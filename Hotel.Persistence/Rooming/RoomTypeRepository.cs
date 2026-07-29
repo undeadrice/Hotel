@@ -1,0 +1,47 @@
+using Hotel.Domain.Rooming.Entities;
+using Hotel.Domain.Rooming.Services;
+using Hotel.Shared.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace Hotel.Persistence.Rooming;
+
+public class RoomTypeRepository(PersistenceDbContext persistenceDbContext) : IRoomTypeRepository
+{
+    public async Task Add(RoomType roomType, CancellationToken token)
+    {
+        await persistenceDbContext.RoomTypes.AddAsync(roomType);
+    }
+
+    public async Task Update(RoomType roomType, CancellationToken token)
+    {
+        persistenceDbContext.RoomTypes.Update(roomType);
+    }
+
+    public async Task<RoomType> GetById(Guid id, CancellationToken token)
+    {
+        var result = await persistenceDbContext.RoomTypes.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (result == null)
+        {
+            throw new NotFoundException($"RoomType with id {id} doesn't exist");
+        }
+
+        return result;
+    }
+
+    public async Task<RoomType?> FindById(Guid id, CancellationToken token)
+    {
+        return await persistenceDbContext.RoomTypes.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<IReadOnlyCollection<RoomType>> GetAll(CancellationToken token, Expression<Func<RoomType, bool>>? filter = null)
+    {
+        if (filter == null)
+        {
+            return await persistenceDbContext.RoomTypes.ToListAsync();
+        }
+
+        return await persistenceDbContext.RoomTypes.Where(filter).ToListAsync();
+    }
+}
