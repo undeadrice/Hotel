@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/IntegrationTests/">
+    <Project Path="IntegrationTests/Hotel.IntegrationTests/Hotel.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj" />
+    <Project Path="Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj" />
+  </Folder>
+  <Project Path="Hotel.API/Hotel.API.csproj" />
+  <Project Path="Hotel.Application/Hotel.Application.csproj" />
+  <Project Path="Hotel.Domain/Hotel.Domain.csproj" />
+  <Project Path="Hotel.Infrastructure/Hotel.Infrastructure.csproj" />
+  <Project Path="Hotel.Persistence/Hotel.Persistence.csproj" />
+  <Project Path="Hotel.Shared/Hotel.Shared.csproj" />
+</Solution>

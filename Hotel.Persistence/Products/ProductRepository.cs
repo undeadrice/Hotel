@@ -1,0 +1,48 @@
+﻿using Hotel.Domain.Products.Entities;
+using Hotel.Domain.Products.Services;
+using Hotel.Shared.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace Hotel.Persistence.Products
+{
+    public class ProductRepository(PersistenceDbContext persistenceDbContext) : IProductRepository
+    {
+        public async Task Add(Product product, CancellationToken token)
+        {
+            await persistenceDbContext.Products.AddAsync(product);
+        }
+
+        public async Task Update(Product product, CancellationToken token)
+        {
+            persistenceDbContext.Products.Update(product);
+        }
+
+        public async Task<Product> GetById(Guid id, CancellationToken token)
+        {
+            var result = await persistenceDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result == null)
+            {
+                throw new NotFoundException($"Product with id {id} doesn't exist");
+            }
+
+            return result;
+        }
+
+        public async Task<Product?> FindById(Guid id, CancellationToken token)
+        {
+            return await persistenceDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IReadOnlyCollection<Product>> GetAll(CancellationToken token, Expression<Func<Product, bool>>? filter = null)
+        {
+            if (filter == null)
+            {
+                return await persistenceDbContext.Products.ToListAsync();
+            }
+
+            return await persistenceDbContext.Products.Where(filter).ToListAsync();
+        }
+    }
+}

@@ -1,0 +1,34 @@
+﻿using Hotel.API.Products.Mappings;
+using Hotel.Application.Products.Commands;
+using Hotel.Application.Products.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Hotel.API.Products
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductsController(IMediator mediator) : ControllerBase
+    {
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
+        {
+            var result = await mediator.Send(new GetProductsQuery());
+            return Ok(result.Select(i => i.MapToProductResponse()));
+        }
+
+        [HttpPost("seed/{quantity:int}")]
+        public async Task<IActionResult> SeedProducts(int quantity)
+        {
+            var result = await mediator.Send(new SeedProductsCommand(quantity));
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(CreateProductCommand command)
+        {
+            var result = await mediator.Send(command);
+            return Ok(result);
+        }
+    }
+}
