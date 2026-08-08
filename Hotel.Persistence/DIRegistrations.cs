@@ -1,12 +1,16 @@
 ﻿using Hotel.Application.Guests.Services;
 using Hotel.Application.Rooming.Services;
+using Hotel.Domain.Folios.Services;
 using Hotel.Domain.Guests.Services;
 using Hotel.Domain.Persistence;
 using Hotel.Domain.Interfaces;
+using Hotel.Domain.Reservations.Services;
 using Hotel.Domain.Rooming.Services;
 using Hotel.Application.Dashboard.Services;
 using Hotel.Persistence.Dashboard;
+using Hotel.Persistence.Folios;
 using Hotel.Persistence.Guests;
+using Hotel.Persistence.Reservations;
 using Hotel.Persistence.Rooming;
 using Hotel.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +37,9 @@ public static class DIRegistrations
         services.AddScoped<IGuestReadRepository, GuestReadRepository>();
         services.AddScoped<IDashboardReadRepository, DashboardReadRepository>();
         services.AddScoped(typeof(IUserOwnershipRepository<>), typeof(UserOwnershipRepository<>));
+
+        services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IFolioRepository, FolioRepository>();
 
         return services;
     }

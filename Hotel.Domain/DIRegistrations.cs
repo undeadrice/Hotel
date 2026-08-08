@@ -1,4 +1,5 @@
-﻿using Hotel.Domain.Rooming.Services;
+﻿using Hotel.Domain.Reservations.Services;
+using Hotel.Domain.Rooming.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hotel.Domain;
@@ -10,6 +11,7 @@ public static class DIRegistrations
         services.AddScoped<IRoomDeactivationService, RoomDeactivationService>();
         services.AddScoped<IRoomCreationService, RoomCreationService>();
         services.AddScoped<IRoomUpdateService, RoomUpdateService>();
+        services.AddScoped<IRoomReservationService, RoomReservationService>();
         return services;
     }
 }
