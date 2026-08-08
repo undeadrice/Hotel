@@ -163,13 +163,13 @@ public class SeedingService(
                 return;
             }
 
-            var roomType = RoomType.Create("Standard", 150.00m, "Standard room");
+            var roomType = RoomType.Create("Standard", "Standard room");
             await roomTypeRepository.Add(roomType, CancellationToken.None);
 
-            roomType = RoomType.Create("Double", 250.00m, "Double room");
+            roomType = RoomType.Create("Double", "Double room");
             await roomTypeRepository.Add(roomType, CancellationToken.None);
 
-            roomType = RoomType.Create("King", 400.00m, "King room");
+            roomType = RoomType.Create("King", "King room");
             await roomTypeRepository.Add(roomType, CancellationToken.None);
 
             await unitOfWork.CommitAsync();

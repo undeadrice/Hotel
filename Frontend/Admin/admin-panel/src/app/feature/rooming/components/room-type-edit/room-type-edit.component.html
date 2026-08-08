@@ -26,16 +26,6 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" style="width: 100%">
-              <mat-label>Base rate</mat-label>
-              <input matInput type="number" formControlName="baseRate" placeholder="e.g. 100.00" />
-              @if (form.get('baseRate')?.hasError('required')) {
-                <mat-error>Base rate is required</mat-error>
-              } @else if (form.get('baseRate')?.hasError('min')) {
-                <mat-error>Base rate must be a positive number</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" style="width: 100%">
               <mat-label>Description</mat-label>
               <textarea matInput formControlName="description" placeholder="Optional description"></textarea>
             </mat-form-field>

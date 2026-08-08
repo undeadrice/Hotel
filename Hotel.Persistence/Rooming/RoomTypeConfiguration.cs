@@ -16,10 +16,6 @@ public class RoomTypeConfiguration : IEntityTypeConfiguration<RoomType>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(rt => rt.BaseRate)
-            .IsRequired()
-            .HasPrecision(18, 2);
-
         builder.Property(rt => rt.Description)
             .HasMaxLength(500);
 

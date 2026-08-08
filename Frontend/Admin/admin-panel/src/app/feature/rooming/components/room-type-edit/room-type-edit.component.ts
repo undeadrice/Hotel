@@ -36,7 +36,6 @@ export class RoomTypeEditComponent implements OnInit {
 
   readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
-    baseRate: [0, [Validators.required, Validators.min(0)]],
     description: [''],
   });
 
@@ -58,7 +57,6 @@ export class RoomTypeEditComponent implements OnInit {
       next: (roomType) => {
         this.form.patchValue({
           name: roomType.name,
-          baseRate: roomType.baseRate,
           description: roomType.description ?? '',
         });
         this.loading.set(false);
@@ -82,7 +80,6 @@ export class RoomTypeEditComponent implements OnInit {
       .updateRoomType({
         id: this.roomTypeId,
         name: this.form.get('name')!.value!,
-        baseRate: this.form.get('baseRate')!.value!,
         description: this.form.get('description')!.value || null,
       })
       .subscribe({

@@ -21,7 +21,7 @@ public class RoomTypeReadRepository(PersistenceDbContext dbContext) : IRoomTypeR
         var roomType = await dbContext.RoomTypes
             .AsNoTracking()
             .Where(rt => rt.Id == id)
-            .Select(rt => new RoomTypeDto(rt.Id, rt.Name, rt.BaseRate, rt.Description))
+            .Select(rt => new RoomTypeDto(rt.Id, rt.Name, rt.Description))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (roomType is null)

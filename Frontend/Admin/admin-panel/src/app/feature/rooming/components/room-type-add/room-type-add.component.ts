@@ -35,7 +35,6 @@ export class RoomTypeAddComponent {
 
   readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
-    baseRate: [0, [Validators.required, Validators.min(0)]],
     description: [''],
   });
 
@@ -50,7 +49,6 @@ export class RoomTypeAddComponent {
     this.roomService
       .createRoomType({
         name: this.form.get('name')!.value!,
-        baseRate: this.form.get('baseRate')!.value!,
         description: this.form.get('description')!.value || null,
       })
       .subscribe({

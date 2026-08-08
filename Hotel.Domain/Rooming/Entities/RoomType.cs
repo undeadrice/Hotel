@@ -8,17 +8,14 @@ public class RoomType
 
     public string Name { get; private set; }
 
-    public decimal BaseRate { get; private set; }
-
     public string? Description { get; private set; }
 
     public bool IsActive { get; private set; }
 
-    private RoomType(Guid id, string name, decimal baseRate, string? description)
+    private RoomType(Guid id, string name, string? description)
     {
         Id = id;
         Name = name;
-        BaseRate = baseRate;
         Description = description;
         IsActive = true;
     }
@@ -27,35 +24,24 @@ public class RoomType
     public RoomType() { }
 #pragma warning restore CS8618
 
-    public static RoomType Create(string name, decimal baseRate, string? description)
+    public static RoomType Create(string name, string? description)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new RoomTypeNameRequiredException();
         }
 
-        if (baseRate <= 0)
-        {
-            throw new RoomTypeBaseRateInvalidException();
-        }
-
-        return new RoomType(Guid.NewGuid(), name, baseRate, description);
+        return new RoomType(Guid.NewGuid(), name, description);
     }
 
-    public void Update(string name, decimal baseRate, string? description)
+    public void Update(string name, string? description)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new RoomTypeNameRequiredException();
-        }
-
-        if (baseRate <= 0)
-        {
-            throw new RoomTypeBaseRateInvalidException();
         }
 
         Name = name;
-        BaseRate = baseRate;
         Description = description;
     }
 }

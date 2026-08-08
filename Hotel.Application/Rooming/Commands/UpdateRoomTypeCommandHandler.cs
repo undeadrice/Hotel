@@ -9,7 +9,7 @@ public class UpdateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository
     public async Task Handle(UpdateRoomTypeCommand request, CancellationToken cancellationToken)
     {
         var roomType = await roomTypeRepository.GetById(request.Id);
-        roomType.Update(request.Name, request.BaseRate, request.Description);
+        roomType.Update(request.Name, request.Description);
 
         await roomTypeRepository.Update(roomType);
     }

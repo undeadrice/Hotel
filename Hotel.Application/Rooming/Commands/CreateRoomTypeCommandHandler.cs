@@ -9,7 +9,7 @@ public class CreateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository
 {
     public async Task<Guid> Handle(CreateRoomTypeCommand request, CancellationToken cancellationToken)
     {
-        var roomType = RoomType.Create(request.Name, request.BaseRate, request.Description);
+        var roomType = RoomType.Create(request.Name, request.Description);
 
         await roomTypeRepository.Add(roomType);
 
