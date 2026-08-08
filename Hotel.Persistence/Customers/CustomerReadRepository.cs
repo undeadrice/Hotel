@@ -33,8 +33,7 @@ public class CustomerReadRepository(PersistenceDbContext dbContext) : ICustomerR
                 c.LastName,
                 c.Phone,
                 c.Email,
-                c.DocumentNumber,
-                c.Location))
+                c.DocumentNumber))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (customer is null)

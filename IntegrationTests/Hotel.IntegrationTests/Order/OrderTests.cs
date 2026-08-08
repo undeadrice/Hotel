@@ -3,7 +3,6 @@ using Hotel.API.Orders.Responses;
 using Hotel.Application.Customers.Commands;
 using Hotel.Application.Orders.Commands;
 using Hotel.Application.Products.Commands;
-using Hotel.Domain.Customers;
 using Hotel.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
@@ -41,9 +40,14 @@ public class OrderTests : IClassFixture<InventoryWebApplicationFactory>, IAsyncL
         return await response.Content.ReadFromJsonAsync<Guid>();
     }
 
-    private async Task<Guid> CreateCustomerAsync(CustomerLocation location = CustomerLocation.US)
+    private async Task<Guid> CreateCustomerAsync()
     {
-        var command = new CreateCustomerCommand(location);
+        var command = new CreateCustomerCommand(
+            "John",
+            "Doe",
+            "123456789",
+            "john.doe@example.com",
+            "DOC12345");
         var response = await _client.PostAsJsonAsync("/api/customers", command);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         return await response.Content.ReadFromJsonAsync<Guid>();

@@ -14,8 +14,7 @@ public class UpdateCustomerCommandHandler(ICustomerRepository customerRepository
             request.LastName,
             request.Phone,
             request.Email,
-            request.DocumentNumber,
-            request.Location);
+            request.DocumentNumber);
 
         await customerRepository.Update(customer, cancellationToken);
     }

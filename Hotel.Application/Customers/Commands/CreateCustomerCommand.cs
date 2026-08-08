@@ -1,6 +1,5 @@
 ﻿using Hotel.Application.Pipeline;
 using Hotel.Application.Users.Enums;
-using Hotel.Domain.Customers;
 
 namespace Hotel.Application.Customers.Commands;
 
@@ -10,5 +9,4 @@ public record CreateCustomerCommand(
     string LastName,
     string Phone,
     string Email,
-    string DocumentNumber,
-    CustomerLocation Location) : ICommand<Guid>;
+    string DocumentNumber) : ICommand<Guid>;

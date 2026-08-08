@@ -30,9 +30,6 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.Property(c => c.Location)
-            .IsRequired();
-
         builder.HasIndex(c => c.Phone);
         builder.HasIndex(c => c.Email);
         builder.HasIndex(c => c.DocumentNumber);

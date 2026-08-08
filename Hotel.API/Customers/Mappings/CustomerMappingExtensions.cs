@@ -12,8 +12,7 @@ public static class CustomerMappingExtensions
             dto.LastName,
             dto.Phone,
             dto.Email,
-            dto.DocumentNumber,
-            dto.Location.ToString());
+            dto.DocumentNumber);
 
     public static CustomerListResponse MapToCustomerListResponse(this CustomerListDto dto) =>
         new CustomerListResponse(

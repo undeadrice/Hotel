@@ -27,8 +27,7 @@ public class CreateCustomerCommandHandlerTests
             "Doe",
             "123456789",
             "john.doe@example.com",
-            "DOC12345",
-            CustomerLocation.US);
+            "DOC12345");
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

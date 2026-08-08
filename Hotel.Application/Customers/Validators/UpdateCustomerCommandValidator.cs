@@ -1,6 +1,5 @@
 using FluentValidation;
 using Hotel.Application.Customers.Commands;
-using Hotel.Domain.Customers;
 
 namespace Hotel.Application.Customers.Validators;
 
@@ -31,8 +30,5 @@ public class UpdateCustomerCommandValidator : AbstractValidator<UpdateCustomerCo
         RuleFor(x => x.DocumentNumber)
             .NotEmpty().WithMessage("Document number is required.")
             .MaximumLength(50).WithMessage("Document number must not exceed 50 characters.");
-
-        RuleFor(x => x.Location)
-            .IsInEnum().WithMessage($"Location must be one of: {string.Join(", ", Enum.GetNames<CustomerLocation>())}.");
     }
 }

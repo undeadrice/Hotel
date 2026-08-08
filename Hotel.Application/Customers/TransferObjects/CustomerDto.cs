@@ -1,6 +1,4 @@
-﻿using Hotel.Domain.Customers;
-
-namespace Hotel.Application.Customers.TransferObjects;
+﻿namespace Hotel.Application.Customers.TransferObjects;
 
 public record CustomerDto(
     Guid Id,
@@ -8,5 +6,4 @@ public record CustomerDto(
     string LastName,
     string Phone,
     string Email,
-    string DocumentNumber,
-    CustomerLocation Location);
+    string DocumentNumber);

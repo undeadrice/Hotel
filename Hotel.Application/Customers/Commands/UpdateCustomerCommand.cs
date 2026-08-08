@@ -1,6 +1,5 @@
 using Hotel.Application.Pipeline;
 using Hotel.Application.Users.Enums;
-using Hotel.Domain.Customers;
 
 namespace Hotel.Application.Customers.Commands;
 
@@ -11,5 +10,4 @@ public record UpdateCustomerCommand(
     string LastName,
     string Phone,
     string Email,
-    string DocumentNumber,
-    CustomerLocation Location) : ICommand;
+    string DocumentNumber) : ICommand;

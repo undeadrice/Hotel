@@ -8,7 +8,6 @@ public class Customer
     public string Phone { get; private set; }
     public string Email { get; private set; }
     public string DocumentNumber { get; private set; }
-    public CustomerLocation Location { get; private set; }
 
     public Customer() { }
 
@@ -18,8 +17,7 @@ public class Customer
         string lastName,
         string phone,
         string email,
-        string documentNumber,
-        CustomerLocation location)
+        string documentNumber)
     {
         Id = id;
         FirstName = firstName;
@@ -27,7 +25,6 @@ public class Customer
         Phone = phone;
         Email = email;
         DocumentNumber = documentNumber;
-        Location = location;
     }
 
     public static Customer Create(
@@ -35,8 +32,7 @@ public class Customer
         string lastName,
         string phone,
         string email,
-        string documentNumber,
-        CustomerLocation location)
+        string documentNumber)
     {
         return new Customer(
             Guid.NewGuid(),
@@ -44,8 +40,7 @@ public class Customer
             lastName,
             phone,
             email,
-            documentNumber,
-            location);
+            documentNumber);
     }
 
     public void UpdateProfile(
@@ -53,14 +48,12 @@ public class Customer
         string lastName,
         string phone,
         string email,
-        string documentNumber,
-        CustomerLocation location)
+        string documentNumber)
     {
         FirstName = firstName;
         LastName = lastName;
         Phone = phone;
         Email = email;
         DocumentNumber = documentNumber;
-        Location = location;
     }
 }

@@ -6,5 +6,4 @@ public record CustomerResponse(
     string LastName,
     string Phone,
     string Email,
-    string DocumentNumber,
-    string Location);
+    string DocumentNumber);
