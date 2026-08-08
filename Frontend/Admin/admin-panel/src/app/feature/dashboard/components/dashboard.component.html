@@ -1,0 +1,25 @@
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @else if (dashboard(); as data) {
+  <div style="display: flex; gap: 24px; flex-wrap: wrap">
+    <mat-card style="flex: 1; min-width: 250px">
+      <mat-card-content style="display: flex; align-items: center; gap: 16px; padding: 24px">
+        <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: #1565c0">meeting_room</mat-icon>
+        <div>
+          <div style="font-size: 14px; color: rgba(0,0,0,0.6)">Rooms</div>
+          <div style="font-size: 36px; font-weight: 500">{{ data.roomCount }}</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card style="flex: 1; min-width: 250px">
+      <mat-card-content style="display: flex; align-items: center; gap: 16px; padding: 24px">
+        <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: #2e7d32">people</mat-icon>
+        <div>
+          <div style="font-size: 14px; color: rgba(0,0,0,0.6)">Guests</div>
+          <div style="font-size: 36px; font-weight: 500">{{ data.guestCount }}</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

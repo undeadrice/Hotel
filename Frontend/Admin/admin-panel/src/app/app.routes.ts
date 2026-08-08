@@ -18,6 +18,7 @@ import { RoomTypeEditComponent } from './feature/rooming/components/room-type-ed
 import { GuestListComponent } from './feature/guests/components/list/guest-list.component';
 import { GuestAddComponent } from './feature/guests/components/add/guest-add.component';
 import { GuestEditComponent } from './feature/guests/components/edit/guest-edit.component';
+import { DashboardComponent } from './feature/dashboard/components/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -86,8 +87,12 @@ export const routes: Routes = [
         component: GuestEditComponent,
       },
       {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
+      {
         path: '',
-        redirectTo: 'roles',
+        redirectTo: 'dashboard',
         pathMatch: 'full',
       },
     ],
