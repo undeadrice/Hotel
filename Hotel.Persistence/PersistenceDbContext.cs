@@ -1,5 +1,6 @@
 ﻿using Hotel.Domain.Folios.Entities;
 using Hotel.Domain.Guests;
+using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Transactions.Entities;
@@ -26,6 +27,10 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
 
     public DbSet<TransactionCode> TransactionCodes { get; set; }
+
+    public DbSet<RatePlan> RatePlans { get; set; }
+
+    public DbSet<RatePlanRoom> RatePlanRooms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

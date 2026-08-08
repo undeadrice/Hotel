@@ -5,6 +5,8 @@ using Hotel.Domain.Guests.Services;
 using Hotel.Domain.Persistence;
 using Hotel.Domain.Interfaces;
 using Hotel.Domain.Reservations.Services;
+using Hotel.Application.RatePlans.Services;
+using Hotel.Domain.RatePlans.Services;
 using Hotel.Domain.Rooming.Services;
 using Hotel.Domain.Transactions.Services;
 using Hotel.Application.Dashboard.Services;
@@ -13,6 +15,7 @@ using Hotel.Persistence.Transactions;
 using Hotel.Persistence.Dashboard;
 using Hotel.Persistence.Folios;
 using Hotel.Persistence.Guests;
+using Hotel.Persistence.RatePlans;
 using Hotel.Persistence.Reservations;
 using Hotel.Persistence.Rooming;
 using Hotel.Persistence.Services;
@@ -48,6 +51,9 @@ public static class DIRegistrations
         services.AddScoped<ITransactionCodeRepository, TransactionCodeRepository>();
         services.AddScoped<ITransactionGroupReadRepository, TransactionGroupReadRepository>();
         services.AddScoped<ITransactionCodeReadRepository, TransactionCodeReadRepository>();
+
+        services.AddScoped<IRatePlanRepository, RatePlanRepository>();
+        services.AddScoped<IRatePlanReadRepository, RatePlanReadRepository>();
 
         return services;
     }
