@@ -20,7 +20,6 @@ export class RatePlanListComponent {
     'StartDate',
     'EndDate',
     'IsActive',
-    'actions',
   ];
 
   constructor() {
