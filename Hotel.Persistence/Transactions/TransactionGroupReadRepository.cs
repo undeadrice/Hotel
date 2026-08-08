@@ -24,7 +24,7 @@ public class TransactionGroupReadRepository(PersistenceDbContext dbContext) : IT
                 tg.Id,
                 tg.Code,
                 tg.Name,
-                (int)tg.Type,
+                tg.Type,
                 tg.IsActive,
                 tg.TransactionCodes.Count))
             .ToListAsync(cancellationToken);
@@ -39,7 +39,7 @@ public class TransactionGroupReadRepository(PersistenceDbContext dbContext) : IT
                 tg.Id,
                 tg.Code,
                 tg.Name,
-                (int)tg.Type,
+                tg.Type,
                 tg.IsActive,
                 tg.TransactionCodes
                     .OrderBy(tc => tc.Code)

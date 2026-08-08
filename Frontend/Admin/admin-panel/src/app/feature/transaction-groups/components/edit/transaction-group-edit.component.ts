@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -37,6 +38,7 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
+    MatTableModule,
   ],
   templateUrl: './transaction-group-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,6 +58,15 @@ export class TransactionGroupEditComponent implements OnInit {
 
   readonly loading = signal(true);
   readonly submitting = signal(false);
+  readonly transactionCodes = signal<
+    Array<{
+      id: string;
+      code: string;
+      name: string;
+      defaultAmount: number;
+      isActive: boolean;
+    }>
+  >([]);
   readonly transactionTypeValues = computed(() =>
     Object.entries(TransactionType)
       .filter(([key]) => isNaN(Number(key)))
@@ -87,6 +98,8 @@ export class TransactionGroupEditComponent implements OnInit {
             name: group.name,
             type: group.type,
           });
+
+          this.transactionCodes.set(group.transactionCodes ?? []);
 
           this.loading.set(false);
         },
