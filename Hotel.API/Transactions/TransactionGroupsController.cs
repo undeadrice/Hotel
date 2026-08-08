@@ -10,9 +10,9 @@ namespace Hotel.API.Transactions;
 public class TransactionGroupsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetTransactionGroups([FromQuery] bool? isActive)
+    public async Task<IActionResult> GetTransactionGroups([FromQuery] GetTransactionGroupsQuery query)
     {
-        var result = await mediator.Send(new GetTransactionGroupsQuery(isActive));
+        var result = await mediator.Send(query);
         return Ok(result);
     }
 
