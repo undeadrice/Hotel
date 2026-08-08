@@ -15,6 +15,9 @@ import { RoomEditComponent } from './feature/rooming/components/room-edit/room-e
 import { RoomTypeListComponent } from './feature/rooming/components/room-type-list/room-type-list.component';
 import { RoomTypeAddComponent } from './feature/rooming/components/room-type-add/room-type-add.component';
 import { RoomTypeEditComponent } from './feature/rooming/components/room-type-edit/room-type-edit.component';
+import { GuestListComponent } from './feature/guests/components/list/guest-list.component';
+import { GuestAddComponent } from './feature/guests/components/add/guest-add.component';
+import { GuestEditComponent } from './feature/guests/components/edit/guest-edit.component';
 
 export const routes: Routes = [
   {
@@ -69,6 +72,18 @@ export const routes: Routes = [
       {
         path: 'room-types/edit/:id',
         component: RoomTypeEditComponent,
+      },
+      {
+        path: 'guests',
+        component: GuestListComponent,
+      },
+      {
+        path: 'guests/add',
+        component: GuestAddComponent,
+      },
+      {
+        path: 'guests/edit/:id',
+        component: GuestEditComponent,
       },
       {
         path: '',

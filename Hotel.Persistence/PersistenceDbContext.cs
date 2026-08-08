@@ -1,4 +1,4 @@
-﻿using Hotel.Domain.Customers;
+﻿using Hotel.Domain.Guests;
 using Hotel.Domain.Rooming.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +6,7 @@ namespace Hotel.Persistence;
 
 public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options) : DbContext(options)
 {
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Guest> Guests { get; set; }
 
     public DbSet<Room> Rooms { get; set; }
 
