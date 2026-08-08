@@ -18,6 +18,12 @@ import { RoomTypeEditComponent } from './feature/rooming/components/room-type-ed
 import { GuestListComponent } from './feature/guests/components/list/guest-list.component';
 import { GuestAddComponent } from './feature/guests/components/add/guest-add.component';
 import { GuestEditComponent } from './feature/guests/components/edit/guest-edit.component';
+import { TransactionGroupListComponent } from './feature/transaction-groups/components/list/transaction-group-list.component';
+import { TransactionGroupAddComponent } from './feature/transaction-groups/components/add/transaction-group-add.component';
+import { TransactionGroupEditComponent } from './feature/transaction-groups/components/edit/transaction-group-edit.component';
+import { TransactionCodeListComponent } from './feature/transaction-codes/components/list/transaction-code-list.component';
+import { TransactionCodeAddComponent } from './feature/transaction-codes/components/add/transaction-code-add.component';
+import { TransactionCodeEditComponent } from './feature/transaction-codes/components/edit/transaction-code-edit.component';
 import { DashboardComponent } from './feature/dashboard/components/dashboard.component';
 
 export const routes: Routes = [
@@ -74,22 +80,46 @@ export const routes: Routes = [
         path: 'room-types/edit/:id',
         component: RoomTypeEditComponent,
       },
-      {
-        path: 'guests',
-        component: GuestListComponent,
-      },
-      {
-        path: 'guests/add',
-        component: GuestAddComponent,
-      },
-      {
-        path: 'guests/edit/:id',
-        component: GuestEditComponent,
-      },
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-      },
+       {
+         path: 'guests',
+         component: GuestListComponent,
+       },
+       {
+         path: 'guests/add',
+         component: GuestAddComponent,
+       },
+       {
+         path: 'guests/edit/:id',
+         component: GuestEditComponent,
+       },
+       {
+         path: 'transaction-groups',
+         component: TransactionGroupListComponent,
+       },
+       {
+         path: 'transaction-groups/add',
+         component: TransactionGroupAddComponent,
+       },
+       {
+         path: 'transaction-groups/edit/:id',
+         component: TransactionGroupEditComponent,
+       },
+       {
+         path: 'transaction-codes',
+         component: TransactionCodeListComponent,
+       },
+       {
+         path: 'transaction-codes/add',
+         component: TransactionCodeAddComponent,
+       },
+       {
+         path: 'transaction-codes/edit/:id',
+         component: TransactionCodeEditComponent,
+       },
+       {
+         path: 'dashboard',
+         component: DashboardComponent,
+       },
       {
         path: '',
         redirectTo: 'dashboard',

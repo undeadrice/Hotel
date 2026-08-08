@@ -1,0 +1,134 @@
+import {
+  Component,
+  ChangeDetectionStrategy,
+  OnInit,
+  signal,
+  inject,
+  computed,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { TransactionGroupService } from '../../services/transaction-group.service';
+import { TransactionType } from '../../enums/transaction-type.enum';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+  ],
+  templateUrl: './transaction-group-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class TransactionGroupEditComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private transactionGroupService = inject(TransactionGroupService);
+  private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  readonly form: FormGroup = this.fb.group({
+    code: ['', [Validators.required, Validators.minLength(2)]],
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    description: [''],
+    type: [TransactionType.Charge, [Validators.required]],
+  });
+
+  readonly loading = signal(true);
+  readonly submitting = signal(false);
+  readonly transactionTypeValues = computed(() =>
+    Object.entries(TransactionType)
+      .filter(([key]) => isNaN(Number(key)))
+      .map(([key, value]) => ({
+        label: key,
+        value: value as number,
+      }))
+  );
+
+  private transactionGroupId: string | null = null;
+
+  ngOnInit(): void {
+    this.transactionGroupId = this.route.snapshot.paramMap.get('id');
+
+    if (!this.transactionGroupId) {
+      this.snackBar.open('Invalid transaction group ID', 'Close', {
+        duration: 5000,
+      });
+      this.router.navigate(['/transaction-groups']);
+      return;
+    }
+
+    this.transactionGroupService
+      .getTransactionGroup(this.transactionGroupId)
+      .subscribe({
+        next: (group) => {
+          this.form.patchValue({
+            code: group.code,
+            name: group.name,
+            description: group.description,
+            type: group.type,
+          });
+
+          this.loading.set(false);
+        },
+        error: () => {
+          this.snackBar.open('Failed to load transaction group', 'Close', {
+            duration: 5000,
+          });
+          this.router.navigate(['/transaction-groups']);
+        },
+      });
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid || !this.transactionGroupId) {
+      return;
+    }
+
+    this.submitting.set(true);
+    this.transactionGroupService
+      .updateTransactionGroup({
+        id: this.transactionGroupId,
+        ...this.form.value,
+      })
+      .subscribe({
+        next: () => {
+          this.snackBar.open(
+            'Transaction group updated successfully',
+            'Close',
+            {
+              duration: 3000,
+            }
+          );
+          this.router.navigate(['/transaction-groups']);
+        },
+        error: () => {
+          this.snackBar.open('Failed to update transaction group', 'Close', {
+            duration: 5000,
+          });
+          this.submitting.set(false);
+        },
+      });
+  }
+}
