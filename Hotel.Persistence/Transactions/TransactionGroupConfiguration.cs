@@ -23,9 +23,6 @@ public class TransactionGroupConfiguration : IEntityTypeConfiguration<Transactio
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(tg => tg.Description)
-            .HasMaxLength(500);
-
         builder.Property(tg => tg.Type)
             .IsRequired()
             .HasConversion<int>();
@@ -34,7 +31,7 @@ public class TransactionGroupConfiguration : IEntityTypeConfiguration<Transactio
             .IsRequired();
 
         builder.HasMany(tg => tg.TransactionCodes)
-            .WithOne(tc => tc.TransactionGroup)
+            .WithOne()
             .HasForeignKey(tc => tc.TransactionGroupId)
             .OnDelete(DeleteBehavior.Restrict);
 

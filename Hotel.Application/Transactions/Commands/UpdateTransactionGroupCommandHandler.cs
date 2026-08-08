@@ -12,7 +12,6 @@ public class UpdateTransactionGroupCommandHandler(ITransactionGroupUpdateService
             request.Id,
             request.Code,
             request.Name,
-            request.Description,
             request.Type,
             cancellationToken);
     }

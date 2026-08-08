@@ -12,8 +12,6 @@ public class CreateTransactionCodeCommandHandler(ITransactionCodeCreationService
             request.TransactionGroupId,
             request.Code,
             request.Name,
-            request.Description,
-            request.DefaultAmount,
             cancellationToken);
 
         return transactionCode.Id;

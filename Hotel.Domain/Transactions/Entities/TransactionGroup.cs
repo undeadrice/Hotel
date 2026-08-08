@@ -13,8 +13,6 @@ public class TransactionGroup
 
     public string Name { get; private set; }
 
-    public string? Description { get; private set; }
-
     public TransactionType Type { get; private set; }
 
     public bool IsActive { get; private set; }
@@ -29,13 +27,11 @@ public class TransactionGroup
         Guid id,
         string code,
         string name,
-        string? description,
         TransactionType type)
     {
         Id = id;
         Code = code;
         Name = name;
-        Description = description;
         Type = type;
         IsActive = true;
     }
@@ -43,7 +39,6 @@ public class TransactionGroup
     public static TransactionGroup Create(
         string code,
         string name,
-        string? description,
         TransactionType type)
     {
         Validate(code, name);
@@ -52,21 +47,18 @@ public class TransactionGroup
             Guid.NewGuid(),
             code.Trim().ToUpperInvariant(),
             name.Trim(),
-            description,
             type);
     }
 
     public void Update(
         string code,
         string name,
-        string? description,
         TransactionType type)
     {
         Validate(code, name);
 
         Code = code.Trim().ToUpperInvariant();
         Name = name.Trim();
-        Description = description;
         Type = type;
     }
 

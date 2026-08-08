@@ -41,15 +41,6 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" style="width: 100%">
-            <mat-label>Description</mat-label>
-            <input
-              matInput
-              formControlName="description"
-              placeholder="e.g. Room charges and fees"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" style="width: 100%">
             <mat-label>Type</mat-label>
             <mat-select formControlName="type">
               @for (typeOption of transactionTypeValues(); track typeOption.value) {

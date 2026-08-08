@@ -43,7 +43,6 @@ export class TransactionGroupAddComponent {
   readonly form: FormGroup = this.fb.group({
     code: ['', [Validators.required, Validators.minLength(2)]],
     name: ['', [Validators.required, Validators.minLength(2)]],
-    description: [''],
     type: [TransactionType.Charge, [Validators.required]],
   });
 

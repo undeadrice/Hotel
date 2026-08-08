@@ -12,8 +12,6 @@ public class TransactionCodeUpdateService(
         Guid transactionGroupId,
         string code,
         string name,
-        string? description,
-        decimal defaultAmount,
         CancellationToken cancellationToken = default)
     {
         var transactionCode = await transactionCodeRepository.GetById(id, cancellationToken);
@@ -39,7 +37,7 @@ public class TransactionCodeUpdateService(
             throw new TransactionCodeAlreadyExistsException(normalizedCode);
         }
 
-        transactionCode.Update(code!, name, description, defaultAmount);
+        transactionCode.Update(code!, name);
 
         await transactionCodeRepository.Update(transactionCode, cancellationToken);
     }

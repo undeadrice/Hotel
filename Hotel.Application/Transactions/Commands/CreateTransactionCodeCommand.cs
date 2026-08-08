@@ -5,7 +5,5 @@ namespace Hotel.Application.Transactions.Commands;
 public record CreateTransactionCodeCommand(
     Guid TransactionGroupId,
     string Code,
-    string Name,
-    string? Description,
-    decimal DefaultAmount)
+    string Name)
     : ICommand<Guid>;

@@ -26,13 +26,6 @@ public class TransactionCodeConfiguration : IEntityTypeConfiguration<Transaction
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(tc => tc.Description)
-            .HasMaxLength(500);
-
-        builder.Property(tc => tc.DefaultAmount)
-            .IsRequired()
-            .HasPrecision(18, 2);
-
         builder.Property(tc => tc.IsActive)
             .IsRequired();
     }

@@ -13,8 +13,6 @@ public class UpdateTransactionCodeCommandHandler(ITransactionCodeUpdateService t
             request.TransactionGroupId,
             request.Code,
             request.Name,
-            request.Description,
-            request.DefaultAmount,
             cancellationToken);
     }
 }

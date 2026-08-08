@@ -54,8 +54,6 @@ export class TransactionCodeEditComponent implements OnInit {
     transactionGroupId: ['', [Validators.required]],
     code: ['', [Validators.required, Validators.minLength(2)]],
     name: ['', [Validators.required, Validators.minLength(2)]],
-    description: [''],
-    defaultAmount: [0, [Validators.required, Validators.min(0)]],
   });
 
   readonly loading = signal(true);
@@ -88,8 +86,6 @@ export class TransactionCodeEditComponent implements OnInit {
             transactionGroupId: code.transactionGroupId,
             code: code.code,
             name: code.name,
-            description: code.description,
-            defaultAmount: code.defaultAmount,
           });
 
           this.loading.set(false);

@@ -29,10 +29,12 @@ public class TransactionCodeReadRepository(PersistenceDbContext dbContext) : ITr
             .Select(tc => new TransactionCodeListDto(
                 tc.Id,
                 tc.TransactionGroupId,
-                tc.TransactionGroup!.Name,
+                dbContext.TransactionGroups
+                    .Where(tg => tg.Id == tc.TransactionGroupId)
+                    .Select(tg => tg.Name)
+                    .FirstOrDefault() ?? "",
                 tc.Code,
                 tc.Name,
-                tc.DefaultAmount,
                 tc.IsActive))
             .ToListAsync(cancellationToken);
     }
@@ -45,11 +47,12 @@ public class TransactionCodeReadRepository(PersistenceDbContext dbContext) : ITr
             .Select(tc => new TransactionCodeDto(
                 tc.Id,
                 tc.TransactionGroupId,
-                tc.TransactionGroup!.Name,
+                dbContext.TransactionGroups
+                    .Where(tg => tg.Id == tc.TransactionGroupId)
+                    .Select(tg => tg.Name)
+                    .FirstOrDefault() ?? "",
                 tc.Code,
                 tc.Name,
-                tc.Description,
-                tc.DefaultAmount,
                 tc.IsActive))
             .FirstOrDefaultAsync(cancellationToken);
 

@@ -8,7 +8,5 @@ public interface ITransactionCodeCreationService
         Guid transactionGroupId,
         string code,
         string name,
-        string? description,
-        decimal defaultAmount,
         CancellationToken cancellationToken = default);
 }

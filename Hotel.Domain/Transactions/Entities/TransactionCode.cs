@@ -8,15 +8,9 @@ public class TransactionCode
 
     public Guid TransactionGroupId { get; private set; }
 
-    public TransactionGroup? TransactionGroup { get; private set; }
-
     public string Code { get; private set; }
 
     public string Name { get; private set; }
-
-    public string? Description { get; private set; }
-
-    public decimal DefaultAmount { get; private set; }
 
     public bool IsActive { get; private set; }
 
@@ -28,49 +22,37 @@ public class TransactionCode
         Guid id,
         Guid transactionGroupId,
         string code,
-        string name,
-        string? description,
-        decimal defaultAmount)
+        string name)
     {
         Id = id;
         TransactionGroupId = transactionGroupId;
         Code = code;
         Name = name;
-        Description = description;
-        DefaultAmount = defaultAmount;
         IsActive = true;
     }
 
     public static TransactionCode Create(
         Guid transactionGroupId,
         string code,
-        string name,
-        string? description,
-        decimal defaultAmount)
+        string name)
     {
-        Validate(code, name, defaultAmount);
+        Validate(code, name);
 
         return new TransactionCode(
             Guid.NewGuid(),
             transactionGroupId,
             code.Trim().ToUpperInvariant(),
-            name.Trim(),
-            description,
-            defaultAmount);
+            name.Trim());
     }
 
     public void Update(
         string code,
-        string name,
-        string? description,
-        decimal defaultAmount)
+        string name)
     {
-        Validate(code, name, defaultAmount);
+        Validate(code, name);
 
         Code = code.Trim().ToUpperInvariant();
         Name = name.Trim();
-        Description = description;
-        DefaultAmount = defaultAmount;
     }
 
     public void ChangeGroup(Guid transactionGroupId)
@@ -88,7 +70,7 @@ public class TransactionCode
         IsActive = false;
     }
 
-    private static void Validate(string code, string name, decimal defaultAmount)
+    private static void Validate(string code, string name)
     {
         if (string.IsNullOrWhiteSpace(code))
         {
@@ -98,11 +80,6 @@ public class TransactionCode
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new TransactionCodeNameRequiredException();
-        }
-
-        if (defaultAmount < 0)
-        {
-            throw new TransactionCodeAmountInvalidException();
         }
     }
 }

@@ -12,8 +12,6 @@ public class TransactionCodeCreationService(
         Guid transactionGroupId,
         string code,
         string name,
-        string? description,
-        decimal defaultAmount,
         CancellationToken cancellationToken = default)
     {
         var transactionGroup = await transactionGroupRepository.GetById(transactionGroupId, cancellationToken);
@@ -23,7 +21,7 @@ public class TransactionCodeCreationService(
             throw new TransactionGroupInactiveException(transactionGroupId);
         }
 
-        var transactionCode = TransactionCode.Create(transactionGroupId, code, name, description, defaultAmount);
+        var transactionCode = TransactionCode.Create(transactionGroupId, code, name);
 
         if (await transactionCodeRepository.ExistsByCode(transactionCode.Code, cancellationToken))
         {

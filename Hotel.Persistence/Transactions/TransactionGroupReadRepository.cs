@@ -39,7 +39,6 @@ public class TransactionGroupReadRepository(PersistenceDbContext dbContext) : IT
                 tg.Id,
                 tg.Code,
                 tg.Name,
-                tg.Description,
                 (int)tg.Type,
                 tg.IsActive,
                 tg.TransactionCodes
@@ -50,7 +49,6 @@ public class TransactionGroupReadRepository(PersistenceDbContext dbContext) : IT
                         tg.Name,
                         tc.Code,
                         tc.Name,
-                        tc.DefaultAmount,
                         tc.IsActive))
                     .ToList()))
             .FirstOrDefaultAsync(cancellationToken);

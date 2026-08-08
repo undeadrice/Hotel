@@ -8,7 +8,6 @@ public interface ITransactionGroupCreationService
     Task<TransactionGroup> CreateTransactionGroup(
         string code,
         string name,
-        string? description,
         TransactionType type,
         CancellationToken cancellationToken = default);
 }

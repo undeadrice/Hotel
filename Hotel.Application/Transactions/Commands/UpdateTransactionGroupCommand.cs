@@ -7,6 +7,5 @@ public record UpdateTransactionGroupCommand(
     Guid Id,
     string Code,
     string Name,
-    string? Description,
     TransactionType Type)
     : ICommand;

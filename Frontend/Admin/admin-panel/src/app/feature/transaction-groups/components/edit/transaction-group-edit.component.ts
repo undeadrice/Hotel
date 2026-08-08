@@ -51,7 +51,6 @@ export class TransactionGroupEditComponent implements OnInit {
   readonly form: FormGroup = this.fb.group({
     code: ['', [Validators.required, Validators.minLength(2)]],
     name: ['', [Validators.required, Validators.minLength(2)]],
-    description: [''],
     type: [TransactionType.Charge, [Validators.required]],
   });
 
@@ -86,7 +85,6 @@ export class TransactionGroupEditComponent implements OnInit {
           this.form.patchValue({
             code: group.code,
             name: group.name,
-            description: group.description,
             type: group.type,
           });
 

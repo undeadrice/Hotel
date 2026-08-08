@@ -10,7 +10,6 @@ public class TransactionGroupUpdateService(ITransactionGroupRepository transacti
         Guid id,
         string code,
         string name,
-        string? description,
         TransactionType type,
         CancellationToken cancellationToken = default)
     {
@@ -25,7 +24,7 @@ public class TransactionGroupUpdateService(ITransactionGroupRepository transacti
             throw new TransactionGroupCodeAlreadyExistsException(normalizedCode);
         }
 
-        transactionGroup.Update(code!, name, description, type);
+        transactionGroup.Update(code!, name, type);
 
         await transactionGroupRepository.Update(transactionGroup, cancellationToken);
     }

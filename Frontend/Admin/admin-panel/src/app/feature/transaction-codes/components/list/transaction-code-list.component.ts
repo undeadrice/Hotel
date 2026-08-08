@@ -19,7 +19,6 @@ export class TransactionCodeListComponent {
     'Code',
     'Name',
     'TransactionGroupName',
-    'DefaultAmount',
     'IsActive',
     'actions',
   ];

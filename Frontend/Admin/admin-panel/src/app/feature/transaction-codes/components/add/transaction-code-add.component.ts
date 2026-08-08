@@ -47,8 +47,6 @@ export class TransactionCodeAddComponent {
     transactionGroupId: ['', [Validators.required]],
     code: ['', [Validators.required, Validators.minLength(2)]],
     name: ['', [Validators.required, Validators.minLength(2)]],
-    description: [''],
-    defaultAmount: [0, [Validators.required, Validators.min(0)]],
   });
 
   readonly submitting = signal(false);

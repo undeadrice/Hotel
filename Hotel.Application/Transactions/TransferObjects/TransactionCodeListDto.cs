@@ -6,5 +6,4 @@ public record TransactionCodeListDto(
     string TransactionGroupName,
     string Code,
     string Name,
-    decimal DefaultAmount,
     bool IsActive);

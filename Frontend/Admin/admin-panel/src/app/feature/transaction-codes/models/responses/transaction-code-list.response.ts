@@ -4,6 +4,5 @@ export interface TransactionCodeListResponse {
   transactionGroupName: string;
   code: string;
   name: string;
-  defaultAmount: number;
   isActive: boolean;
 }

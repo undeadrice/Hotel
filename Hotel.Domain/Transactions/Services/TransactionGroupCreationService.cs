@@ -10,11 +10,10 @@ public class TransactionGroupCreationService(ITransactionGroupRepository transac
     public async Task<TransactionGroup> CreateTransactionGroup(
         string code,
         string name,
-        string? description,
         TransactionType type,
         CancellationToken cancellationToken = default)
     {
-        var transactionGroup = TransactionGroup.Create(code, name, description, type);
+        var transactionGroup = TransactionGroup.Create(code, name, type);
 
         if (await transactionGroupRepository.ExistsByCode(transactionGroup.Code, cancellationToken))
         {

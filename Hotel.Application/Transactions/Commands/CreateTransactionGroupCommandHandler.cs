@@ -11,7 +11,6 @@ public class CreateTransactionGroupCommandHandler(ITransactionGroupCreationServi
         var transactionGroup = await transactionGroupCreationService.CreateTransactionGroup(
             request.Code,
             request.Name,
-            request.Description,
             request.Type,
             cancellationToken);
 
