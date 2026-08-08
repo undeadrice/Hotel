@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Hotel.Application.Pipeline;
+using Hotel.Application.Seeding;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +19,8 @@ public static class DIRegistrations
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OwnedResourceBehavior<,>));
 
         services.AddValidatorsFromAssembly(typeof(DIRegistrations).Assembly);
+
+        services.AddScoped<ISeedingService, SeedingService>();
 
         return services;
     }
