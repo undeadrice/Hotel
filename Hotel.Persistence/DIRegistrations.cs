@@ -4,6 +4,8 @@ using Hotel.Domain.Guests.Services;
 using Hotel.Domain.Persistence;
 using Hotel.Domain.Interfaces;
 using Hotel.Domain.Rooming.Services;
+using Hotel.Application.Dashboard.Services;
+using Hotel.Persistence.Dashboard;
 using Hotel.Persistence.Guests;
 using Hotel.Persistence.Rooming;
 using Hotel.Persistence.Services;
@@ -29,6 +31,7 @@ public static class DIRegistrations
         services.AddScoped<IRoomReadRepository, RoomReadRepository>();
         services.AddScoped<IRoomTypeReadRepository, RoomTypeReadRepository>();
         services.AddScoped<IGuestReadRepository, GuestReadRepository>();
+        services.AddScoped<IDashboardReadRepository, DashboardReadRepository>();
         services.AddScoped(typeof(IUserOwnershipRepository<>), typeof(UserOwnershipRepository<>));
 
         return services;
