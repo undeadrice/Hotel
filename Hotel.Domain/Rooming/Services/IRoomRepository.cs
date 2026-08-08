@@ -16,4 +16,6 @@ public interface IRoomRepository
     Task<IReadOnlyCollection<Room>> GetAll(CancellationToken token, Expression<Func<Room, bool>>? filter = null);
 
     Task<bool> ExistsByRoomNumber(string roomNumber, CancellationToken token = default);
+
+    Task<bool> ExistsByRoomNumberExcluding(Guid roomId, string roomNumber, CancellationToken token = default);
 }

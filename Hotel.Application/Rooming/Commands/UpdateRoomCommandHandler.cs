@@ -3,15 +3,11 @@ using MediatR;
 
 namespace Hotel.Application.Rooming.Commands;
 
-public class UpdateRoomCommandHandler(IRoomRepository roomRepository)
+public class UpdateRoomCommandHandler(IRoomUpdateService roomUpdateService)
     : IRequestHandler<UpdateRoomCommand>
 {
     public async Task Handle(UpdateRoomCommand request, CancellationToken cancellationToken)
     {
-        var room = await roomRepository.GetById(request.Id);
-        room.UpdateRoomNumber(request.RoomNumber);
-        room.ChangeRoomType(request.RoomTypeId);
-
-        await roomRepository.Update(room);
+        await roomUpdateService.UpdateRoom(request.Id, request.RoomNumber, request.RoomTypeId, cancellationToken);
     }
 }

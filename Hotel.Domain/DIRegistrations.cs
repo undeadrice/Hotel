@@ -9,6 +9,7 @@ public static class DIRegistrations
     {
         services.AddScoped<IRoomDeactivationService, RoomDeactivationService>();
         services.AddScoped<IRoomCreationService, RoomCreationService>();
+        services.AddScoped<IRoomUpdateService, RoomUpdateService>();
         return services;
     }
 }
