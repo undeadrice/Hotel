@@ -1,0 +1,19 @@
+using Hotel.Domain.Transactions.Entities;
+using System.Linq.Expressions;
+
+namespace Hotel.Domain.Transactions.Services;
+
+public interface ITransactionCodeRepository
+{
+    Task Add(TransactionCode transactionCode, CancellationToken token = default);
+
+    Task Update(TransactionCode transactionCode, CancellationToken token = default);
+
+    Task<TransactionCode> GetById(Guid id, CancellationToken token = default);
+
+    Task<TransactionCode?> FindById(Guid id, CancellationToken token = default);
+
+    Task<bool> ExistsByCode(string code, CancellationToken token = default);
+
+    Task<IReadOnlyCollection<TransactionCode>> GetAll(CancellationToken token, Expression<Func<TransactionCode, bool>>? filter = null);
+}

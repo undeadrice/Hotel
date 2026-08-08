@@ -1,0 +1,55 @@
+using Hotel.Domain.Transactions.Entities;
+using Hotel.Domain.Transactions.Services;
+using Hotel.Shared.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace Hotel.Persistence.Transactions;
+
+public class TransactionCodeRepository(PersistenceDbContext dbContext) : ITransactionCodeRepository
+{
+    public async Task Add(TransactionCode transactionCode, CancellationToken token = default)
+    {
+        await dbContext.TransactionCodes.AddAsync(transactionCode, token);
+    }
+
+    public Task Update(TransactionCode transactionCode, CancellationToken token = default)
+    {
+        dbContext.TransactionCodes.Update(transactionCode);
+        return Task.CompletedTask;
+    }
+
+    public async Task<TransactionCode> GetById(Guid id, CancellationToken token = default)
+    {
+        var result = await dbContext.TransactionCodes.FirstOrDefaultAsync(tc => tc.Id == id, token);
+
+        if (result is null)
+        {
+            throw new NotFoundException($"Transaction code with id {id} doesn't exist");
+        }
+
+        return result;
+    }
+
+    public async Task<TransactionCode?> FindById(Guid id, CancellationToken token = default)
+    {
+        return await dbContext.TransactionCodes.FirstOrDefaultAsync(tc => tc.Id == id, token);
+    }
+
+    public async Task<bool> ExistsByCode(string code, CancellationToken token = default)
+    {
+        return await dbContext.TransactionCodes.AnyAsync(tc => tc.Code == code, token);
+    }
+
+    public async Task<IReadOnlyCollection<TransactionCode>> GetAll(
+        CancellationToken token,
+        Expression<Func<TransactionCode, bool>>? filter = null)
+    {
+        if (filter is null)
+        {
+            return await dbContext.TransactionCodes.ToListAsync(token);
+        }
+
+        return await dbContext.TransactionCodes.Where(filter).ToListAsync(token);
+    }
+}

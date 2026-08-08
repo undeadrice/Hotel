@@ -1,5 +1,6 @@
 ﻿using Hotel.Domain.Reservations.Services;
 using Hotel.Domain.Rooming.Services;
+using Hotel.Domain.Transactions.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hotel.Domain;
@@ -12,6 +13,12 @@ public static class DIRegistrations
         services.AddScoped<IRoomCreationService, RoomCreationService>();
         services.AddScoped<IRoomUpdateService, RoomUpdateService>();
         services.AddScoped<IRoomReservationService, RoomReservationService>();
+
+        services.AddScoped<ITransactionGroupCreationService, TransactionGroupCreationService>();
+        services.AddScoped<ITransactionGroupUpdateService, TransactionGroupUpdateService>();
+        services.AddScoped<ITransactionCodeCreationService, TransactionCodeCreationService>();
+        services.AddScoped<ITransactionCodeUpdateService, TransactionCodeUpdateService>();
+
         return services;
     }
 }

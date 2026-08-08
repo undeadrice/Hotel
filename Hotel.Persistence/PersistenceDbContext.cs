@@ -2,6 +2,7 @@
 using Hotel.Domain.Guests;
 using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Rooming.Entities;
+using Hotel.Domain.Transactions.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Persistence;
@@ -21,6 +22,10 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
     public DbSet<Folio> Folios { get; set; }
 
     public DbSet<FolioItem> FolioItems { get; set; }
+
+    public DbSet<TransactionGroup> TransactionGroups { get; set; }
+
+    public DbSet<TransactionCode> TransactionCodes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

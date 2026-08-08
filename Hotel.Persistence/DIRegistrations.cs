@@ -6,7 +6,10 @@ using Hotel.Domain.Persistence;
 using Hotel.Domain.Interfaces;
 using Hotel.Domain.Reservations.Services;
 using Hotel.Domain.Rooming.Services;
+using Hotel.Domain.Transactions.Services;
 using Hotel.Application.Dashboard.Services;
+using Hotel.Application.Transactions.Services;
+using Hotel.Persistence.Transactions;
 using Hotel.Persistence.Dashboard;
 using Hotel.Persistence.Folios;
 using Hotel.Persistence.Guests;
@@ -40,6 +43,11 @@ public static class DIRegistrations
 
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IFolioRepository, FolioRepository>();
+
+        services.AddScoped<ITransactionGroupRepository, TransactionGroupRepository>();
+        services.AddScoped<ITransactionCodeRepository, TransactionCodeRepository>();
+        services.AddScoped<ITransactionGroupReadRepository, TransactionGroupReadRepository>();
+        services.AddScoped<ITransactionCodeReadRepository, TransactionCodeReadRepository>();
 
         return services;
     }
