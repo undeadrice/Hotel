@@ -18,11 +18,12 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
 
     public async Task<RoomDto> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var room = await dbContext.Rooms
-            .AsNoTracking()
-            .Where(r => r.Id == id)
-            .Select(r => new RoomDto(r.Id, r.RoomNumber, r.RoomTypeId, r.RoomType.Name, r.Status, r.IsActive))
-            .FirstOrDefaultAsync(cancellationToken);
+        var room = await (
+            from r in dbContext.Rooms.AsNoTracking()
+            join rt in dbContext.RoomTypes.AsNoTracking() on r.RoomTypeId equals rt.Id
+            where r.Id == id
+            select new RoomDto(r.Id, r.RoomNumber, r.RoomTypeId, rt.Name, r.Status, r.IsActive)
+        ).FirstOrDefaultAsync(cancellationToken);
 
         if (room is null)
         {
