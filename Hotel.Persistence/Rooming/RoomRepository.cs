@@ -21,7 +21,6 @@ public class RoomRepository(PersistenceDbContext persistenceDbContext) : IRoomRe
     public async Task<Room> GetById(Guid id, CancellationToken token)
     {
         var result = await persistenceDbContext.Rooms
-            .Include(r => r.RoomType)
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (result == null)
@@ -35,14 +34,12 @@ public class RoomRepository(PersistenceDbContext persistenceDbContext) : IRoomRe
     public async Task<Room?> FindById(Guid id, CancellationToken token)
     {
         return await persistenceDbContext.Rooms
-            .Include(r => r.RoomType)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IReadOnlyCollection<Room>> GetAll(CancellationToken token, Expression<Func<Room, bool>>? filter = null)
     {
         var query = persistenceDbContext.Rooms
-            .Include(r => r.RoomType)
             .AsQueryable();
 
         if (filter != null)

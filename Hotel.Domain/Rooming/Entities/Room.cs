@@ -15,8 +15,6 @@ public class Room
 
     public bool IsActive { get; private set; }
 
-    public RoomType RoomType { get; private set; } = null!;
-
     private Room(Guid id, string roomNumber, Guid roomTypeId, RoomStatus status)
     {
         Id = id;

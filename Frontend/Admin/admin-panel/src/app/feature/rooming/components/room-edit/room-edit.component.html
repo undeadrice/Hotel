@@ -1,0 +1,108 @@
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @else {
+  <mat-card style="max-width: 1200px; margin: 0 auto">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>Edit room</mat-card-title>
+        <button mat-stroked-button routerLink="/rooms">Back</button>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      @if (!isActive()) {
+        <mat-card style="margin-bottom: 16px; background-color: #fff3e0">
+          <mat-card-content>
+            <p><strong>This room is deactivated.</strong></p>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Room details</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Room number</mat-label>
+              <input matInput formControlName="roomNumber" placeholder="e.g. 101" />
+              @if (form.get('roomNumber')?.hasError('required')) {
+                <mat-error>Room number is required</mat-error>
+              } @else if (form.get('roomNumber')?.hasError('minlength')) {
+                <mat-error>Room number must be at least 1 character</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Room type</mat-label>
+              <mat-select formControlName="roomTypeId">
+                @for (type of roomTypes(); track type.id) {
+                  <mat-option [value]="type.id">{{ type.name }}</mat-option>
+                }
+              </mat-select>
+              @if (form.get('roomTypeId')?.hasError('required')) {
+                <mat-error>Room type is required</mat-error>
+              }
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card style="margin-top: 16px">
+          <mat-card-header>
+            <mat-card-title>Room status</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                @for (status of roomStatuses; track status) {
+                  <mat-option [value]="status">
+                    {{ roomStatusLabels[status] }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (form.get('status')?.hasError('required')) {
+                <mat-error>Status is required</mat-error>
+              }
+            </mat-form-field>
+
+            <div style="display: flex; gap: 8px">
+              <button
+                mat-raised-button
+                color="accent"
+                type="button"
+                [disabled]="submitting()"
+                (click)="onChangeStatus()"
+              >
+                Change status
+              </button>
+              @if (isActive()) {
+                <button
+                  mat-raised-button
+                  color="warn"
+                  type="button"
+                  [disabled]="submitting()"
+                  (click)="onDeactivate()"
+                >
+                  Deactivate room
+                </button>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div style="margin-top: 16px; display: flex; gap: 8px">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid || submitting()"
+          >
+            Save changes
+          </button>
+          <button mat-button type="button" routerLink="/rooms">Cancel</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+}

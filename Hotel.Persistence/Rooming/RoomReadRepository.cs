@@ -20,7 +20,6 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
     {
         var room = await dbContext.Rooms
             .AsNoTracking()
-            .Include(r => r.RoomType)
             .Where(r => r.Id == id)
             .Select(r => new RoomDto(r.Id, r.RoomNumber, r.RoomTypeId, r.RoomType.Name, r.Status, r.IsActive))
             .FirstOrDefaultAsync(cancellationToken);

@@ -9,6 +9,12 @@ import { UserAddComponent } from './feature/users/components/add/user-add.compon
 import { UserEditComponent } from './feature/users/components/edit/user-edit.component';
 import { LoginComponent } from './feature/authorization/components/login.component';
 import { authGuard } from './core/auth/auth.guard';
+import { RoomListComponent } from './feature/rooming/components/room-list/room-list.component';
+import { RoomAddComponent } from './feature/rooming/components/room-add/room-add.component';
+import { RoomEditComponent } from './feature/rooming/components/room-edit/room-edit.component';
+import { RoomTypeListComponent } from './feature/rooming/components/room-type-list/room-type-list.component';
+import { RoomTypeAddComponent } from './feature/rooming/components/room-type-add/room-type-add.component';
+import { RoomTypeEditComponent } from './feature/rooming/components/room-type-edit/room-type-edit.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +45,30 @@ export const routes: Routes = [
       {
         path: 'users/edit/:id',
         component: UserEditComponent,
+      },
+      {
+        path: 'rooms',
+        component: RoomListComponent,
+      },
+      {
+        path: 'rooms/add',
+        component: RoomAddComponent,
+      },
+      {
+        path: 'rooms/edit/:id',
+        component: RoomEditComponent,
+      },
+      {
+        path: 'room-types',
+        component: RoomTypeListComponent,
+      },
+      {
+        path: 'room-types/add',
+        component: RoomTypeAddComponent,
+      },
+      {
+        path: 'room-types/edit/:id',
+        component: RoomTypeEditComponent,
       },
       {
         path: '',
