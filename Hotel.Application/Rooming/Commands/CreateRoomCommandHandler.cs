@@ -1,17 +1,14 @@
-using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Rooming.Services;
 using MediatR;
 
 namespace Hotel.Application.Rooming.Commands;
 
-public class CreateRoomCommandHandler(IRoomRepository roomRepository)
+public class CreateRoomCommandHandler(IRoomCreationService roomCreationService)
     : IRequestHandler<CreateRoomCommand, Guid>
 {
     public async Task<Guid> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
     {
-        var room = Room.Create(request.RoomNumber, request.RoomTypeId);
-
-        await roomRepository.Add(room, cancellationToken);
+        var room = await roomCreationService.CreateRoom(request.RoomNumber, request.RoomTypeId, cancellationToken);
 
         return room.Id;
     }

@@ -49,4 +49,10 @@ public class RoomRepository(PersistenceDbContext persistenceDbContext) : IRoomRe
 
         return await query.ToListAsync();
     }
+
+    public async Task<bool> ExistsByRoomNumber(string roomNumber, CancellationToken token)
+    {
+        return await persistenceDbContext.Rooms
+            .AnyAsync(x => x.RoomNumber == roomNumber, token);
+    }
 }

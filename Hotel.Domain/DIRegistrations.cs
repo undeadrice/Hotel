@@ -8,6 +8,7 @@ public static class DIRegistrations
     public static IServiceCollection AddDomain(this IServiceCollection services)
     {
         services.AddScoped<IRoomDeactivationService, RoomDeactivationService>();
+        services.AddScoped<IRoomCreationService, RoomCreationService>();
         return services;
     }
 }
