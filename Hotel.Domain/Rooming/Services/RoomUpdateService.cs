@@ -8,7 +8,7 @@ public class RoomUpdateService(IRoomRepository roomRepository) : IRoomUpdateServ
     {
         var room = await roomRepository.GetById(roomId, cancellationToken);
 
-        if (await roomRepository.ExistsByRoomNumberExcluding(roomId, roomNumber, cancellationToken))
+        if (room.RoomNumber != roomNumber && await roomRepository.ExistsByRoomNumber(roomNumber, cancellationToken))
         {
             throw new RoomNumberAlreadyExistsException(roomNumber);
         }

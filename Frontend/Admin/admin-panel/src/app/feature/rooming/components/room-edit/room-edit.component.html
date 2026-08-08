@@ -9,16 +9,9 @@
       </mat-card-title-group>
     </mat-card-header>
     <mat-card-content>
-      @if (!isActive()) {
-        <mat-card style="margin-bottom: 16px; background-color: #fff3e0">
-          <mat-card-content>
-            <p><strong>This room is deactivated.</strong></p>
-          </mat-card-content>
-        </mat-card>
-      }
-
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-card>
+        <!-- Room Details Panel -->
+        <mat-card appearance="outlined" style="margin-bottom: 16px">
           <mat-card-header>
             <mat-card-title>Room details</mat-card-title>
           </mat-card-header>
@@ -47,7 +40,8 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card style="margin-top: 16px">
+        <!-- Room Status Panel -->
+        <mat-card appearance="outlined" style="margin-bottom: 16px">
           <mat-card-header>
             <mat-card-title>Room status</mat-card-title>
           </mat-card-header>
@@ -66,32 +60,47 @@
               }
             </mat-form-field>
 
-            <div style="display: flex; gap: 8px">
-              <button
-                mat-raised-button
-                color="accent"
-                type="button"
-                [disabled]="submitting()"
-                (click)="onChangeStatus()"
-              >
-                Change status
-              </button>
-              @if (isActive()) {
-                <button
-                  mat-raised-button
-                  color="warn"
-                  type="button"
-                  [disabled]="submitting()"
-                  (click)="onDeactivate()"
-                >
-                  Deactivate room
-                </button>
-              }
-            </div>
+            <button
+              mat-raised-button
+              color="accent"
+              type="button"
+              [disabled]="submitting()"
+              (click)="onChangeStatus()"
+            >
+              Change status
+            </button>
           </mat-card-content>
         </mat-card>
 
-        <div style="margin-top: 16px; display: flex; gap: 8px">
+        <!-- Deactivation Panel -->
+        <mat-card appearance="outlined" style="margin-bottom: 16px">
+          <mat-card-header>
+            <mat-card-title>Deactivation</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (!isActive()) {
+              <p style="color: #e65100; font-weight: 500; margin-bottom: 12px">
+                This room is currently deactivated.
+              </p>
+            } @else {
+              <p style="margin-bottom: 12px">
+                Deactivate this room to prevent it from being used.
+              </p>
+              <button
+                mat-raised-button
+                color="warn"
+                type="button"
+                [disabled]="submitting()"
+                (click)="onDeactivate()"
+              >
+                Deactivate room
+              </button>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Form Actions -->
+        <div style="display: flex; gap: 8px">
           <button
             mat-raised-button
             color="primary"
