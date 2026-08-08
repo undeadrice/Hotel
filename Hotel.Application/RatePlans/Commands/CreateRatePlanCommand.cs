@@ -1,3 +1,4 @@
+using Hotel.Application.Pipeline;
 using MediatR;
 
 namespace Hotel.Application.RatePlans.Commands;
@@ -7,7 +8,7 @@ public record CreateRatePlanCommand(
     Guid TransactionCodeId,
     DateOnly StartDate,
     DateOnly EndDate,
-    List<CreateRatePlanRoomCommand> Rooms) : IRequest<Guid>;
+    List<CreateRatePlanRoomCommand> Rooms) : ICommand<Guid>;
 
 public record CreateRatePlanRoomCommand(
     Guid RoomTypeId,

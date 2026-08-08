@@ -25,6 +25,8 @@ import { TransactionCodeListComponent } from './feature/transaction-codes/compon
 import { TransactionCodeAddComponent } from './feature/transaction-codes/components/add/transaction-code-add.component';
 import { TransactionCodeEditComponent } from './feature/transaction-codes/components/edit/transaction-code-edit.component';
 import { DashboardComponent } from './feature/dashboard/components/dashboard.component';
+import { RatePlanListComponent } from './feature/rate-plans/components/list/rate-plan-list.component';
+import { RatePlanAddComponent } from './feature/rate-plans/components/add/rate-plan-add.component';
 
 export const routes: Routes = [
   {
@@ -117,14 +119,22 @@ export const routes: Routes = [
          component: TransactionCodeEditComponent,
        },
        {
-         path: 'dashboard',
-         component: DashboardComponent,
+          path: 'dashboard',
+          component: DashboardComponent,
+        },
+        {
+          path: 'rate-plans',
+          component: RatePlanListComponent,
+        },
+        {
+          path: 'rate-plans/add',
+          component: RatePlanAddComponent,
+        },
+       {
+         path: '',
+         redirectTo: 'dashboard',
+         pathMatch: 'full',
        },
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
     ],
   },
   {
