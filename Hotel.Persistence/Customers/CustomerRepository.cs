@@ -44,4 +44,43 @@ public class CustomerRepository(PersistenceDbContext persistenceDbContext) : ICu
 
         return await persistenceDbContext.Customers.Where(filter).ToListAsync(cancellationToken: token);
     }
+
+    public async Task<IReadOnlyCollection<Customer>> Search(
+        string? name,
+        string? phone,
+        string? email,
+        string? documentNumber,
+        CancellationToken token = default)
+    {
+        var query = persistenceDbContext.Customers.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            var normalizedName = name.Trim().ToLower();
+            query = query.Where(c =>
+                (c.FirstName + " " + c.LastName).ToLower().Contains(normalizedName) ||
+                c.FirstName.ToLower().Contains(normalizedName) ||
+                c.LastName.ToLower().Contains(normalizedName));
+        }
+
+        if (!string.IsNullOrWhiteSpace(phone))
+        {
+            var normalizedPhone = phone.Trim();
+            query = query.Where(c => c.Phone.Contains(normalizedPhone));
+        }
+
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            var normalizedEmail = email.Trim().ToLower();
+            query = query.Where(c => c.Email.ToLower().Contains(normalizedEmail));
+        }
+
+        if (!string.IsNullOrWhiteSpace(documentNumber))
+        {
+            var normalizedDoc = documentNumber.Trim();
+            query = query.Where(c => c.DocumentNumber.Contains(normalizedDoc));
+        }
+
+        return await query.AsNoTracking().ToListAsync(cancellationToken: token);
+    }
 }

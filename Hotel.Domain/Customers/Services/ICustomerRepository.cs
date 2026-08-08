@@ -14,4 +14,11 @@ public interface ICustomerRepository
     Task<Customer?> FindById(Guid id, CancellationToken token = default);
 
     Task<IReadOnlyCollection<Customer>> GetAll(CancellationToken token, Expression<Func<Customer, bool>>? filter = null);
+
+    Task<IReadOnlyCollection<Customer>> Search(
+        string? name,
+        string? phone,
+        string? email,
+        string? documentNumber,
+        CancellationToken token = default);
 }

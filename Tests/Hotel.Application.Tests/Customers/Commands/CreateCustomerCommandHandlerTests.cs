@@ -22,8 +22,13 @@ public class CreateCustomerCommandHandlerTests
     public async Task Handle_WithValidCommand_ShouldAddCustomerToRepositoryAndReturnCustomerId()
     {
         // Arrange
-        var location = CustomerLocation.US;
-        var command = new CreateCustomerCommand(location);
+        var command = new CreateCustomerCommand(
+            "John",
+            "Doe",
+            "123456789",
+            "john.doe@example.com",
+            "DOC12345",
+            CustomerLocation.US);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

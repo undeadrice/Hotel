@@ -6,5 +6,20 @@ namespace Hotel.API.Customers.Mappings;
 public static class CustomerMappingExtensions
 {
     public static CustomerResponse MapToCustomerResponse(this CustomerDto dto) =>
-        new CustomerResponse(dto.Id, dto.Location.ToString());
+        new CustomerResponse(
+            dto.Id,
+            dto.FirstName,
+            dto.LastName,
+            dto.Phone,
+            dto.Email,
+            dto.DocumentNumber,
+            dto.Location.ToString());
+
+    public static CustomerListResponse MapToCustomerListResponse(this CustomerListDto dto) =>
+        new CustomerListResponse(
+            dto.Id,
+            dto.FullName,
+            dto.Phone,
+            dto.Email,
+            dto.DocumentNumber);
 }

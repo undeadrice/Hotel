@@ -8,7 +8,13 @@ public class CreateCustomerCommandHandler(ICustomerRepository customerRepository
 {
     public async Task<Guid> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customer = Customer.Create(request.Location);
+        var customer = Customer.Create(
+            request.FirstName,
+            request.LastName,
+            request.Phone,
+            request.Email,
+            request.DocumentNumber,
+            request.Location);
 
         await customerRepository.Add(customer, cancellationToken);
 

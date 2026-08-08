@@ -1,13 +1,16 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Hotel.Application.Customers.Commands;
 using Hotel.Domain.Customers;
 
 namespace Hotel.Application.Customers.Validators;
 
-public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCommand>
+public class UpdateCustomerCommandValidator : AbstractValidator<UpdateCustomerCommand>
 {
-    public CreateCustomerCommandValidator()
+    public UpdateCustomerCommandValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Customer id is required.");
+
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First name is required.")
             .MaximumLength(100).WithMessage("First name must not exceed 100 characters.");
