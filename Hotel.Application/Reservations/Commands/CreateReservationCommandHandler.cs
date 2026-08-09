@@ -1,22 +1,32 @@
+using Hotel.Domain.Folios.Entities;
+using Hotel.Domain.Folios.Services;
+using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Reservations.Services;
 using MediatR;
 
 namespace Hotel.Application.Reservations.Commands;
 
-public class CreateReservationCommandHandler(IRoomReservationService roomReservationService)
+public class CreateReservationCommandHandler(
+    IReservationRepository reservationRepository,
+    IFiscalAccountRepository fiscalAccountRepository)
     : IRequestHandler<CreateReservationCommand, Guid>
 {
     public async Task<Guid> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
     {
-        var reservation = await roomReservationService.CreateReservation(
+        var reservation = Reservation.Create(
             request.CreatorId,
             request.RoomId,
             request.RatePlanId,
             request.StartDate,
             request.EndDate,
             request.ArrivalTime,
-            request.GuestIds,
-            cancellationToken);
+            request.GuestIds);
+
+        await reservationRepository.Add(reservation, cancellationToken);
+
+        var fiscalAccount = FiscalAccount.Create(reservation.Id, request.CreatorId);
+
+        await fiscalAccountRepository.Add(fiscalAccount, cancellationToken);
 
         return reservation.Id;
     }
