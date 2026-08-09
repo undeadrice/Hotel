@@ -12,6 +12,7 @@ using Hotel.Domain.Rooming.Services;
 using Hotel.Domain.Transactions.Services;
 using Hotel.Application.Dashboard.Services;
 using Hotel.Application.Transactions.Services;
+using Hotel.Application.FiscalAccounting.Services;
 using Hotel.Persistence.Transactions;
 using Hotel.Persistence.Dashboard;
 using Hotel.Persistence.FiscalAccounting;
@@ -53,6 +54,7 @@ public static class DIRegistrations
         services.AddScoped<ITransactionCodeRepository, TransactionCodeRepository>();
         services.AddScoped<ITransactionGroupReadRepository, TransactionGroupReadRepository>();
         services.AddScoped<ITransactionCodeReadRepository, TransactionCodeReadRepository>();
+        services.AddScoped<IFiscalAccountReadRepository, FiscalAccountReadRepository>();
 
         services.AddScoped<IRatePlanRepository, RatePlanRepository>();
         services.AddScoped<IRatePlanReadRepository, RatePlanReadRepository>();
