@@ -1,8 +1,8 @@
-using Hotel.Domain.Folios.Entities;
+using Hotel.Domain.FiscalAccounting.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Hotel.Persistence.Folios;
+namespace Hotel.Persistence.FiscalAccounting;
 
 public class FolioItemConfiguration : IEntityTypeConfiguration<FolioItem>
 {

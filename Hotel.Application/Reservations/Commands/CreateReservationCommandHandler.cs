@@ -1,5 +1,5 @@
-using Hotel.Domain.Folios.Entities;
-using Hotel.Domain.Folios.Services;
+using Hotel.Domain.FiscalAccounting.Entities;
+using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Reservations.Services;
 using MediatR;

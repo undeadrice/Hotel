@@ -1,4 +1,4 @@
-namespace Hotel.Domain.Folios.Entities;
+namespace Hotel.Domain.FiscalAccounting.Entities;
 
 public class Folio
 {

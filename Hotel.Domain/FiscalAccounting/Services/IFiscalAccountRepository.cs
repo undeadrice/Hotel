@@ -1,7 +1,7 @@
-using Hotel.Domain.Folios.Entities;
+using Hotel.Domain.FiscalAccounting.Entities;
 using System.Linq.Expressions;
 
-namespace Hotel.Domain.Folios.Services;
+namespace Hotel.Domain.FiscalAccounting.Services;
 
 public interface IFiscalAccountRepository
 {

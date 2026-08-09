@@ -1,4 +1,4 @@
-﻿using Hotel.Domain.Folios.Entities;
+﻿using Hotel.Domain.FiscalAccounting.Entities;
 using Hotel.Domain.Guests;
 using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.Reservations.Entities;

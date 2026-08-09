@@ -1,7 +1,7 @@
 ﻿using Hotel.Application.Guests.Services;
 using Hotel.Application.Reservations.Services;
 using Hotel.Application.Rooming.Services;
-using Hotel.Domain.Folios.Services;
+using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Domain.Guests.Services;
 using Hotel.Domain.Persistence;
 using Hotel.Domain.Interfaces;
@@ -14,7 +14,7 @@ using Hotel.Application.Dashboard.Services;
 using Hotel.Application.Transactions.Services;
 using Hotel.Persistence.Transactions;
 using Hotel.Persistence.Dashboard;
-using Hotel.Persistence.Folios;
+using Hotel.Persistence.FiscalAccounting;
 using Hotel.Persistence.Guests;
 using Hotel.Persistence.RatePlans;
 using Hotel.Persistence.Reservations;
