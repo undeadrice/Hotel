@@ -1,3 +1,4 @@
+using Hotel.Application.FiscalAccounting.Commands;
 using Hotel.Application.FiscalAccounting.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,13 @@ public class FiscalAccountsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetFiscalAccountById(Guid id)
     {
         var result = await mediator.Send(new GetFiscalAccountByIdQuery(id));
+        return Ok(result);
+    }
+
+    [HttpPost("{id:guid}/open-folio")]
+    public async Task<IActionResult> OpenFolio(Guid id)
+    {
+        var result = await mediator.Send(new OpenFolioCommand(id));
         return Ok(result);
     }
 }
