@@ -3,8 +3,7 @@ namespace Hotel.Domain.Folios.Entities;
 public class Folio
 {
     public Guid Id { get; private set; }
-    public Guid OriginatorId { get; private set; }
-    public Guid GuestId { get; private set; }
+    public Guid FiscalAccountId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private readonly List<FolioItem> _items = new();
@@ -16,22 +15,19 @@ public class Folio
 
     private Folio(
         Guid id,
-        Guid originatorId,
-        Guid guestId,
+        Guid fiscalAccountId,
         DateTime createdAt)
     {
         Id = id;
-        OriginatorId = originatorId;
-        GuestId = guestId;
+        FiscalAccountId = fiscalAccountId;
         CreatedAt = createdAt;
     }
 
-    public static Folio Create(Guid originatorId, Guid guestId)
+    internal static Folio Create(Guid fiscalAccountId)
     {
         return new Folio(
             Guid.NewGuid(),
-            originatorId,
-            guestId,
+            fiscalAccountId,
             DateTime.UtcNow);
     }
 }

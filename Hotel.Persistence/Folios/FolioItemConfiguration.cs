@@ -8,6 +8,8 @@ public class FolioItemConfiguration : IEntityTypeConfiguration<FolioItem>
 {
     public void Configure(EntityTypeBuilder<FolioItem> builder)
     {
+        builder.ToTable("FolioItems");
+
         builder.HasKey(fi => fi.Id);
 
         builder.Property(fi => fi.FolioId)

@@ -8,12 +8,11 @@ public class FolioConfiguration : IEntityTypeConfiguration<Folio>
 {
     public void Configure(EntityTypeBuilder<Folio> builder)
     {
+        builder.ToTable("Folios");
+
         builder.HasKey(f => f.Id);
 
-        builder.Property(f => f.OriginatorId)
-            .IsRequired();
-
-        builder.Property(f => f.GuestId)
+        builder.Property(f => f.FiscalAccountId)
             .IsRequired();
 
         builder.Property(f => f.CreatedAt)

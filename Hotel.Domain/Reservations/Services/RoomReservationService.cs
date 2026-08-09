@@ -6,7 +6,7 @@ namespace Hotel.Domain.Reservations.Services;
 
 public class RoomReservationService(
     IReservationRepository reservationRepository,
-    IFolioRepository folioRepository) : IRoomReservationService
+    IFiscalAccountRepository fiscalAccountRepository) : IRoomReservationService
 {
     public async Task<Reservation> CreateReservation(
         Guid creatorId,
@@ -22,8 +22,9 @@ public class RoomReservationService(
 
         await reservationRepository.Add(reservation, cancellationToken);
 
-        var folio = Folio.Create(reservation.Id, creatorId);
-        await folioRepository.Add(folio, cancellationToken);
+        var fiscalAccount = FiscalAccount.Create(reservation.Id, creatorId);
+
+        await fiscalAccountRepository.Add(fiscalAccount, cancellationToken);
 
         return reservation;
     }

@@ -4,6 +4,7 @@ using Hotel.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotel.Persistence.Migrations
 {
     [DbContext(typeof(PersistenceDbContext))]
-    partial class PersistenceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260809055107_AddFiscalAccount")]
+    partial class AddFiscalAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace Hotel.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FiscalAccounts", (string)null);
+                    b.ToTable("FiscalAccounts");
                 });
 
             modelBuilder.Entity("Hotel.Domain.Folios.Entities.Folio", b =>
@@ -58,7 +61,7 @@ namespace Hotel.Persistence.Migrations
 
                     b.HasIndex("FiscalAccountId");
 
-                    b.ToTable("Folios", (string)null);
+                    b.ToTable("Folios");
                 });
 
             modelBuilder.Entity("Hotel.Domain.Folios.Entities.FolioItem", b =>
@@ -86,7 +89,7 @@ namespace Hotel.Persistence.Migrations
 
                     b.HasIndex("FolioId");
 
-                    b.ToTable("FolioItems", (string)null);
+                    b.ToTable("FolioItems");
                 });
 
             modelBuilder.Entity("Hotel.Domain.Guests.Guest", b =>
@@ -128,7 +131,7 @@ namespace Hotel.Persistence.Migrations
 
                     b.HasIndex("Phone");
 
-                    b.ToTable("Guests", (string)null);
+                    b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("Hotel.Domain.RatePlans.Entities.RatePlan", b =>
@@ -204,7 +207,7 @@ namespace Hotel.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Hotel.Domain.Reservations.Entities.ReservationGuest", b =>
@@ -217,7 +220,7 @@ namespace Hotel.Persistence.Migrations
 
                     b.HasKey("ReservationId", "GuestId");
 
-                    b.ToTable("ReservationGuests", (string)null);
+                    b.ToTable("ReservationGuests");
                 });
 
             modelBuilder.Entity("Hotel.Domain.Rooming.Entities.Room", b =>

@@ -20,9 +20,7 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
 
     public DbSet<ReservationGuest> ReservationGuests { get; set; }
 
-    public DbSet<Folio> Folios { get; set; }
-
-    public DbSet<FolioItem> FolioItems { get; set; }
+    public DbSet<FiscalAccount> FiscalAccounts { get; set; }
 
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
 
