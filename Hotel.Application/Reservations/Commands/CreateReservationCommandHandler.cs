@@ -11,8 +11,10 @@ public class CreateReservationCommandHandler(IRoomReservationService roomReserva
         var reservation = await roomReservationService.CreateReservation(
             request.CreatorId,
             request.RoomId,
+            request.RatePlanId,
             request.StartDate,
             request.EndDate,
+            request.ArrivalTime,
             request.GuestIds,
             cancellationToken);
 

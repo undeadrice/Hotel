@@ -5,8 +5,10 @@ public class Reservation
     public Guid Id { get; private set; }
     public Guid CreatorId { get; private set; }
     public Guid RoomId { get; private set; }
+    public Guid RatePlanId { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
+    public DateTime? ArrivalTime { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private readonly List<ReservationGuest> _guests = new();
@@ -20,23 +22,29 @@ public class Reservation
         Guid id,
         Guid creatorId,
         Guid roomId,
+        Guid ratePlanId,
         DateTime startDate,
         DateTime endDate,
+        DateTime? arrivalTime,
         DateTime createdAt)
     {
         Id = id;
         CreatorId = creatorId;
         RoomId = roomId;
+        RatePlanId = ratePlanId;
         StartDate = startDate;
         EndDate = endDate;
+        ArrivalTime = arrivalTime;
         CreatedAt = createdAt;
     }
 
     public static Reservation Create(
         Guid creatorId,
         Guid roomId,
+        Guid ratePlanId,
         DateTime startDate,
         DateTime endDate,
+        DateTime? arrivalTime,
         IEnumerable<Guid> guestIds)
     {
         if (startDate >= endDate)
@@ -53,8 +61,10 @@ public class Reservation
             Guid.NewGuid(),
             creatorId,
             roomId,
+            ratePlanId,
             startDate,
             endDate,
+            arrivalTime,
             DateTime.UtcNow);
 
         foreach (var guestId in guestIds)

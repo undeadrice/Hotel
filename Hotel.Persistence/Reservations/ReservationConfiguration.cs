@@ -16,11 +16,17 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
         builder.Property(r => r.RoomId)
             .IsRequired();
 
+        builder.Property(r => r.RatePlanId)
+            .IsRequired();
+
         builder.Property(r => r.StartDate)
             .IsRequired();
 
         builder.Property(r => r.EndDate)
             .IsRequired();
+
+        builder.Property(r => r.ArrivalTime)
+            .IsRequired(false);
 
         builder.Property(r => r.CreatedAt)
             .IsRequired();

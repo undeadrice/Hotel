@@ -13,6 +13,9 @@ public class CreateReservationCommandValidator : AbstractValidator<CreateReserva
         RuleFor(x => x.RoomId)
             .NotEmpty().WithMessage("Room is required.");
 
+        RuleFor(x => x.RatePlanId)
+            .NotEmpty().WithMessage("RatePlan is required.");
+
         RuleFor(x => x.StartDate)
             .NotEmpty().WithMessage("Start date is required.")
             .Must((command, startDate) => startDate < command.EndDate)

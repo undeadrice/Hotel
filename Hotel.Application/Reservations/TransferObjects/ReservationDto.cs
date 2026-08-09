@@ -1,6 +1,6 @@
-namespace Hotel.API.Reservations.Responses;
+namespace Hotel.Application.Reservations.TransferObjects;
 
-public record ReservationResponse(
+public record ReservationDto(
     Guid Id,
     Guid CreatorId,
     Guid RoomId,

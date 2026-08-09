@@ -11,12 +11,14 @@ public class RoomReservationService(
     public async Task<Reservation> CreateReservation(
         Guid creatorId,
         Guid roomId,
+        Guid ratePlanId,
         DateTime startDate,
         DateTime endDate,
+        DateTime? arrivalTime,
         IEnumerable<Guid> guestIds,
         CancellationToken cancellationToken = default)
     {
-        var reservation = Reservation.Create(creatorId, roomId, startDate, endDate, guestIds);
+        var reservation = Reservation.Create(creatorId, roomId, ratePlanId, startDate, endDate, arrivalTime, guestIds);
 
         await reservationRepository.Add(reservation, cancellationToken);
 

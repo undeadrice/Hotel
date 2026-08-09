@@ -1,4 +1,5 @@
 ﻿using Hotel.Application.Guests.Services;
+using Hotel.Application.Reservations.Services;
 using Hotel.Application.Rooming.Services;
 using Hotel.Domain.Folios.Services;
 using Hotel.Domain.Guests.Services;
@@ -45,6 +46,7 @@ public static class DIRegistrations
         services.AddScoped(typeof(IUserOwnershipRepository<>), typeof(UserOwnershipRepository<>));
 
         services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IReservationReadRepository, ReservationReadRepository>();
         services.AddScoped<IFolioRepository, FolioRepository>();
 
         services.AddScoped<ITransactionGroupRepository, TransactionGroupRepository>();
