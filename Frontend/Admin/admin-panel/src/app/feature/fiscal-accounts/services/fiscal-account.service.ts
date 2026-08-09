@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseHttpService } from '../../../core/http/base-http.service';
+import { FiscalAccountListResponse } from '../models/fiscal-account-list.response';
+import { FiscalAccountDetailResponse } from '../models/fiscal-account-detail.response';
+import { CreateFolioRequest } from '../models/requests/create-folio.request';
+import { CreateFolioItemRequest } from '../models/requests/create-folio-item.request';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class FiscalAccountService extends BaseHttpService {
+  getAccounts(): Observable<FiscalAccountListResponse[]> {
+    return this.get<FiscalAccountListResponse[]>('FiscalAccounts');
+  }
+
+  getAccount(id: string): Observable<FiscalAccountDetailResponse> {
+    return this.get<FiscalAccountDetailResponse>(`FiscalAccounts/${id}`);
+  }
+
+  createFolio(request: CreateFolioRequest): Observable<string> {
+    return this.post<string>(`FiscalAccounts/${request.fiscalAccountId}/folios`, request);
+  }
+
+  createFolioItem(request: CreateFolioItemRequest): Observable<string> {
+    return this.post<string>(
+      `FiscalAccounts/${request.folioId}/items`,
+      request
+    );
+  }
+}

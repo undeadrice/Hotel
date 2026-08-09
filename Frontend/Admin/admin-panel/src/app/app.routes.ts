@@ -27,6 +27,10 @@ import { TransactionCodeEditComponent } from './feature/transaction-codes/compon
 import { DashboardComponent } from './feature/dashboard/components/dashboard.component';
 import { RatePlanListComponent } from './feature/rate-plans/components/list/rate-plan-list.component';
 import { RatePlanAddComponent } from './feature/rate-plans/components/add/rate-plan-add.component';
+import { ReservationListComponent } from './feature/reservations/components/list/reservation-list.component';
+import { ReservationAddComponent } from './feature/reservations/components/add/reservation-add.component';
+import { AccountListComponent } from './feature/fiscal-accounts/components/list/account-list.component';
+import { AccountDetailComponent } from './feature/fiscal-accounts/components/detail/account-detail.component';
 
 export const routes: Routes = [
   {
@@ -126,15 +130,31 @@ export const routes: Routes = [
           path: 'rate-plans',
           component: RatePlanListComponent,
         },
+         {
+           path: 'rate-plans/add',
+           component: RatePlanAddComponent,
+         },
+         {
+           path: 'reservations',
+           component: ReservationListComponent,
+         },
+         {
+           path: 'reservations/add',
+           component: ReservationAddComponent,
+         },
+         {
+           path: 'fiscal-accounts',
+           component: AccountListComponent,
+         },
+         {
+           path: 'fiscal-accounts/:id',
+           component: AccountDetailComponent,
+         },
         {
-          path: 'rate-plans/add',
-          component: RatePlanAddComponent,
+          path: '',
+          redirectTo: 'dashboard',
+          pathMatch: 'full',
         },
-       {
-         path: '',
-         redirectTo: 'dashboard',
-         pathMatch: 'full',
-       },
     ],
   },
   {

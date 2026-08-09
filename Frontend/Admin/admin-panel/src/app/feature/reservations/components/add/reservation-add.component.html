@@ -1,0 +1,106 @@
+<mat-card style="max-width: 600px; margin: 0 auto">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Create reservation</mat-card-title>
+      <button mat-stroked-button routerLink="/reservations">Back</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Creator (Guest)</mat-label>
+        <mat-select formControlName="creatorId">
+          @for (guest of guests(); track guest.id) {
+            <mat-option [value]="guest.id">{{ guest.fullName }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('creatorId')?.hasError('required')) {
+          <mat-error>Creator is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Room</mat-label>
+        <mat-select formControlName="roomId">
+          @for (room of rooms(); track room.id) {
+            <mat-option [value]="room.id">{{ room.roomNumber }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('roomId')?.hasError('required')) {
+          <mat-error>Room is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Rate Plan</mat-label>
+        <mat-select formControlName="ratePlanId">
+          @for (plan of ratePlans(); track plan.id) {
+            <mat-option [value]="plan.id">{{ plan.name }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('ratePlanId')?.hasError('required')) {
+          <mat-error>Rate Plan is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        @if (form.get('startDate')?.hasError('required')) {
+          <mat-error>Start Date is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+        @if (form.get('endDate')?.hasError('required')) {
+          <mat-error>End Date is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Arrival Time (optional)</mat-label>
+        <input matInput type="datetime-local" formControlName="arrivalTime" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Guests</mat-label>
+        <mat-select formControlName="guestIds" multiple>
+          @for (guest of guests(); track guest.id) {
+            <mat-option [value]="guest.id">{{ guest.fullName }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('guestIds')?.hasError('required')) {
+          <mat-error>At least one guest is required</mat-error>
+        }
+      </mat-form-field>
+
+      <div style="margin-top: 16px; display: flex; gap: 8px">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid || submitting()"
+        >
+          Create reservation
+        </button>
+        <button
+          mat-button
+          type="button"
+          routerLink="/reservations"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+
+    @if (submitting()) {
+      <mat-progress-bar mode="indeterminate" style="margin-top: 12px"></mat-progress-bar>
+    }
+  </mat-card-content>
+</mat-card>

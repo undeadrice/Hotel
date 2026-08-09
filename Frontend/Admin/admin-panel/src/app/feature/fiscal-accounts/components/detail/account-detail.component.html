@@ -1,0 +1,81 @@
+<mat-card style="max-width: 900px; margin: 0 auto">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Fiscal Account Details</mat-card-title>
+      <button mat-stroked-button routerLink="/fiscal-accounts">Back</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    @if (account(); as acc) {
+      <mat-card style="margin-top: 16px">
+        <mat-card-header>
+          <mat-card-title>Account Info</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>ID:</strong> {{ acc.id }}</p>
+          <p><strong>Originator:</strong> {{ acc.originatorId }}</p>
+          <p><strong>Owner:</strong> {{ acc.ownerId }}</p>
+          <p><strong>Created:</strong> {{ acc.createdAt | date: 'short' }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px">
+        <h2>Folios</h2>
+        <button mat-raised-button color="primary" (click)="openCreateFolioDialog()">
+          <mat-icon>add</mat-icon> Create Folio
+        </button>
+      </div>
+
+      @for (folio of acc.folios; track folio.id) {
+        <mat-card style="margin-top: 16px">
+          <mat-card-header>
+            <mat-card-title>Folio {{ $index + 1 }}</mat-card-title>
+            <mat-card-subtitle>
+              ID: {{ folio.id }} | Created: {{ folio.createdAt | date: 'short' }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px">
+              <span><strong>Items</strong></span>
+              <button
+                mat-stroked-button
+                color="accent"
+                (click)="openAddFolioItemDialog(folio)"
+              >
+                <mat-icon>add</mat-icon> Add item
+              </button>
+            </div>
+
+            @if (folio.items.length === 0) {
+              <p>No items in this folio.</p>
+            } @else {
+              <table mat-table [dataSource]="folio.items">
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let item">{{ item.description }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef>Amount</th>
+                  <td mat-cell *matCellDef="let item">{{ item.amount | currency }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdAt">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let item">{{ item.createdAt | date: 'short' }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="folioDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: folioDisplayedColumns"></tr>
+              </table>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  </mat-card-content>
+</mat-card>
