@@ -47,9 +47,18 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
             .Select(r => r.RoomId)
             .Distinct();
 
+        var roomTypeIdsWithRatePlans = dbContext.RatePlans
+            .AsNoTracking()
+            .Where(rp => rp.StartDate <= endDate && rp.EndDate >= startDate)
+            .SelectMany(rp => rp.Rooms.Select(rpr => rpr.RoomTypeId))
+            .Distinct();
+
         return await dbContext.Rooms
             .AsNoTracking()
-            .Where(r => !reservedRoomIds.Contains(r.Id) && r.IsActive)
+            .Where(r =>
+                !reservedRoomIds.Contains(r.Id) &&
+                r.IsActive &&
+                roomTypeIdsWithRatePlans.Contains(r.RoomTypeId))
             .OrderBy(r => r.RoomNumber)
             .Select(r => new RoomListDto(r.Id, r.RoomNumber))
             .ToListAsync(cancellationToken);
