@@ -10,6 +10,9 @@ public class FiscalAccountConfiguration : IEntityTypeConfiguration<FiscalAccount
     {
         builder.HasKey(a => a.Id);
 
+        builder.Property(a => a.Id)
+            .ValueGeneratedNever();
+
         builder.Property(a => a.OriginatorId)
             .IsRequired();
 

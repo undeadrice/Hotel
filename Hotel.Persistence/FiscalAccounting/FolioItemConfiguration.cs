@@ -12,6 +12,9 @@ public class FolioItemConfiguration : IEntityTypeConfiguration<FolioItem>
 
         builder.HasKey(fi => fi.Id);
 
+        builder.Property(fi => fi.Id)
+            .ValueGeneratedNever();
+
         builder.Property(fi => fi.FolioId)
             .IsRequired();
 

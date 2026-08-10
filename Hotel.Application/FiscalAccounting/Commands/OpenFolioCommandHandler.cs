@@ -13,8 +13,6 @@ internal class OpenFolioCommandHandler(IFiscalAccountRepository fiscalAccountRep
 
         var folio = account.OpenFolio();
 
-        await fiscalAccountRepository.Update(account, cancellationToken);
-
         return folio.Id;
     }
 }
