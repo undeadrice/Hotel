@@ -1,4 +1,3 @@
-using Hotel.Domain.Rooming.Enums;
 using Hotel.Domain.Rooming.Exceptions;
 
 namespace Hotel.Domain.Rooming.Entities;
@@ -11,16 +10,13 @@ public class Room
 
     public Guid RoomTypeId { get; private set; }
 
-    public RoomStatus Status { get; private set; }
-
     public bool IsActive { get; private set; }
 
-    private Room(Guid id, string roomNumber, Guid roomTypeId, RoomStatus status)
+    private Room(Guid id, string roomNumber, Guid roomTypeId)
     {
         Id = id;
         RoomNumber = roomNumber;
         RoomTypeId = roomTypeId;
-        Status = status;
         IsActive = true;
     }
 
@@ -35,7 +31,7 @@ public class Room
             throw new RoomNumberRequiredException();
         }
 
-        return new Room(Guid.NewGuid(), roomNumber, roomTypeId, RoomStatus.Available);
+        return new Room(Guid.NewGuid(), roomNumber, roomTypeId);
     }
 
     public void UpdateRoomNumber(string roomNumber)
@@ -51,22 +47,6 @@ public class Room
     public void ChangeRoomType(Guid roomTypeId)
     {
         RoomTypeId = roomTypeId;
-    }
-
-    public void ChangeStatus(RoomStatus newStatus)
-    {
-        if (Status == newStatus)
-        {
-            throw new RoomStatusChangeInvalidException("Room is already in this status.");
-        }
-
-        if (newStatus == RoomStatus.Available && Status == RoomStatus.Reserved)
-        {
-            throw new RoomStatusChangeInvalidException(
-                "Cannot set room to Available when there is an active reservation for today.");
-        }
-
-        Status = newStatus;
     }
 
     public void Deactivate()

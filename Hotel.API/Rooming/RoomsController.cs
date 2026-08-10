@@ -37,20 +37,12 @@ public class RoomsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("status")]
-    public async Task<IActionResult> ChangeRoomStatus(ChangeRoomStatusCommand command)
-    {
-        await mediator.Send(command);
-        return NoContent();
-    }
-
     [HttpPut("deactivate")]
     public async Task<IActionResult> DeactivateRoom(DeactivateRoomCommand command)
     {
         await mediator.Send(command);
         return NoContent();
     }
-
     [HttpGet("types")]
     public async Task<IActionResult> GetRoomTypes()
     {

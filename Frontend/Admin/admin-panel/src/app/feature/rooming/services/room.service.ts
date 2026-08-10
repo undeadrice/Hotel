@@ -9,8 +9,6 @@ import { CreateRoomRequest } from '../models/requests/create-room.request';
 import { UpdateRoomRequest } from '../models/requests/update-room.request';
 import { CreateRoomTypeRequest } from '../models/requests/create-room-type.request';
 import { UpdateRoomTypeRequest } from '../models/requests/update-room-type.request';
-import { ChangeRoomStatusRequest } from '../models/requests/change-room-status.request';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -29,10 +27,6 @@ export class RoomService extends BaseHttpService {
 
   updateRoom(request: UpdateRoomRequest): Observable<void> {
     return this.put<void>('rooms', request);
-  }
-
-  changeRoomStatus(request: ChangeRoomStatusRequest): Observable<void> {
-    return this.put<void>('rooms/status', request);
   }
 
   deactivateRoom(roomId: string): Observable<void> {

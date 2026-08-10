@@ -5,7 +5,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 import { RoomService } from '../../services/room.service';
 import { RoomTypeListResponse } from '../../models/responses/room-type-list.response';
-import { RoomStatus } from '../../models/responses/room.response';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -42,24 +41,12 @@ export class RoomEditComponent implements OnInit {
   readonly form = this.fb.group({
     roomNumber: ['', [Validators.required, Validators.minLength(1)]],
     roomTypeId: ['', [Validators.required]],
-    status: [RoomStatus.Available, [Validators.required]],
   });
 
   readonly roomTypes = signal<RoomTypeListResponse[]>([]);
   readonly loading = signal(true);
   readonly submitting = signal(false);
   readonly isActive = signal(true);
-
-  readonly roomStatuses = Object.values(RoomStatus).filter(
-    (v) => typeof v === 'number',
-  );
-  readonly roomStatusLabels: Record<number, string> = {
-    [RoomStatus.Available]: 'Available',
-    [RoomStatus.Occupied]: 'Occupied',
-    [RoomStatus.Dirty]: 'Dirty',
-    [RoomStatus.OutOfService]: 'Out of Service',
-    [RoomStatus.Reserved]: 'Reserved',
-  };
 
   private roomId: string | null = null;
 
@@ -80,7 +67,6 @@ export class RoomEditComponent implements OnInit {
         this.form.patchValue({
           roomNumber: room.roomNumber,
           roomTypeId: room.roomTypeId,
-          status: room.status,
         });
         this.isActive.set(room.isActive);
         this.roomTypes.set(types);
@@ -116,34 +102,6 @@ export class RoomEditComponent implements OnInit {
         },
         error: () => {
           this.snackBar.open('Failed to update room', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
-      });
-  }
-
-  onChangeStatus(): void {
-    if (!this.roomId) {
-      return;
-    }
-
-    const newStatus = this.form.get('status')!.value as number;
-    this.submitting.set(true);
-    this.roomService
-      .changeRoomStatus({
-        roomId: this.roomId,
-        newStatus: newStatus as RoomStatus,
-      })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Room status changed successfully', 'Close', {
-            duration: 3000,
-          });
-          this.submitting.set(false);
-        },
-        error: () => {
-          this.snackBar.open('Failed to change room status', 'Close', {
             duration: 5000,
           });
           this.submitting.set(false);

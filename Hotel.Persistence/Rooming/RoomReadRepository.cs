@@ -22,7 +22,7 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
             from r in dbContext.Rooms.AsNoTracking()
             join rt in dbContext.RoomTypes.AsNoTracking() on r.RoomTypeId equals rt.Id
             where r.Id == id
-            select new RoomDto(r.Id, r.RoomNumber, r.RoomTypeId, rt.Name, r.Status, r.IsActive)
+            select new RoomDto(r.Id, r.RoomNumber, r.RoomTypeId, rt.Name, r.IsActive)
         ).FirstOrDefaultAsync(cancellationToken);
 
         if (room is null)
