@@ -3,7 +3,7 @@ using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.Guests.Commands;
 
-[CheckRole(UserRole.Admin)]
+[CheckPermission(Permission.GuestCreate)]
 public record CreateGuestCommand(
     string FirstName,
     string LastName,

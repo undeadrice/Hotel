@@ -3,7 +3,7 @@ using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.Guests.Commands;
 
-[CheckRole(UserRole.Admin)]
+[CheckPermission(Permission.GuestEdit)]
 public record UpdateGuestCommand(
     Guid Id,
     string FirstName,

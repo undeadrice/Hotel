@@ -46,6 +46,7 @@
         GuestView,
 
         // FiscalAccount
+        FiscalAccountEdit,
         FiscalAccountView,
 
         // TransactionCode

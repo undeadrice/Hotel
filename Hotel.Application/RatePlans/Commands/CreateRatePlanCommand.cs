@@ -1,8 +1,10 @@
 using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 using MediatR;
 
 namespace Hotel.Application.RatePlans.Commands;
 
+[CheckPermission(Permission.RatePlanCreate)]
 public record CreateRatePlanCommand(
     string Name,
     Guid TransactionCodeId,
