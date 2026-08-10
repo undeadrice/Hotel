@@ -44,4 +44,16 @@ public class RatePlanReadRepository(PersistenceDbContext dbContext) : IRatePlanR
 
         return ratePlan;
     }
+
+    public async Task<IReadOnlyCollection<RatePlanListSimpleDto>> GetByRoomTypeId(
+        Guid roomTypeId,
+        CancellationToken cancellationToken)
+    {
+        return await dbContext.RatePlans
+            .AsNoTracking()
+            .Where(rp => rp.Rooms.Any(r => r.RoomTypeId == roomTypeId))
+            .OrderBy(rp => rp.Name)
+            .Select(rp => new RatePlanListSimpleDto(rp.Id, rp.Name))
+            .ToListAsync(cancellationToken);
+    }
 }

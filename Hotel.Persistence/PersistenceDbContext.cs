@@ -28,8 +28,6 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
 
     public DbSet<RatePlan> RatePlans { get; set; }
 
-    public DbSet<RatePlanRoom> RatePlanRooms { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

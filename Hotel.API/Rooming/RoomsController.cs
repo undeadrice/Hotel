@@ -16,6 +16,15 @@ public class RoomsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("available")]
+    public async Task<IActionResult> GetAvailableRooms(
+        [FromQuery] DateOnly startDate,
+        [FromQuery] DateOnly endDate)
+    {
+        var result = await mediator.Send(new GetAvailableRoomsQuery(startDate, endDate));
+        return Ok(result);
+    }
+
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetRoomById(Guid id)
     {

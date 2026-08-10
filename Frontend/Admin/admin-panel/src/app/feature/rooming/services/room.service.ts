@@ -17,6 +17,12 @@ export class RoomService extends BaseHttpService {
     return this.get<RoomListResponse[]>('rooms');
   }
 
+  getAvailableRooms(startDate: string, endDate: string): Observable<RoomListResponse[]> {
+    return this.get<RoomListResponse[]>(
+      `rooms/available?startDate=${startDate}&endDate=${endDate}`
+    );
+  }
+
   getRoom(id: string): Observable<RoomResponse> {
     return this.get<RoomResponse>(`rooms/${id}`);
   }

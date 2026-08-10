@@ -32,4 +32,26 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
 
         return room;
     }
+
+    public async Task<IReadOnlyCollection<RoomListDto>> GetAvailable(
+        DateOnly startDate,
+        DateOnly endDate,
+        CancellationToken cancellationToken)
+    {
+        var start = startDate.ToDateTime(TimeOnly.MinValue);
+        var end = endDate.ToDateTime(TimeOnly.MinValue);
+
+        var reservedRoomIds = dbContext.Reservations
+            .AsNoTracking()
+            .Where(r => r.StartDate < end && r.EndDate > start)
+            .Select(r => r.RoomId)
+            .Distinct();
+
+        return await dbContext.Rooms
+            .AsNoTracking()
+            .Where(r => !reservedRoomIds.Contains(r.Id) && r.IsActive)
+            .OrderBy(r => r.RoomNumber)
+            .Select(r => new RoomListDto(r.Id, r.RoomNumber))
+            .ToListAsync(cancellationToken);
+    }
 }
