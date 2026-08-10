@@ -20,6 +20,26 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        @if (form.get('startDate')?.hasError('required')) {
+          <mat-error>Start Date is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+        @if (form.get('endDate')?.hasError('required')) {
+          <mat-error>End Date is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Room</mat-label>
         <mat-select formControlName="roomId">
           @for (room of rooms(); track room.id) {
@@ -40,26 +60,6 @@
         </mat-select>
         @if (form.get('ratePlanId')?.hasError('required')) {
           <mat-error>Rate Plan is required</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" style="width: 100%">
-        <mat-label>Start Date</mat-label>
-        <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-        @if (form.get('startDate')?.hasError('required')) {
-          <mat-error>Start Date is required</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" style="width: 100%">
-        <mat-label>End Date</mat-label>
-        <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
-        @if (form.get('endDate')?.hasError('required')) {
-          <mat-error>End Date is required</mat-error>
         }
       </mat-form-field>
 
