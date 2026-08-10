@@ -2,7 +2,6 @@ using Hotel.Domain.Guests;
 using Hotel.Domain.Guests.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hotel.Persistence.Guests;
 
@@ -33,16 +32,6 @@ public class GuestRepository(PersistenceDbContext persistenceDbContext) : IGuest
     public async Task<Guest?> FindById(Guid id, CancellationToken token)
     {
         return await persistenceDbContext.Guests.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: token);
-    }
-
-    public async Task<IReadOnlyCollection<Guest>> GetAll(CancellationToken token, Expression<Func<Guest, bool>>? filter = null)
-    {
-        if (filter == null)
-        {
-            return await persistenceDbContext.Guests.ToListAsync(cancellationToken: token);
-        }
-
-        return await persistenceDbContext.Guests.Where(filter).ToListAsync(cancellationToken: token);
     }
 
     public async Task<IReadOnlyCollection<Guest>> Search(

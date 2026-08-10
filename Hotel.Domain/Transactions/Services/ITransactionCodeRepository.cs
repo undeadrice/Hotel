@@ -1,5 +1,4 @@
 using Hotel.Domain.Transactions.Entities;
-using System.Linq.Expressions;
 
 namespace Hotel.Domain.Transactions.Services;
 
@@ -14,6 +13,4 @@ public interface ITransactionCodeRepository
     Task<TransactionCode?> FindById(Guid id, CancellationToken token = default);
 
     Task<bool> ExistsByCode(string code, CancellationToken token = default);
-
-    Task<IReadOnlyCollection<TransactionCode>> GetAll(CancellationToken token, Expression<Func<TransactionCode, bool>>? filter = null);
 }

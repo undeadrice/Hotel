@@ -2,7 +2,6 @@ using Hotel.Domain.FiscalAccounting.Entities;
 using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hotel.Persistence.FiscalAccounting;
 
@@ -36,19 +35,5 @@ public class FiscalAccountRepository(PersistenceDbContext persistenceDbContext) 
         }
 
         return result;
-    }
-
-    public async Task<IReadOnlyCollection<FiscalAccount>> GetAll(CancellationToken token, Expression<Func<FiscalAccount, bool>>? filter = null)
-    {
-        IQueryable<FiscalAccount> query = persistenceDbContext.FiscalAccounts
-            .Include(a => a.Folios)
-            .ThenInclude(f => f.Items);
-
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-
-        return await query.ToListAsync(cancellationToken: token);
     }
 }

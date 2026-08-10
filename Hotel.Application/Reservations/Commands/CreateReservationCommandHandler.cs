@@ -25,13 +25,13 @@ public class CreateReservationCommandHandler(
             throw new RoomNotActiveException();
         }
 
-        var overlappingReservations = await reservationRepository.GetAll(
-            cancellationToken,
-            r => r.RoomId == request.RoomId
-                 && r.StartDate < request.EndDate
-                 && r.EndDate > request.StartDate);
+        var hasOverlap = await reservationRepository.HasOverlappingReservation(
+            request.RoomId,
+            request.StartDate,
+            request.EndDate,
+            cancellationToken);
 
-        if (overlappingReservations.Count != 0)
+        if (hasOverlap)
         {
             throw new RoomNotAvailableException();
         }

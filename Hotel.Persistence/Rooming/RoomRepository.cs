@@ -2,7 +2,6 @@ using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Rooming.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hotel.Persistence.Rooming;
 
@@ -35,19 +34,6 @@ public class RoomRepository(PersistenceDbContext persistenceDbContext) : IRoomRe
     {
         return await persistenceDbContext.Rooms
             .FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<IReadOnlyCollection<Room>> GetAll(CancellationToken token, Expression<Func<Room, bool>>? filter = null)
-    {
-        var query = persistenceDbContext.Rooms
-            .AsQueryable();
-
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-
-        return await query.ToListAsync();
     }
 
     public async Task<bool> ExistsByRoomNumber(string roomNumber, CancellationToken token)

@@ -1,5 +1,4 @@
 using Hotel.Domain.Reservations.Entities;
-using System.Linq.Expressions;
 
 namespace Hotel.Domain.Reservations.Services;
 
@@ -13,5 +12,5 @@ public interface IReservationRepository
 
     Task<Reservation> GetById(Guid id, CancellationToken token = default);
 
-    Task<IReadOnlyCollection<Reservation>> GetAll(CancellationToken token, Expression<Func<Reservation, bool>>? filter = null);
+    Task<bool> HasOverlappingReservation(Guid roomId, DateTime startDate, DateTime endDate, CancellationToken token = default);
 }

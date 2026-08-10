@@ -1,5 +1,4 @@
 using Hotel.Domain.Guests;
-using System.Linq.Expressions;
 
 namespace Hotel.Domain.Guests.Services;
 
@@ -12,8 +11,6 @@ public interface IGuestRepository
     Task<Guest> GetById(Guid id, CancellationToken token = default);
 
     Task<Guest?> FindById(Guid id, CancellationToken token = default);
-
-    Task<IReadOnlyCollection<Guest>> GetAll(CancellationToken token, Expression<Func<Guest, bool>>? filter = null);
 
     Task<IReadOnlyCollection<Guest>> Search(
         string? name,

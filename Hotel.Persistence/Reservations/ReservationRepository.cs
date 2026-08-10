@@ -2,7 +2,6 @@ using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Reservations.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hotel.Persistence.Reservations;
 
@@ -37,15 +36,11 @@ public class ReservationRepository(PersistenceDbContext persistenceDbContext) : 
         return result;
     }
 
-    public async Task<IReadOnlyCollection<Reservation>> GetAll(CancellationToken token, Expression<Func<Reservation, bool>>? filter = null)
+    public async Task<bool> HasOverlappingReservation(Guid roomId, DateTime startDate, DateTime endDate, CancellationToken token)
     {
-        IQueryable<Reservation> query = persistenceDbContext.Reservations.Include(r => r.Guests);
-
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-
-        return await query.ToListAsync(cancellationToken: token);
+        return await persistenceDbContext.Reservations
+            .AnyAsync(r => r.RoomId == roomId
+                         && r.StartDate < endDate
+                         && r.EndDate > startDate, cancellationToken: token);
     }
 }

@@ -2,7 +2,6 @@ using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.RatePlans.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hotel.Persistence.RatePlans;
 
@@ -37,19 +36,5 @@ public class RatePlanRepository(PersistenceDbContext persistenceDbContext) : IRa
         return await persistenceDbContext.RatePlans
             .Include(rp => rp.Rooms)
             .FirstOrDefaultAsync(x => x.Id == id, token);
-    }
-
-    public async Task<IReadOnlyCollection<RatePlan>> GetAll(CancellationToken token, Expression<Func<RatePlan, bool>>? filter = null)
-    {
-        var query = persistenceDbContext.RatePlans
-            .Include(rp => rp.Rooms)
-            .AsQueryable();
-
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-
-        return await query.ToListAsync(token);
     }
 }

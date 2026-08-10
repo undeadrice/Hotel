@@ -2,7 +2,6 @@ using Hotel.Domain.Transactions.Entities;
 using Hotel.Domain.Transactions.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Hotel.Persistence.Transactions;
 
@@ -39,17 +38,5 @@ public class TransactionGroupRepository(PersistenceDbContext dbContext) : ITrans
     public async Task<bool> ExistsByCode(string code, CancellationToken token = default)
     {
         return await dbContext.TransactionGroups.AnyAsync(tg => tg.Code == code, token);
-    }
-
-    public async Task<IReadOnlyCollection<TransactionGroup>> GetAll(
-        CancellationToken token,
-        Expression<Func<TransactionGroup, bool>>? filter = null)
-    {
-        if (filter is null)
-        {
-            return await dbContext.TransactionGroups.ToListAsync(token);
-        }
-
-        return await dbContext.TransactionGroups.Where(filter).ToListAsync(token);
     }
 }
