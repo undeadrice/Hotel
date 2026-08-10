@@ -6,7 +6,7 @@ public record CreateReservationCommand(
     Guid CreatorId,
     Guid RoomId,
     Guid RatePlanId,
-    DateTime StartDate,
-    DateTime EndDate,
+    DateOnly StartDate,
+    DateOnly EndDate,
     DateTime? ArrivalTime,
     List<Guid> GuestIds) : ICommand<Guid>;

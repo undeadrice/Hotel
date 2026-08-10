@@ -13,7 +13,8 @@ public class CreateReservationCommandHandler(
     IReservationRepository reservationRepository,
     IFiscalAccountRepository fiscalAccountRepository,
     IRoomRepository roomRepository,
-    IRatePlanRepository ratePlanRepository)
+    IRatePlanRepository ratePlanRepository,
+    IRoomAvailabilityService roomAvailabilityService)
     : IRequestHandler<CreateReservationCommand, Guid>
 {
     public async Task<Guid> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
@@ -25,23 +26,9 @@ public class CreateReservationCommandHandler(
             throw new RoomNotActiveException();
         }
 
-        var hasOverlap = await reservationRepository.HasOverlappingReservation(
-            request.RoomId,
-            request.StartDate,
-            request.EndDate,
-            cancellationToken);
-
-        if (hasOverlap)
-        {
-            throw new RoomNotAvailableException();
-        }
-
         var ratePlan = await ratePlanRepository.GetById(request.RatePlanId, cancellationToken);
 
-        var reservationStartDate = DateOnly.FromDateTime(request.StartDate);
-        var reservationEndDate = DateOnly.FromDateTime(request.EndDate);
-
-        if (reservationStartDate < ratePlan.StartDate || reservationEndDate > ratePlan.EndDate)
+        if (request.StartDate < ratePlan.StartDate || request.EndDate > ratePlan.EndDate)
         {
             throw RatePlanInvalidForRoomException.DateRangeMismatch();
         }
@@ -52,14 +39,16 @@ public class CreateReservationCommandHandler(
             throw RatePlanInvalidForRoomException.RoomNotInRatePlan();
         }
 
-        var reservation = Reservation.Create(
+        var reservation = await Reservation.Create(
             request.CreatorId,
             request.RoomId,
             request.RatePlanId,
             request.StartDate,
             request.EndDate,
             request.ArrivalTime,
-            request.GuestIds);
+            request.GuestIds,
+            roomAvailabilityService,
+            cancellationToken);
 
         await reservationRepository.Add(reservation, cancellationToken);
 

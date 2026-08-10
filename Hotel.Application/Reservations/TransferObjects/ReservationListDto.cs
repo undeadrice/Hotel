@@ -5,8 +5,8 @@ public record ReservationListDto(
     string RoomName,
     string RatePlanName,
     string CreatorName,
-    DateTime StartDate,
-    DateTime EndDate,
+    DateOnly StartDate,
+    DateOnly EndDate,
     DateTime? ArrivalTime,
     DateTime CreatedAt,
     int GuestCount);

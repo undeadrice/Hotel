@@ -12,5 +12,5 @@ public interface IReservationRepository
 
     Task<Reservation> GetById(Guid id, CancellationToken token = default);
 
-    Task<bool> HasOverlappingReservation(Guid roomId, DateTime startDate, DateTime endDate, CancellationToken token = default);
+    Task<bool> HasOverlappingReservation(Guid roomId, DateOnly startDate, DateOnly endDate, CancellationToken token = default);
 }

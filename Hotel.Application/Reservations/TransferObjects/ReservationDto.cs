@@ -5,8 +5,8 @@ public record ReservationDto(
     Guid CreatorId,
     Guid RoomId,
     Guid RatePlanId,
-    DateTime StartDate,
-    DateTime EndDate,
+    DateOnly StartDate,
+    DateOnly EndDate,
     DateTime? ArrivalTime,
     DateTime CreatedAt,
     List<Guid> GuestIds);

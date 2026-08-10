@@ -36,7 +36,7 @@ public class ReservationRepository(PersistenceDbContext persistenceDbContext) : 
         return result;
     }
 
-    public async Task<bool> HasOverlappingReservation(Guid roomId, DateTime startDate, DateTime endDate, CancellationToken token)
+    public async Task<bool> HasOverlappingReservation(Guid roomId, DateOnly startDate, DateOnly endDate, CancellationToken token)
     {
         return await persistenceDbContext.Reservations
             .AnyAsync(r => r.RoomId == roomId

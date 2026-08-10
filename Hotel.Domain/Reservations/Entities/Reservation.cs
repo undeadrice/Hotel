@@ -1,3 +1,6 @@
+using Hotel.Domain.Reservations.Exceptions;
+using Hotel.Domain.Reservations.Services;
+
 namespace Hotel.Domain.Reservations.Entities;
 
 public class Reservation
@@ -6,8 +9,8 @@ public class Reservation
     public Guid CreatorId { get; private set; }
     public Guid RoomId { get; private set; }
     public Guid RatePlanId { get; private set; }
-    public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
+    public DateOnly StartDate { get; private set; }
+    public DateOnly EndDate { get; private set; }
     public DateTime? ArrivalTime { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
@@ -23,8 +26,8 @@ public class Reservation
         Guid creatorId,
         Guid roomId,
         Guid ratePlanId,
-        DateTime startDate,
-        DateTime endDate,
+        DateOnly startDate,
+        DateOnly endDate,
         DateTime? arrivalTime,
         DateTime createdAt)
     {
@@ -38,14 +41,16 @@ public class Reservation
         CreatedAt = createdAt;
     }
 
-    public static Reservation Create(
+    public static async Task<Reservation> Create(
         Guid creatorId,
         Guid roomId,
         Guid ratePlanId,
-        DateTime startDate,
-        DateTime endDate,
+        DateOnly startDate,
+        DateOnly endDate,
         DateTime? arrivalTime,
-        IEnumerable<Guid> guestIds)
+        IEnumerable<Guid> guestIds,
+        IRoomAvailabilityService roomAvailabilityService,
+        CancellationToken cancellationToken = default)
     {
         if (startDate >= endDate)
         {
@@ -55,6 +60,13 @@ public class Reservation
         if (!guestIds.Any())
         {
             throw new ArgumentException("At least one guest must be assigned.");
+        }
+
+        var isOccupied = await roomAvailabilityService.IsRoomOccupied(roomId, startDate, endDate, cancellationToken);
+
+        if (isOccupied)
+        {
+            throw new RoomNotAvailableException();
         }
 
         var reservation = new Reservation(

@@ -38,12 +38,9 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
         DateOnly endDate,
         CancellationToken cancellationToken)
     {
-        var start = startDate.ToDateTime(TimeOnly.MinValue);
-        var end = endDate.ToDateTime(TimeOnly.MinValue);
-
         var reservedRoomIds = dbContext.Reservations
             .AsNoTracking()
-            .Where(r => r.StartDate < end && r.EndDate > start)
+            .Where(r => r.StartDate < endDate && r.EndDate > startDate)
             .Select(r => r.RoomId)
             .Distinct();
 
