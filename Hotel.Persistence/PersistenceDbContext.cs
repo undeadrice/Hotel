@@ -18,8 +18,6 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
 
     public DbSet<Reservation> Reservations { get; set; }
 
-    public DbSet<ReservationGuest> ReservationGuests { get; set; }
-
     public DbSet<FiscalAccount> FiscalAccounts { get; set; }
 
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
