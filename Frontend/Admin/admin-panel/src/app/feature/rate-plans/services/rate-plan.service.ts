@@ -14,8 +14,14 @@ export class RatePlanService extends BaseHttpService {
     return this.get<RatePlanListResponse[]>('RatePlans');
   }
 
-  getRatePlansByRoom(roomId: string): Observable<RatePlanListSimpleResponse[]> {
-    return this.get<RatePlanListSimpleResponse[]>(`RatePlans/by-room/${roomId}`);
+  getRatePlansByRoom(
+    roomId: string,
+    startDate: string,
+    endDate: string
+  ): Observable<RatePlanListSimpleResponse[]> {
+    return this.get<RatePlanListSimpleResponse[]>(
+      `RatePlans/by-room/${roomId}?startDate=${startDate}&endDate=${endDate}`
+    );
   }
 
   getRatePlan(id: string): Observable<RatePlanResponse> {

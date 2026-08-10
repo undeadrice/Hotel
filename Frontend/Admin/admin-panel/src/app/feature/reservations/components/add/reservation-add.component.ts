@@ -118,17 +118,31 @@ export class ReservationAddComponent {
       });
 
     // When a room is selected, fetch rate plans configured for its room type
+    // (also filtered by the selected date range)
     roomId$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((roomId) => {
         if (roomId) {
-          this.ratePlanService.getRatePlansByRoom(roomId).subscribe((data) => {
-            this.ratePlans.set(data);
-            const currentRatePlanId = this.form.get('ratePlanId')?.value;
-            if (currentRatePlanId && !data.some((rp) => rp.id === currentRatePlanId)) {
-              this.form.patchValue({ ratePlanId: '' }, { emitEvent: false });
-            }
-          });
+          const startDate = this.form.get('startDate')?.value;
+          const endDate = this.form.get('endDate')?.value;
+          if (startDate && endDate) {
+            this.ratePlanService
+              .getRatePlansByRoom(
+                roomId,
+                this.formatDate(startDate),
+                this.formatDate(endDate)
+              )
+              .subscribe((data) => {
+                this.ratePlans.set(data);
+                const currentRatePlanId = this.form.get('ratePlanId')?.value;
+                if (currentRatePlanId && !data.some((rp) => rp.id === currentRatePlanId)) {
+                  this.form.patchValue({ ratePlanId: '' }, { emitEvent: false });
+                }
+              });
+          } else {
+            this.ratePlans.set([]);
+            this.form.patchValue({ ratePlanId: '' }, { emitEvent: false });
+          }
         } else {
           this.ratePlans.set([]);
           this.form.patchValue({ ratePlanId: '' }, { emitEvent: false });

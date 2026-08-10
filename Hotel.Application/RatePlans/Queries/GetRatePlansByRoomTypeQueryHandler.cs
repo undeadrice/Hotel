@@ -17,6 +17,10 @@ internal class GetRatePlansByRoomTypeQueryHandler(
     {
         var room = await roomReadRepository.GetById(request.RoomId, cancellationToken);
 
-        return await ratePlanReadRepository.GetByRoomTypeId(room.RoomTypeId, cancellationToken);
+        return await ratePlanReadRepository.GetByRoomTypeId(
+            room.RoomTypeId,
+            request.StartDate,
+            request.EndDate,
+            cancellationToken);
     }
 }

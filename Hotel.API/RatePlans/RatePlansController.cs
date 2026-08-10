@@ -17,9 +17,13 @@ public class RatePlansController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("by-room/{roomId:guid}")]
-    public async Task<IActionResult> GetRatePlansByRoom(Guid roomId)
+    public async Task<IActionResult> GetRatePlansByRoom(
+        Guid roomId,
+        [FromQuery] DateOnly startDate,
+        [FromQuery] DateOnly endDate)
     {
-        var result = await mediator.Send(new GetRatePlansByRoomTypeQuery(roomId));
+        var result = await mediator.Send(
+            new GetRatePlansByRoomTypeQuery(roomId, startDate, endDate));
         return Ok(result);
     }
 

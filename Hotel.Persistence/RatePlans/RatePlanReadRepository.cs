@@ -47,11 +47,15 @@ public class RatePlanReadRepository(PersistenceDbContext dbContext) : IRatePlanR
 
     public async Task<IReadOnlyCollection<RatePlanListSimpleDto>> GetByRoomTypeId(
         Guid roomTypeId,
+        DateOnly startDate,
+        DateOnly endDate,
         CancellationToken cancellationToken)
     {
         return await dbContext.RatePlans
             .AsNoTracking()
-            .Where(rp => rp.Rooms.Any(r => r.RoomTypeId == roomTypeId))
+            .Where(rp =>
+                rp.Rooms.Any(r => r.RoomTypeId == roomTypeId) &&
+                rp.StartDate <= endDate && rp.EndDate >= startDate)
             .OrderBy(rp => rp.Name)
             .Select(rp => new RatePlanListSimpleDto(rp.Id, rp.Name))
             .ToListAsync(cancellationToken);

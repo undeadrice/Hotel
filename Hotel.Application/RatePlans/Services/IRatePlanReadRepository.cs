@@ -8,5 +8,9 @@ public interface IRatePlanReadRepository
 
     Task<RatePlanDto> GetById(Guid id, CancellationToken cancellationToken);
 
-    Task<IReadOnlyCollection<RatePlanListSimpleDto>> GetByRoomTypeId(Guid roomTypeId, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<RatePlanListSimpleDto>> GetByRoomTypeId(
+        Guid roomTypeId,
+        DateOnly startDate,
+        DateOnly endDate,
+        CancellationToken cancellationToken);
 }
