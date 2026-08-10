@@ -8,12 +8,8 @@ public class ReservationGuestConfiguration : IEntityTypeConfiguration<Reservatio
 {
     public void Configure(EntityTypeBuilder<ReservationGuest> builder)
     {
+        builder.ToTable("ReservationGuests");
+
         builder.HasKey(rg => new { rg.ReservationId, rg.GuestId });
-
-        builder.Property(rg => rg.ReservationId)
-            .IsRequired();
-
-        builder.Property(rg => rg.GuestId)
-            .IsRequired();
     }
 }

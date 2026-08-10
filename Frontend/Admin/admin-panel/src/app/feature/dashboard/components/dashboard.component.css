@@ -1,0 +1,147 @@
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  transition: box-shadow 0.2s ease;
+}
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px !important;
+}
+
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stat-icon mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.rooms-icon {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+.occupied-icon {
+  background-color: #fce4ec;
+  color: #c62828;
+}
+.guests-icon {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+.onsite-icon {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Gauge */
+.gauge-row {
+  display: flex;
+  justify-content: center;
+}
+
+.gauge-card {
+  max-width: 500px;
+  width: 100%;
+}
+
+.gauge-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 24px 32px !important;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gauge-container {
+  flex-shrink: 0;
+}
+
+.gauge-svg {
+  width: 140px;
+  height: 140px;
+}
+
+.gauge-percent {
+  font-size: 22px;
+  font-weight: 700;
+  fill: #212121;
+}
+
+.gauge-label {
+  font-size: 11px;
+  fill: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+}
+
+.gauge-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gauge-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.detail-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.occupied-dot {
+  background-color: #c62828;
+}
+
+.free-dot {
+  background-color: #e0e0e0;
+}
