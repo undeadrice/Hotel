@@ -15,6 +15,50 @@
         UserView,
 
         // Permissions
-        PermissionView
+        PermissionView,
+
+        // Reservation
+        ReservationCreate,
+        ReservationView,
+
+        // Room
+        RoomCreate,
+        RoomEdit,
+        RoomDelete,
+        RoomView,
+
+        // RoomType
+        RoomTypeCreate,
+        RoomTypeEdit,
+        RoomTypeDelete,
+        RoomTypeView,
+
+        // RatePlan
+        RatePlanCreate,
+        RatePlanEdit,
+        RatePlanDelete,
+        RatePlanView,
+
+        // Guest
+        GuestCreate,
+        GuestEdit,
+        GuestDelete,
+        GuestView,
+
+        // FiscalAccount
+        FiscalAccountView,
+
+        // TransactionCode
+        TransactionCodeCreate,
+        TransactionCodeEdit,
+        TransactionCodeView,
+
+        // TransactionGroup
+        TransactionGroupCreate,
+        TransactionGroupEdit,
+        TransactionGroupView,
+
+        // Dashboard
+        DashboardView
     }
 }
