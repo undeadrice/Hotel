@@ -7,14 +7,19 @@
   </mat-card-header>
   <mat-card-content>
     <table mat-table [dataSource]="reservations">
-      <ng-container matColumnDef="RoomId">
+      <ng-container matColumnDef="RoomName">
         <th mat-header-cell *matHeaderCellDef>Room</th>
-        <td mat-cell *matCellDef="let reservation">{{ reservation.roomId }}</td>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.roomName }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="RatePlanId">
+      <ng-container matColumnDef="RatePlanName">
         <th mat-header-cell *matHeaderCellDef>Rate Plan</th>
-        <td mat-cell *matCellDef="let reservation">{{ reservation.ratePlanId }}</td>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.ratePlanName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="CreatorName">
+        <th mat-header-cell *matHeaderCellDef>Guest</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.creatorName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="StartDate">
@@ -30,13 +35,22 @@
       <ng-container matColumnDef="ArrivalTime">
         <th mat-header-cell *matHeaderCellDef>Arrival Time</th>
         <td mat-cell *matCellDef="let reservation">
-          {{ reservation.arrivalTime ? (reservation.arrivalTime | date: 'short') : 'N/A' }}
+          @if (reservation.arrivalTime) {
+            {{ reservation.arrivalTime | date: 'short' }}
+          } @else {
+            N/A
+          }
         </td>
+      </ng-container>
+
+      <ng-container matColumnDef="CreatedAt">
+        <th mat-header-cell *matHeaderCellDef>Created</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.createdAt | date: 'shortDate' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="GuestCount">
         <th mat-header-cell *matHeaderCellDef>Guests</th>
-        <td mat-cell *matCellDef="let reservation">{{ reservation.guestIds.length }}</td>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.guestCount }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

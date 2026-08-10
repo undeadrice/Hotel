@@ -15,14 +15,23 @@ public class ReservationReadRepository(PersistenceDbContext dbContext) : IReserv
             .OrderByDescending(r => r.CreatedAt)
             .Select(r => new ReservationListDto(
                 r.Id,
-                r.CreatorId,
-                r.RoomId,
-                r.RatePlanId,
+                dbContext.Rooms
+                    .Where(room => room.Id == r.RoomId)
+                    .Select(room => room.RoomNumber)
+                    .FirstOrDefault() ?? "Unknown",
+                dbContext.RatePlans
+                    .Where(rp => rp.Id == r.RatePlanId)
+                    .Select(rp => rp.Name)
+                    .FirstOrDefault() ?? "Unknown",
+                dbContext.Guests
+                    .Where(g => g.Id == r.CreatorId)
+                    .Select(g => g.FirstName + " " + g.LastName)
+                    .FirstOrDefault() ?? "Unknown",
                 r.StartDate,
                 r.EndDate,
                 r.ArrivalTime,
                 r.CreatedAt,
-                r.Guests.Select(g => g.GuestId).ToList()))
+                r.Guests.Count))
             .ToListAsync(cancellationToken);
     }
 

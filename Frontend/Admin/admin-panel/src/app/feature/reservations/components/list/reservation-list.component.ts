@@ -16,11 +16,13 @@ export class ReservationListComponent {
 
   reservations = new MatTableDataSource<ReservationListResponse>([]);
   displayedColumns: string[] = [
-    'RoomId',
-    'RatePlanId',
+    'RoomName',
+    'RatePlanName',
+    'CreatorName',
     'StartDate',
     'EndDate',
     'ArrivalTime',
+    'CreatedAt',
     'GuestCount',
   ];
 

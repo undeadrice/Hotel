@@ -2,11 +2,11 @@ namespace Hotel.Application.Reservations.TransferObjects;
 
 public record ReservationListDto(
     Guid Id,
-    Guid CreatorId,
-    Guid RoomId,
-    Guid RatePlanId,
+    string RoomName,
+    string RatePlanName,
+    string CreatorName,
     DateTime StartDate,
     DateTime EndDate,
     DateTime? ArrivalTime,
     DateTime CreatedAt,
-    List<Guid> GuestIds);
+    int GuestCount);
