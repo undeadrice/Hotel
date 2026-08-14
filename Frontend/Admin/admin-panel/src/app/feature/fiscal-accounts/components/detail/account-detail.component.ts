@@ -30,6 +30,7 @@ import { AddFolioItemDialogComponent } from '../dialogs/add-folio-item-dialog.co
     MatTableModule,
   ],
   templateUrl: './account-detail.component.html',
+  styleUrls: ['./account-detail.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountDetailComponent implements OnInit {
@@ -76,6 +77,11 @@ export class AccountDetailComponent implements OnInit {
         this.refreshAccount();
       }
     });
+  }
+
+  goToReservation(): void {
+    // Reservation details page is not implemented yet.
+    void 0;
   }
 
   openAddFolioItemDialog(folio: FolioResponse): void {
