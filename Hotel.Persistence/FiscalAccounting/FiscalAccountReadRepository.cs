@@ -47,7 +47,9 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                             .Select(i => new FolioItemDto(
                                 i.Id,
                                 i.Description,
+                                i.Quantity,
                                 i.Amount,
+                                i.TransactionCodeId,
                                 i.CreatedAt))
                             .ToList()
                             .AsReadOnly()))

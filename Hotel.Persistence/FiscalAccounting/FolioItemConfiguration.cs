@@ -22,9 +22,15 @@ public class FolioItemConfiguration : IEntityTypeConfiguration<FolioItem>
             .IsRequired()
             .HasMaxLength(500);
 
+        builder.Property(fi => fi.Quantity)
+            .IsRequired();
+
         builder.Property(fi => fi.Amount)
             .IsRequired()
             .HasPrecision(18, 2);
+
+        builder.Property(fi => fi.TransactionCodeId)
+            .IsRequired();
 
         builder.Property(fi => fi.CreatedAt)
             .IsRequired();

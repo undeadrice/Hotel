@@ -16,5 +16,7 @@ public record FolioDto(
 public record FolioItemDto(
     Guid Id,
     string Description,
+    int Quantity,
     decimal Amount,
+    Guid TransactionCodeId,
     DateTime CreatedAt);

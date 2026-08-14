@@ -1,3 +1,5 @@
+using Hotel.Domain.FiscalAccounting.Exceptions;
+
 namespace Hotel.Domain.FiscalAccounting.Entities;
 
 public class FolioItem
@@ -5,7 +7,9 @@ public class FolioItem
     public Guid Id { get; private set; }
     public Guid FolioId { get; private set; }
     public string Description { get; private set; }
+    public int Quantity { get; private set; }
     public decimal Amount { get; private set; }
+    public Guid TransactionCodeId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
 #pragma warning disable CS8618
@@ -16,28 +20,49 @@ public class FolioItem
         Guid id,
         Guid folioId,
         string description,
+        int quantity,
         decimal amount,
+        Guid transactionCodeId,
         DateTime createdAt)
     {
         Id = id;
         FolioId = folioId;
         Description = description;
+        Quantity = quantity;
         Amount = amount;
+        TransactionCodeId = transactionCodeId;
         CreatedAt = createdAt;
     }
 
-    public static FolioItem Create(Guid folioId, string description, decimal amount)
+    public static FolioItem Create(
+        Guid folioId,
+        string description,
+        int quantity,
+        decimal amount,
+        Guid transactionCodeId)
     {
         if (string.IsNullOrWhiteSpace(description))
         {
-            throw new ArgumentException("Description is required.");
+            throw new InvalidFolioItemDescriptionException();
+        }
+
+        if (quantity <= 0)
+        {
+            throw new InvalidFolioItemQuantityException();
+        }
+
+        if (amount < 0)
+        {
+            throw new InvalidFolioItemAmountException();
         }
 
         return new FolioItem(
             Guid.NewGuid(),
             folioId,
             description,
+            quantity,
             amount,
+            transactionCodeId,
             DateTime.UtcNow);
     }
 }
