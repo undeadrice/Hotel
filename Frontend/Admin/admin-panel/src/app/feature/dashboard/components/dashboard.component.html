@@ -3,6 +3,13 @@
 } @else if (dashboard(); as data) {
   <div class="dashboard-grid">
 
+    @if (businessDay()) {
+      <div class="business-day-banner">
+        <mat-icon>event</mat-icon>
+        <span>Business day: {{ businessDay() }}</span>
+      </div>
+    }
+
     <!-- Stats Cards Row -->
     <div class="stats-row">
       <mat-card class="stat-card">

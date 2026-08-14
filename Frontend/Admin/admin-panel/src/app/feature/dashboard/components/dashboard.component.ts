@@ -19,6 +19,19 @@ export class DashboardComponent implements OnInit {
   readonly loading = signal(true);
 
   readonly occupancy = computed(() => this.dashboard()?.occupancyPercentage ?? 0);
+  readonly businessDay = computed(() => {
+    const value = this.dashboard()?.currentBusinessDate;
+    if (!value) {
+      return '';
+    }
+    const date = new Date(`${value}T00:00:00`);
+    return date.toLocaleDateString(undefined, {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  });
   readonly gaugeDashArray = computed(() => {
     const pct = this.occupancy();
     const circumference = 2 * Math.PI * 54;

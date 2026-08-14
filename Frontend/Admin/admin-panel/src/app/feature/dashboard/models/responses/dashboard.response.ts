@@ -4,4 +4,5 @@ export interface DashboardResponse {
   guestCount: number;
   guestsOnSiteCount: number;
   occupancyPercentage: number;
+  currentBusinessDate: string;
 }

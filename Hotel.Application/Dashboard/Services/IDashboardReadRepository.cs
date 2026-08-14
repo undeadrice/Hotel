@@ -4,5 +4,5 @@ namespace Hotel.Application.Dashboard.Services;
 
 public interface IDashboardReadRepository
 {
-    Task<DashboardDto> GetDashboard(CancellationToken cancellationToken);
+    Task<DashboardDto> GetDashboard(DateOnly businessDate, CancellationToken cancellationToken);
 }
