@@ -40,7 +40,7 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
     {
         var reservedRoomIds = dbContext.Reservations
             .AsNoTracking()
-            .Where(r => r.StartDate < endDate && r.EndDate > startDate)
+            .Where(r => r.StartDate <= endDate && r.EndDate >= startDate)
             .Select(r => r.RoomId)
             .Distinct();
 
