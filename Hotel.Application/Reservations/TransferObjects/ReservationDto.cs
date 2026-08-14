@@ -5,6 +5,7 @@ public record ReservationDto(
     Guid CreatorId,
     Guid RoomId,
     Guid RatePlanId,
+    string CycleIdentifier,
     DateOnly StartDate,
     DateOnly EndDate,
     DateTime? ArrivalTime,

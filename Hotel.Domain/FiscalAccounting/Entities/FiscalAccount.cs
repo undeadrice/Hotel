@@ -5,6 +5,7 @@ public class FiscalAccount
     public Guid Id { get; private set; }
     public Guid OriginatorId { get; private set; }
     public Guid OwnerId { get; private set; }
+    public string CycleIdentifier { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private readonly List<Folio> _folios = new();
@@ -18,20 +19,28 @@ public class FiscalAccount
         Guid id,
         Guid originatorId,
         Guid ownerId,
+        string cycleIdentifier,
         DateTime createdAt)
     {
         Id = id;
         OriginatorId = originatorId;
         OwnerId = ownerId;
+        CycleIdentifier = cycleIdentifier;
         CreatedAt = createdAt;
     }
 
-    public static FiscalAccount Create(Guid originatorId, Guid ownerId)
+    public static FiscalAccount Create(Guid originatorId, Guid ownerId, string cycleIdentifier)
     {
+        if (string.IsNullOrWhiteSpace(cycleIdentifier))
+        {
+            throw new ArgumentException("Cycle identifier is required.", nameof(cycleIdentifier));
+        }
+
         var account = new FiscalAccount(
             Guid.NewGuid(),
             originatorId,
             ownerId,
+            cycleIdentifier,
             DateTime.UtcNow);
 
         account.AddFolio();

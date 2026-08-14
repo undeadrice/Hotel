@@ -19,6 +19,10 @@ public class FiscalAccountConfiguration : IEntityTypeConfiguration<FiscalAccount
         builder.Property(a => a.OwnerId)
             .IsRequired();
 
+        builder.Property(a => a.CycleIdentifier)
+            .IsRequired()
+            .HasMaxLength(100);
+
         builder.Property(a => a.CreatedAt)
             .IsRequired();
 

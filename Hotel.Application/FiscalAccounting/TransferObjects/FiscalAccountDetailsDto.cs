@@ -3,6 +3,7 @@ namespace Hotel.Application.FiscalAccounting.TransferObjects;
 public record FiscalAccountDetailsDto(
     Guid Id,
     Guid OriginatorId,
+    string CycleIdentifier,
     string OwnerFullName,
     DateTime CreatedAt,
     IReadOnlyCollection<FolioDto> Folios);

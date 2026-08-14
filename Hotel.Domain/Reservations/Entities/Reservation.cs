@@ -9,6 +9,7 @@ public class Reservation
     public Guid CreatorId { get; private set; }
     public Guid RoomId { get; private set; }
     public Guid RatePlanId { get; private set; }
+    public string CycleIdentifier { get; private set; }
     public DateOnly StartDate { get; private set; }
     public DateOnly EndDate { get; private set; }
     public DateTime? ArrivalTime { get; private set; }
@@ -26,6 +27,7 @@ public class Reservation
         Guid creatorId,
         Guid roomId,
         Guid ratePlanId,
+        string cycleIdentifier,
         DateOnly startDate,
         DateOnly endDate,
         DateTime? arrivalTime,
@@ -35,6 +37,7 @@ public class Reservation
         CreatorId = creatorId;
         RoomId = roomId;
         RatePlanId = ratePlanId;
+        CycleIdentifier = cycleIdentifier;
         StartDate = startDate;
         EndDate = endDate;
         ArrivalTime = arrivalTime;
@@ -45,6 +48,7 @@ public class Reservation
         Guid creatorId,
         Guid roomId,
         Guid ratePlanId,
+        string cycleIdentifier,
         DateOnly startDate,
         DateOnly endDate,
         DateTime? arrivalTime,
@@ -62,6 +66,11 @@ public class Reservation
             throw new ArgumentException("At least one guest must be assigned.");
         }
 
+        if (string.IsNullOrWhiteSpace(cycleIdentifier))
+        {
+            throw new ArgumentException("Cycle identifier is required.", nameof(cycleIdentifier));
+        }
+
         var isOccupied = await roomAvailabilityService.IsRoomOccupied(roomId, startDate, endDate, cancellationToken);
 
         if (isOccupied)
@@ -74,6 +83,7 @@ public class Reservation
             creatorId,
             roomId,
             ratePlanId,
+            cycleIdentifier,
             startDate,
             endDate,
             arrivalTime,

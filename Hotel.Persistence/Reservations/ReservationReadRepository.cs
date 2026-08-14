@@ -15,6 +15,7 @@ public class ReservationReadRepository(PersistenceDbContext dbContext) : IReserv
             .OrderByDescending(r => r.CreatedAt)
             .Select(r => new ReservationListDto(
                 r.Id,
+                r.CycleIdentifier,
                 dbContext.Rooms
                     .Where(room => room.Id == r.RoomId)
                     .Select(room => room.RoomNumber)
@@ -46,6 +47,7 @@ public class ReservationReadRepository(PersistenceDbContext dbContext) : IReserv
                 r.CreatorId,
                 r.RoomId,
                 r.RatePlanId,
+                r.CycleIdentifier,
                 r.StartDate,
                 r.EndDate,
                 r.ArrivalTime,

@@ -14,6 +14,7 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
             .OrderBy(a => a.CreatedAt)
             .Select(a => new FiscalAccountListItemDto(
                 a.Id,
+                a.CycleIdentifier,
                 a.CreatedAt,
                 dbContext.Guests
                     .Where(g => g.Id == a.OwnerId)
@@ -32,6 +33,7 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
             .Select(a => new FiscalAccountDetailsDto(
                 a.Id,
                 a.OriginatorId,
+                a.CycleIdentifier,
                 dbContext.Guests
                     .Where(g => g.Id == a.OwnerId)
                     .Select(g => g.FirstName + " " + g.LastName)

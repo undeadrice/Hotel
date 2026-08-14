@@ -1,5 +1,7 @@
 using Hotel.Domain.FiscalAccounting.Entities;
 using Hotel.Domain.FiscalAccounting.Services;
+using Hotel.Domain.NumberCycles.Enums;
+using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.RatePlans.Services;
 using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Reservations.Exceptions;
@@ -14,7 +16,8 @@ public class CreateReservationCommandHandler(
     IFiscalAccountRepository fiscalAccountRepository,
     IRoomRepository roomRepository,
     IRatePlanRepository ratePlanRepository,
-    IRoomAvailabilityService roomAvailabilityService)
+    IRoomAvailabilityService roomAvailabilityService,
+    INumberCycleService numberCycleService)
     : IRequestHandler<CreateReservationCommand, Guid>
 {
     public async Task<Guid> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
@@ -39,10 +42,14 @@ public class CreateReservationCommandHandler(
             throw RatePlanInvalidForRoomException.RoomNotInRatePlan();
         }
 
+        var reservationIdentifier = await numberCycleService.NextIdentifier(NumberCycleTopic.Reservation, cancellationToken);
+        var fiscalAccountIdentifier = await numberCycleService.NextIdentifier(NumberCycleTopic.FiscalAccount, cancellationToken);
+
         var reservation = await Reservation.Create(
             request.CreatorId,
             request.RoomId,
             request.RatePlanId,
+            reservationIdentifier,
             request.StartDate,
             request.EndDate,
             request.ArrivalTime,
@@ -52,7 +59,7 @@ public class CreateReservationCommandHandler(
 
         await reservationRepository.Add(reservation, cancellationToken);
 
-        var fiscalAccount = FiscalAccount.Create(reservation.Id, request.CreatorId);
+        var fiscalAccount = FiscalAccount.Create(reservation.Id, request.CreatorId, fiscalAccountIdentifier);
 
         await fiscalAccountRepository.Add(fiscalAccount, cancellationToken);
 

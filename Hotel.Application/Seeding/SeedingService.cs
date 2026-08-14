@@ -1,8 +1,11 @@
+using Hotel.Application.NumberCycles.Services;
 using Hotel.Application.Roles.Services;
 using Hotel.Application.Rooming.Services;
 using Hotel.Application.Transactions.Services;
 using Hotel.Application.Users.Contracts;
 using Hotel.Application.Users.Services;
+using Hotel.Domain.NumberCycles.Enums;
+using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.Persistence;
 using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Rooming.Services;
@@ -22,12 +25,15 @@ public class SeedingService(
     IRoomTypeReadRepository roomTypeReadRepository,
     IRoomCreationService roomCreationService,
     IRoomReadRepository roomReadRepository,
+    INumberCycleReadRepository numberCycleReadRepository,
+    INumberCycleService numberCycleService,
     IUnitOfWork unitOfWork)
     : ISeedingService
 {
     public async Task SeedAsync()
     {
         await SeedAccountsAsync();
+        await SeedNumberCyclesAsync();
         await SeedTransactionGroupsAsync();
         await SeedTransactionCodesAsync();
         await SeedRoomTypesAsync();
@@ -80,6 +86,30 @@ public class SeedingService(
             [roleNameToId["Super admin"]]);
 
         await userService.Create(superAdminUser);
+    }
+
+    private async Task SeedNumberCyclesAsync()
+    {
+        var existingCycles = await numberCycleReadRepository.GetAll(CancellationToken.None);
+        if (existingCycles.Count > 0)
+        {
+            return;
+        }
+
+        await unitOfWork.StartTransaction();
+
+        try
+        {
+            await numberCycleService.Create(NumberCycleTopic.Reservation, "RES", 1, CancellationToken.None);
+            await numberCycleService.Create(NumberCycleTopic.FiscalAccount, "FA", 1, CancellationToken.None);
+
+            await unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await unitOfWork.RollbackAsync();
+            throw;
+        }
     }
 
     private async Task SeedTransactionGroupsAsync()

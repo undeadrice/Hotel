@@ -1,5 +1,6 @@
 ﻿using Hotel.Domain.FiscalAccounting.Entities;
 using Hotel.Domain.Guests;
+using Hotel.Domain.NumberCycles.Entities;
 using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Rooming.Entities;
@@ -19,6 +20,8 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
     public DbSet<Reservation> Reservations { get; set; }
 
     public DbSet<FiscalAccount> FiscalAccounts { get; set; }
+
+    public DbSet<NumberCycle> NumberCycles { get; set; }
 
     public DbSet<TransactionGroup> TransactionGroups { get; set; }
 

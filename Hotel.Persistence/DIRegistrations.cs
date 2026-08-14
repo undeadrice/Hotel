@@ -3,6 +3,7 @@ using Hotel.Application.Reservations.Services;
 using Hotel.Application.Rooming.Services;
 using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Domain.Guests.Services;
+using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.Persistence;
 using Hotel.Domain.Interfaces;
 using Hotel.Domain.Reservations.Services;
@@ -13,10 +14,12 @@ using Hotel.Domain.Transactions.Services;
 using Hotel.Application.Dashboard.Services;
 using Hotel.Application.Transactions.Services;
 using Hotel.Application.FiscalAccounting.Services;
+using Hotel.Application.NumberCycles.Services;
 using Hotel.Persistence.Transactions;
 using Hotel.Persistence.Dashboard;
 using Hotel.Persistence.FiscalAccounting;
 using Hotel.Persistence.Guests;
+using Hotel.Persistence.NumberCycles;
 using Hotel.Persistence.RatePlans;
 using Hotel.Persistence.Reservations;
 using Hotel.Persistence.Rooming;
@@ -49,12 +52,14 @@ public static class DIRegistrations
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IReservationReadRepository, ReservationReadRepository>();
         services.AddScoped<IFiscalAccountRepository, FiscalAccountRepository>();
+        services.AddScoped<INumberCycleRepository, NumberCycleRepository>();
 
         services.AddScoped<ITransactionGroupRepository, TransactionGroupRepository>();
         services.AddScoped<ITransactionCodeRepository, TransactionCodeRepository>();
         services.AddScoped<ITransactionGroupReadRepository, TransactionGroupReadRepository>();
         services.AddScoped<ITransactionCodeReadRepository, TransactionCodeReadRepository>();
         services.AddScoped<IFiscalAccountReadRepository, FiscalAccountReadRepository>();
+        services.AddScoped<INumberCycleReadRepository, NumberCycleReadRepository>();
 
         services.AddScoped<IRatePlanRepository, RatePlanRepository>();
         services.AddScoped<IRatePlanReadRepository, RatePlanReadRepository>();

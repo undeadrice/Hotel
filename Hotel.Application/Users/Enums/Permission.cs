@@ -45,6 +45,11 @@
         GuestDelete,
         GuestView,
 
+        // NumberCycle
+        NumberCycleCreate,
+        NumberCycleDelete,
+        NumberCycleView,
+
         // FiscalAccount
         FiscalAccountEdit,
         FiscalAccountView,

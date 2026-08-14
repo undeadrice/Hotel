@@ -19,6 +19,10 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
         builder.Property(r => r.RatePlanId)
             .IsRequired();
 
+        builder.Property(r => r.CycleIdentifier)
+            .IsRequired()
+            .HasMaxLength(100);
+
         builder.Property(r => r.StartDate)
             .IsRequired();
 
