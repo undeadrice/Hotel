@@ -7,5 +7,6 @@ export interface FolioItemResponse {
   amount: number;
   transactionCodeId: string;
   transactionGroupType: TransactionType;
+  businessDate: string;
   createdAt: string;
 }

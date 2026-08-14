@@ -22,4 +22,5 @@ public record FolioItemDto(
     decimal Amount,
     Guid TransactionCodeId,
     TransactionType TransactionGroupType,
+    DateOnly BusinessDate,
     DateTime CreatedAt);

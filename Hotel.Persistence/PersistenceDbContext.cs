@@ -1,4 +1,5 @@
-﻿using Hotel.Domain.FiscalAccounting.Entities;
+﻿using Hotel.Domain.Configurations.Entities;
+using Hotel.Domain.FiscalAccounting.Entities;
 using Hotel.Domain.Guests;
 using Hotel.Domain.NumberCycles.Entities;
 using Hotel.Domain.RatePlans.Entities;
@@ -28,6 +29,8 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
     public DbSet<TransactionCode> TransactionCodes { get; set; }
 
     public DbSet<RatePlan> RatePlans { get; set; }
+
+    public DbSet<Configuration> Configurations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

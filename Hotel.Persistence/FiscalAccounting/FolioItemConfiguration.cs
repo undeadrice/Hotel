@@ -32,6 +32,9 @@ public class FolioItemConfiguration : IEntityTypeConfiguration<FolioItem>
         builder.Property(fi => fi.TransactionCodeId)
             .IsRequired();
 
+        builder.Property(fi => fi.BusinessDate)
+            .IsRequired();
+
         builder.Property(fi => fi.CreatedAt)
             .IsRequired();
     }

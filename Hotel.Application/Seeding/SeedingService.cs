@@ -4,6 +4,7 @@ using Hotel.Application.Rooming.Services;
 using Hotel.Application.Transactions.Services;
 using Hotel.Application.Users.Contracts;
 using Hotel.Application.Users.Services;
+using Hotel.Domain.Configurations.Services;
 using Hotel.Domain.NumberCycles.Enums;
 using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.Persistence;
@@ -27,12 +28,14 @@ public class SeedingService(
     IRoomReadRepository roomReadRepository,
     INumberCycleReadRepository numberCycleReadRepository,
     INumberCycleService numberCycleService,
+    IConfigurationRepository configurationRepository,
     IUnitOfWork unitOfWork)
     : ISeedingService
 {
     public async Task SeedAsync()
     {
         await SeedAccountsAsync();
+        await SeedConfigurationsAsync();
         await SeedNumberCyclesAsync();
         await SeedTransactionGroupsAsync();
         await SeedTransactionCodesAsync();
@@ -86,6 +89,22 @@ public class SeedingService(
             [roleNameToId["Super admin"]]);
 
         await userService.Create(superAdminUser);
+    }
+
+    private async Task SeedConfigurationsAsync()
+    {
+        var existing = await configurationRepository.Find(CancellationToken.None);
+
+        if (existing is not null)
+        {
+            return;
+        }
+
+        var configuration = Hotel.Domain.Configurations.Entities.Configuration.Create(
+            "UTC",
+            DateOnly.FromDateTime(DateTime.UtcNow));
+
+        await configurationRepository.Add(configuration, CancellationToken.None);
     }
 
     private async Task SeedNumberCyclesAsync()

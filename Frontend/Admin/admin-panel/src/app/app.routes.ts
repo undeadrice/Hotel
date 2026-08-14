@@ -33,6 +33,7 @@ import { AccountListComponent } from './feature/fiscal-accounts/components/list/
 import { AccountDetailComponent } from './feature/fiscal-accounts/components/detail/account-detail.component';
 import { NumberCycleListComponent } from './feature/number-cycles/components/list/number-cycle-list.component';
 import { NumberCycleAddComponent } from './feature/number-cycles/components/add/number-cycle-add.component';
+import { ConfigurationComponent } from './feature/configurations/components/configuration.component';
 
 export const routes: Routes = [
   {
@@ -152,14 +153,18 @@ export const routes: Routes = [
             path: 'fiscal-accounts/:id',
             component: AccountDetailComponent,
           },
-          {
-            path: 'number-cycles',
-            component: NumberCycleListComponent,
-          },
-          {
-            path: 'number-cycles/add',
-            component: NumberCycleAddComponent,
-          },
+           {
+             path: 'number-cycles',
+             component: NumberCycleListComponent,
+           },
+           {
+             path: 'number-cycles/add',
+             component: NumberCycleAddComponent,
+           },
+           {
+             path: 'configurations',
+             component: ConfigurationComponent,
+           },
         {
           path: '',
           redirectTo: 'dashboard',

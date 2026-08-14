@@ -1,5 +1,9 @@
 <mat-toolbar>
   <span>Inventory Management</span>
+  <button mat-button color="primary" (click)="performEndOfDay()">
+    <mat-icon>nightlight_round</mat-icon>
+    End of day
+  </button>
   <span class="flex-spacer"></span>
   @if (authService.fullName(); as fullName) {
   <span class="me-2">{{ fullName }}</span>
@@ -77,6 +81,13 @@
 
       <mat-list-item routerLink="/number-cycles" routerLinkActive="active-link">
         <span class="text-light"><mat-icon>pin</mat-icon> Number Cycles</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Configuration</div>
+
+      <mat-list-item routerLink="/configurations" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>settings</mat-icon> Configuration</span>
       </mat-list-item>
 
       <mat-divider></mat-divider>

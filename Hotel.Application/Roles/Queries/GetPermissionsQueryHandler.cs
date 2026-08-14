@@ -18,6 +18,7 @@ internal class GetPermissionsQueryHandler
         new PermissionGroupDto("Guest", ["GuestCreate", "GuestEdit", "GuestDelete", "GuestView"]),
         new PermissionGroupDto("NumberCycle", ["NumberCycleCreate", "NumberCycleDelete", "NumberCycleView"]),
         new PermissionGroupDto("FiscalAccount", ["FiscalAccountEdit", "FiscalAccountView"]),
+        new PermissionGroupDto("Configuration", ["ConfigurationView", "ConfigurationEdit"]),
         new PermissionGroupDto("TransactionCode", ["TransactionCodeCreate", "TransactionCodeEdit", "TransactionCodeView"]),
         new PermissionGroupDto("TransactionGroup", ["TransactionGroupCreate", "TransactionGroupEdit", "TransactionGroupView"]),
         new PermissionGroupDto("Dashboard", ["DashboardView"]),

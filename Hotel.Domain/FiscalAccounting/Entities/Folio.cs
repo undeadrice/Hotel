@@ -35,9 +35,10 @@ public class Folio
         string description,
         int quantity,
         decimal amount,
-        Guid transactionCodeId)
+        Guid transactionCodeId,
+        DateOnly businessDate)
     {
-        var item = FolioItem.Create(Id, description, quantity, amount, transactionCodeId);
+        var item = FolioItem.Create(Id, description, quantity, amount, transactionCodeId, businessDate);
         _items.Add(item);
         return item;
     }

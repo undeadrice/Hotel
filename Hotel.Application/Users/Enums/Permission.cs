@@ -54,6 +54,10 @@
         FiscalAccountEdit,
         FiscalAccountView,
 
+        // Configuration
+        ConfigurationView,
+        ConfigurationEdit,
+
         // TransactionCode
         TransactionCodeCreate,
         TransactionCodeEdit,

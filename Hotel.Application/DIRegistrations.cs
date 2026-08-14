@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Hotel.Application.Configurations.Services;
 using Hotel.Application.Pipeline;
 using Hotel.Application.Seeding;
 using MediatR;
@@ -21,6 +22,8 @@ public static class DIRegistrations
         services.AddValidatorsFromAssembly(typeof(DIRegistrations).Assembly);
 
         services.AddScoped<ISeedingService, SeedingService>();
+
+        services.AddScoped<IBusinessDateProvider, BusinessDateProvider>();
 
         return services;
     }

@@ -43,7 +43,7 @@ export class AccountDetailComponent implements OnInit {
 
   readonly account = signal<FiscalAccountDetailResponse | null>(null);
   readonly loading = signal(true);
-  readonly folioDisplayedColumns: string[] = ['description', 'amount', 'createdAt'];
+  readonly folioDisplayedColumns: string[] = ['description', 'amount', 'businessDate', 'createdAt'];
 
   canSettleFolio(folio: FolioResponse): boolean {
     const payments = folio.items

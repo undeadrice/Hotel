@@ -57,6 +57,7 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                                         .FirstOrDefault())
                                     .Select(tg => tg.Type)
                                     .FirstOrDefault(),
+                                i.BusinessDate,
                                 i.CreatedAt))
                             .ToList()
                             .AsReadOnly()))

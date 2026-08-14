@@ -1,0 +1,47 @@
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">Configuration</h1>
+  </header>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  <mat-card class="configuration-card">
+    <mat-card-header>
+      <mat-card-title>Property setup</mat-card-title>
+      <mat-card-subtitle>Configure the hotel time zone and current business date</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Time zone</mat-label>
+          <mat-select formControlName="timeZoneId">
+            @for (tz of timeZones; track tz.value) {
+              <mat-option [value]="tz.value">{{ tz.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Current business date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="currentBusinessDate" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="form.invalid || saving()"
+        (click)="save()"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
