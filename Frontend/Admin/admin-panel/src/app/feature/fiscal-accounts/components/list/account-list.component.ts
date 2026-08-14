@@ -16,6 +16,7 @@ export class AccountListComponent {
 
   accounts = new MatTableDataSource<FiscalAccountListResponse>([]);
   displayedColumns: string[] = [
+    'cycleIdentifier',
     'ownerFullName',
     'createdAt',
     'actions',

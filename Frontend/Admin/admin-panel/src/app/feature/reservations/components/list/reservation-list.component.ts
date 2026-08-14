@@ -16,6 +16,7 @@ export class ReservationListComponent {
 
   reservations = new MatTableDataSource<ReservationListResponse>([]);
   displayedColumns: string[] = [
+    'CycleIdentifier',
     'RoomName',
     'RatePlanName',
     'CreatorName',

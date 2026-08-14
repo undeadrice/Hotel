@@ -1,5 +1,6 @@
 export interface ReservationListResponse {
   id: string;
+  cycleIdentifier: string;
   roomName: string;
   ratePlanName: string;
   creatorName: string;

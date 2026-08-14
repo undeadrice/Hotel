@@ -31,6 +31,8 @@ import { ReservationListComponent } from './feature/reservations/components/list
 import { ReservationAddComponent } from './feature/reservations/components/add/reservation-add.component';
 import { AccountListComponent } from './feature/fiscal-accounts/components/list/account-list.component';
 import { AccountDetailComponent } from './feature/fiscal-accounts/components/detail/account-detail.component';
+import { NumberCycleListComponent } from './feature/number-cycles/components/list/number-cycle-list.component';
+import { NumberCycleAddComponent } from './feature/number-cycles/components/add/number-cycle-add.component';
 
 export const routes: Routes = [
   {
@@ -146,10 +148,18 @@ export const routes: Routes = [
            path: 'fiscal-accounts',
            component: AccountListComponent,
          },
-         {
-           path: 'fiscal-accounts/:id',
-           component: AccountDetailComponent,
-         },
+          {
+            path: 'fiscal-accounts/:id',
+            component: AccountDetailComponent,
+          },
+          {
+            path: 'number-cycles',
+            component: NumberCycleListComponent,
+          },
+          {
+            path: 'number-cycles/add',
+            component: NumberCycleAddComponent,
+          },
         {
           path: '',
           redirectTo: 'dashboard',
