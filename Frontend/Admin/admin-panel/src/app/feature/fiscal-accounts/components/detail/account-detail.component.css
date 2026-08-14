@@ -31,6 +31,12 @@
   font-weight: 500;
 }
 
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .account-card {
   margin-bottom: 40px;
   padding: 24px;

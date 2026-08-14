@@ -74,16 +74,16 @@ internal sealed class UtcDateTimeConverter : JsonConverter<DateTime>
 
 internal sealed class UtcDateOnlyConverter : JsonConverter<DateOnly>
 {
-    private const string Format = "yyyy-MM-ddTHH:mm:ss.fffZ";
+    private const string Format = "yyyy-MM-dd";
 
     public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        return DateOnly.FromDateTime(DateTime.Parse(reader.GetString()!).ToUniversalTime());
+        return DateOnly.FromDateTime(DateTime.Parse(reader.GetString()!));
     }
 
     public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
     {
-        writer.WriteStringValue(value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc).ToString(Format));
+        writer.WriteStringValue(value.ToString(Format));
     }
 }
 

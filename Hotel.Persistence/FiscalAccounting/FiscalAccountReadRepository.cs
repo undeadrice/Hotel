@@ -50,6 +50,13 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                                 i.Quantity,
                                 i.Amount,
                                 i.TransactionCodeId,
+                                dbContext.TransactionGroups
+                                    .Where(tg => tg.Id == dbContext.TransactionCodes
+                                        .Where(tc => tc.Id == i.TransactionCodeId)
+                                        .Select(tc => tc.TransactionGroupId)
+                                        .FirstOrDefault())
+                                    .Select(tg => tg.Type)
+                                    .FirstOrDefault(),
                                 i.CreatedAt))
                             .ToList()
                             .AsReadOnly()))

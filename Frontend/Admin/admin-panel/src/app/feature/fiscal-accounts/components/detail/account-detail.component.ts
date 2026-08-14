@@ -15,6 +15,7 @@ import { FiscalAccountDetailResponse } from '../../models/fiscal-account-detail.
 import { FolioResponse } from '../../models/folio.response';
 import { CreateFolioDialogComponent } from '../dialogs/create-folio-dialog.component';
 import { AddFolioItemDialogComponent } from '../dialogs/add-folio-item-dialog.component';
+import { TransactionType } from '../../../transaction-groups/enums/transaction-type.enum';
 
 @Component({
   imports: [
@@ -43,6 +44,18 @@ export class AccountDetailComponent implements OnInit {
   readonly account = signal<FiscalAccountDetailResponse | null>(null);
   readonly loading = signal(true);
   readonly folioDisplayedColumns: string[] = ['description', 'amount', 'createdAt'];
+
+  canSettleFolio(folio: FolioResponse): boolean {
+    const payments = folio.items
+      .filter((item) => item.transactionGroupType === TransactionType.Payment)
+      .reduce((sum, item) => sum + item.amount, 0);
+
+    const charges = folio.items
+      .filter((item) => item.transactionGroupType === TransactionType.Charge)
+      .reduce((sum, item) => sum + item.amount, 0);
+
+    return payments === charges && charges !== 0;
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -82,6 +95,11 @@ export class AccountDetailComponent implements OnInit {
   goToReservation(): void {
     // Reservation details page is not implemented yet.
     void 0;
+  }
+
+  settleFolio(folio: FolioResponse): void {
+    // Backend functionality is not implemented yet.
+    void folio;
   }
 
   openAddFolioItemDialog(folio: FolioResponse): void {

@@ -56,14 +56,25 @@
               <h3 class="folio-title">Folio {{ $index + 1 }}</h3>
               <span class="folio-meta">Created {{ folio.createdAt | date: 'short' }}</span>
             </div>
-            <button
-              mat-stroked-button
-              color="accent"
-              (click)="openAddFolioItemDialog(folio)"
-            >
-              <mat-icon>add</mat-icon>
-              Add item
-            </button>
+            <div class="card-actions">
+              <button
+                mat-stroked-button
+                color="accent"
+                [disabled]="!canSettleFolio(folio)"
+                (click)="settleFolio(folio)"
+              >
+                <mat-icon>check_circle</mat-icon>
+                Settle
+              </button>
+              <button
+                mat-stroked-button
+                color="accent"
+                (click)="openAddFolioItemDialog(folio)"
+              >
+                <mat-icon>add</mat-icon>
+                Add item
+              </button>
+            </div>
           </div>
 
           @if (folio.items.length === 0) {
