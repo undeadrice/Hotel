@@ -52,6 +52,7 @@ public static class DIRegistrations
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IReservationReadRepository, ReservationReadRepository>();
         services.AddScoped<IFiscalAccountRepository, FiscalAccountRepository>();
+        services.AddScoped<IFolioRepository, FolioRepository>();
         services.AddScoped<INumberCycleRepository, NumberCycleRepository>();
 
         services.AddScoped<ITransactionGroupRepository, TransactionGroupRepository>();

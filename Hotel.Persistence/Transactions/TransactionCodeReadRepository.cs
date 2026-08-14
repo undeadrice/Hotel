@@ -39,6 +39,16 @@ public class TransactionCodeReadRepository(PersistenceDbContext dbContext) : ITr
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<TransactionCodeSimpleListDto>> GetActiveSimpleList(CancellationToken cancellationToken)
+    {
+        return await dbContext.TransactionCodes
+            .AsNoTracking()
+            .Where(tc => tc.IsActive)
+            .OrderBy(tc => tc.Name)
+            .Select(tc => new TransactionCodeSimpleListDto(tc.Id, tc.Name))
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<TransactionCodeDto> GetById(Guid id, CancellationToken cancellationToken)
     {
         var transactionCode = await dbContext.TransactionCodes

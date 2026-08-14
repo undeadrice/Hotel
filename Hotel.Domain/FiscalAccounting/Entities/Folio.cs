@@ -30,4 +30,15 @@ public class Folio
             fiscalAccountId,
             DateTime.UtcNow);
     }
+
+    public FolioItem AddItem(
+        string description,
+        int quantity,
+        decimal amount,
+        Guid transactionCodeId)
+    {
+        var item = FolioItem.Create(Id, description, quantity, amount, transactionCodeId);
+        _items.Add(item);
+        return item;
+    }
 }

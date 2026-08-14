@@ -10,4 +10,6 @@ public interface ITransactionCodeReadRepository
         CancellationToken cancellationToken);
 
     Task<TransactionCodeDto> GetById(Guid id, CancellationToken cancellationToken);
+
+    Task<IReadOnlyCollection<TransactionCodeSimpleListDto>> GetActiveSimpleList(CancellationToken cancellationToken);
 }

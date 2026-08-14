@@ -18,6 +18,13 @@ public class TransactionCodesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("simple-list")]
+    public async Task<IActionResult> GetTransactionCodesSimpleList()
+    {
+        var result = await mediator.Send(new GetTransactionCodesSimpleListQuery());
+        return Ok(result);
+    }
+
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetTransactionCodeById(Guid id)
     {

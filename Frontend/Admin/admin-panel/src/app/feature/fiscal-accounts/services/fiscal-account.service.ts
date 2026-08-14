@@ -19,13 +19,10 @@ export class FiscalAccountService extends BaseHttpService {
   }
 
   createFolio(request: CreateFolioRequest): Observable<string> {
-    return this.post<string>(`FiscalAccounts/${request.fiscalAccountId}/open-folio`, request);
+    return this.post<string>('Folios', request);
   }
 
   createFolioItem(request: CreateFolioItemRequest): Observable<string> {
-    return this.post<string>(
-      `FiscalAccounts/${request.folioId}/items`,
-      request
-    );
+    return this.post<string>('FolioItems', request);
   }
 }
