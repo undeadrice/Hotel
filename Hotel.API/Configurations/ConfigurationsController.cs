@@ -16,6 +16,13 @@ public class ConfigurationsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("time-zones")]
+    public async Task<IActionResult> GetServerTimeZones()
+    {
+        var result = await mediator.Send(new GetServerTimeZonesQuery());
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> UpsertConfiguration(UpsertConfigurationCommand command)
     {

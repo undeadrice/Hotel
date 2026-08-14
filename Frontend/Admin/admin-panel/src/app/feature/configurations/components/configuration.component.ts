@@ -12,20 +12,6 @@ interface TimeZoneOption {
   label: string;
 }
 
-const TIME_ZONES: TimeZoneOption[] = [
-  { value: 'Poland Standard Time', label: 'Poland (Warsaw)' },
-  { value: 'UTC', label: 'UTC' },
-  { value: 'GMT Standard Time', label: 'London (GMT)' },
-  { value: 'Central Europe Standard Time', label: 'Central Europe (Budapest, Prague)' },
-  { value: 'Romance Standard Time', label: 'Paris, Madrid, Rome' },
-  { value: 'Eastern Standard Time', label: 'New York (EST)' },
-  { value: 'Central Standard Time', label: 'Chicago (CST)' },
-  { value: 'Pacific Standard Time', label: 'Los Angeles (PST)' },
-  { value: 'China Standard Time', label: 'Beijing (CST)' },
-  { value: 'India Standard Time', label: 'Mumbai (IST)' },
-  { value: 'Tokyo Standard Time', label: 'Tokyo (JST)' },
-];
-
 @Component({
   imports: [
     ...SHARED_IMPORTS,
@@ -44,29 +30,16 @@ export class ConfigurationComponent implements OnInit {
   readonly loading = signal(true);
   readonly saving = signal(false);
 
-  readonly timeZones = TIME_ZONES;
+  readonly timeZones = signal<TimeZoneOption[]>([]);
 
   readonly form: FormGroup = this.fb.group({
-    timeZoneId: ['Poland Standard Time', [Validators.required]],
+    timeZoneId: ['', [Validators.required]],
     currentBusinessDate: [this.today(), [Validators.required]],
   });
 
   ngOnInit(): void {
-    this.configurationService.getConfiguration().subscribe({
-      next: (configuration) => {
-        if (configuration) {
-          this.form.patchValue({
-            timeZoneId: configuration.timeZoneId,
-            currentBusinessDate: configuration.currentBusinessDate,
-          });
-        }
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load configuration', 'Close', { duration: 5000 });
-        this.loading.set(false);
-      },
-    });
+    this.loadTimeZones();
+    this.loadConfiguration();
   }
 
   save(): void {
@@ -94,6 +67,40 @@ export class ConfigurationComponent implements OnInit {
           this.snackBar.open('Failed to save configuration', 'Close', { duration: 5000 });
         },
       });
+  }
+
+  private loadTimeZones(): void {
+    this.configurationService.getServerTimeZones().subscribe({
+      next: (timeZones) => {
+        this.timeZones.set(
+          timeZones.map((tz) => ({
+            value: tz.id,
+            label: tz.displayName,
+          }))
+        );
+      },
+      error: () => {
+        this.snackBar.open('Failed to load time zones', 'Close', { duration: 5000 });
+      },
+    });
+  }
+
+  private loadConfiguration(): void {
+    this.configurationService.getConfiguration().subscribe({
+      next: (configuration) => {
+        if (configuration) {
+          this.form.patchValue({
+            timeZoneId: configuration.timeZoneId,
+            currentBusinessDate: configuration.currentBusinessDate,
+          });
+        }
+        this.loading.set(false);
+      },
+      error: () => {
+        this.snackBar.open('Failed to load configuration', 'Close', { duration: 5000 });
+        this.loading.set(false);
+      },
+    });
   }
 
   private today(): Date {

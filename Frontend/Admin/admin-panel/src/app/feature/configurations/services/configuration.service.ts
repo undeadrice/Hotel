@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseHttpService } from '../../../core/http/base-http.service';
 import { ConfigurationResponse } from '../models/responses/configuration.response';
+import { TimeZoneResponse } from '../models/responses/time-zone.response';
 import { UpsertConfigurationRequest } from '../models/requests/upsert-configuration.request';
 
 @Injectable({
@@ -10,6 +11,10 @@ import { UpsertConfigurationRequest } from '../models/requests/upsert-configurat
 export class ConfigurationService extends BaseHttpService {
   getConfiguration(): Observable<ConfigurationResponse | null> {
     return this.get<ConfigurationResponse | null>('Configurations');
+  }
+
+  getServerTimeZones(): Observable<TimeZoneResponse[]> {
+    return this.get<TimeZoneResponse[]>('Configurations/time-zones');
   }
 
   upsertConfiguration(request: UpsertConfigurationRequest): Observable<string> {

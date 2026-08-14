@@ -18,7 +18,7 @@
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Time zone</mat-label>
           <mat-select formControlName="timeZoneId">
-            @for (tz of timeZones; track tz.value) {
+            @for (tz of timeZones(); track tz.value) {
               <mat-option [value]="tz.value">{{ tz.label }}</mat-option>
             }
           </mat-select>
