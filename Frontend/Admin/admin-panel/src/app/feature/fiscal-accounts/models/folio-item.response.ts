@@ -1,4 +1,4 @@
-import { TransactionType } from '../../transaction-groups/enums/transaction-type.enum';
+import { FolioItemType } from '../enums/folio-item-type.enum';
 
 export interface FolioItemResponse {
   id: string;
@@ -7,7 +7,7 @@ export interface FolioItemResponse {
   amount: number;
   totalAmount: number;
   transactionCodeId: string;
-  transactionGroupType: TransactionType;
+  transactionGroupType: FolioItemType;
   businessDate: string;
   createdAt: string;
 }

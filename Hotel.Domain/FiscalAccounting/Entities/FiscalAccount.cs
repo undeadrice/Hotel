@@ -1,5 +1,5 @@
+using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.Domain.FiscalAccounting.Exceptions;
-using Hotel.Domain.Transactions.Enums;
 
 namespace Hotel.Domain.FiscalAccounting.Entities;
 
@@ -62,7 +62,7 @@ public class FiscalAccount
         int quantity,
         decimal amount,
         Guid transactionCodeId,
-        TransactionType transactionType,
+        FolioItemType transactionType,
         DateOnly businessDate)
     {
         var folio = GetFolio(folioId);

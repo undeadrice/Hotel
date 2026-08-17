@@ -15,7 +15,7 @@ import { FiscalAccountDetailResponse } from '../../models/fiscal-account-detail.
 import { FolioResponse } from '../../models/folio.response';
 import { CreateFolioDialogComponent } from '../dialogs/create-folio-dialog.component';
 import { AddFolioItemDialogComponent } from '../dialogs/add-folio-item-dialog.component';
-import { TransactionType } from '../../../transaction-groups/enums/transaction-type.enum';
+import { FolioItemType } from '../../enums/folio-item-type.enum';
 
 @Component({
   imports: [
@@ -47,11 +47,11 @@ export class AccountDetailComponent implements OnInit {
 
   canSettleFolio(folio: FolioResponse): boolean {
     const payments = folio.items
-      .filter((item) => item.transactionGroupType === TransactionType.Payment)
+      .filter((item) => item.transactionGroupType === FolioItemType.Payment)
       .reduce((sum, item) => sum + item.amount, 0);
 
     const charges = folio.items
-      .filter((item) => item.transactionGroupType === TransactionType.Charge)
+      .filter((item) => item.transactionGroupType === FolioItemType.Charge)
       .reduce((sum, item) => sum + item.amount, 0);
 
     return payments === charges && charges !== 0;

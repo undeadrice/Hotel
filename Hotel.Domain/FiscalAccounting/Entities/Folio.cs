@@ -1,6 +1,5 @@
 using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.Domain.FiscalAccounting.Exceptions;
-using Hotel.Domain.Transactions.Enums;
 
 namespace Hotel.Domain.FiscalAccounting.Entities;
 
@@ -42,7 +41,7 @@ public class Folio
         int quantity,
         decimal amount,
         Guid transactionCodeId,
-        TransactionType transactionType,
+        FolioItemType transactionType,
         DateOnly businessDate)
     {
         var item = FolioItem.Create(
@@ -69,7 +68,7 @@ public class Folio
 
         foreach (var item in _items)
         {
-            total += item.TransactionType == TransactionType.Charge
+            total += item.TransactionType == FolioItemType.Charge
                 ? item.Amount * item.Quantity
                 : -item.Amount * item.Quantity;
         }

@@ -1,5 +1,7 @@
 using Hotel.Application.Configurations.Services;
+using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.Domain.FiscalAccounting.Services;
+using Hotel.Domain.Transactions.Enums;
 using Hotel.Domain.Transactions.Services;
 using MediatR;
 
@@ -21,13 +23,17 @@ public class CreateFolioItemCommandHandler(
 
         var businessDate = await businessDateProvider.GetCurrentBusinessDate(cancellationToken);
 
+        var itemType = transactionGroup.Type == TransactionType.Charge
+            ? FolioItemType.Charge
+            : FolioItemType.Payment;
+
         var item = account.AddFolioItem(
             request.FolioId,
             request.Description,
             request.Quantity,
             request.Amount,
             request.TransactionCodeId,
-            transactionGroup.Type,
+            itemType,
             businessDate);
 
         return item.Id;

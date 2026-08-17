@@ -1,5 +1,4 @@
 using Hotel.Domain.FiscalAccounting.Enums;
-using Hotel.Domain.Transactions.Enums;
 
 namespace Hotel.Application.FiscalAccounting.TransferObjects;
 
@@ -24,6 +23,6 @@ public record FolioItemDto(
     decimal Amount,
     decimal TotalAmount,
     Guid TransactionCodeId,
-    TransactionType TransactionGroupType,
+    FolioItemType TransactionGroupType,
     DateOnly BusinessDate,
     DateTime CreatedAt);

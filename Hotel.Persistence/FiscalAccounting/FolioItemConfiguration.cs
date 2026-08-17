@@ -1,5 +1,4 @@
 using Hotel.Domain.FiscalAccounting.Entities;
-using Hotel.Domain.Transactions.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
