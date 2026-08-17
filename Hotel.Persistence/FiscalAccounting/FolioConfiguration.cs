@@ -1,4 +1,5 @@
 using Hotel.Domain.FiscalAccounting.Entities;
+using Hotel.Domain.FiscalAccounting.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,6 +21,11 @@ public class FolioConfiguration : IEntityTypeConfiguration<Folio>
 
         builder.Property(f => f.CreatedAt)
             .IsRequired();
+
+        builder.Property(f => f.Status)
+            .IsRequired()
+            .HasConversion<int>()
+            .HasDefaultValue(FolioStatus.Open);
 
         builder.HasMany(f => f.Items)
             .WithOne()

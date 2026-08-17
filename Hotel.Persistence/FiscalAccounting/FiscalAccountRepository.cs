@@ -12,9 +12,10 @@ public class FiscalAccountRepository(PersistenceDbContext persistenceDbContext) 
         await persistenceDbContext.FiscalAccounts.AddAsync(account, token);
     }
 
-    public async Task Update(FiscalAccount account, CancellationToken token)
+    public Task Update(FiscalAccount account, CancellationToken token)
     {
         persistenceDbContext.FiscalAccounts.Update(account);
+        return Task.CompletedTask;
     }
 
     public async Task<FiscalAccount?> FindById(Guid id, CancellationToken token)
@@ -35,5 +36,35 @@ public class FiscalAccountRepository(PersistenceDbContext persistenceDbContext) 
         }
 
         return result;
+    }
+
+    public async Task<FiscalAccount> GetByFolioId(Guid folioId, CancellationToken token)
+    {
+        var account = await persistenceDbContext.FiscalAccounts
+            .Include(a => a.Folios)
+            .ThenInclude(f => f.Items)
+            .FirstOrDefaultAsync(a => a.Folios.Any(f => f.Id == folioId), cancellationToken: token);
+
+        if (account is null)
+        {
+            throw new NotFoundException($"FiscalAccount containing folio {folioId} doesn't exist");
+        }
+
+        return account;
+    }
+
+    public async Task<FiscalAccount> GetForSettlement(Guid accountId, Guid folioId, CancellationToken token)
+    {
+        var account = await persistenceDbContext.FiscalAccounts
+            .Include(a => a.Folios.Where(f => f.Id == folioId))
+            .ThenInclude(f => f.Items)
+            .FirstOrDefaultAsync(a => a.Id == accountId, cancellationToken: token);
+
+        if (account is null)
+        {
+            throw new NotFoundException($"FiscalAccount with id {accountId} doesn't exist");
+        }
+
+        return account;
     }
 }

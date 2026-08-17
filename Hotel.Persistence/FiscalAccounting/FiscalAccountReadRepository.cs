@@ -43,6 +43,7 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                     .Select(f => new FolioDto(
                         f.Id,
                         f.CreatedAt,
+                        f.Status,
                         f.Items
                             .Select(i => new FolioItemDto(
                                 i.Id,
@@ -51,13 +52,7 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                                 i.Amount,
                                 i.Quantity * i.Amount,
                                 i.TransactionCodeId,
-                                dbContext.TransactionGroups
-                                    .Where(tg => tg.Id == dbContext.TransactionCodes
-                                        .Where(tc => tc.Id == i.TransactionCodeId)
-                                        .Select(tc => tc.TransactionGroupId)
-                                        .FirstOrDefault())
-                                    .Select(tg => tg.Type)
-                                    .FirstOrDefault(),
+                                i.TransactionType,
                                 i.BusinessDate,
                                 i.CreatedAt))
                             .ToList()

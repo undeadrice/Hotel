@@ -11,4 +11,8 @@ public interface IFiscalAccountRepository
     Task<FiscalAccount?> FindById(Guid id, CancellationToken token = default);
 
     Task<FiscalAccount> GetById(Guid id, CancellationToken token = default);
+
+    Task<FiscalAccount> GetByFolioId(Guid folioId, CancellationToken token = default);
+
+    Task<FiscalAccount> GetForSettlement(Guid accountId, Guid folioId, CancellationToken token = default);
 }

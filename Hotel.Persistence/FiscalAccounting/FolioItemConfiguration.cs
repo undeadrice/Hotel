@@ -1,4 +1,5 @@
 using Hotel.Domain.FiscalAccounting.Entities;
+using Hotel.Domain.Transactions.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,6 +32,10 @@ public class FolioItemConfiguration : IEntityTypeConfiguration<FolioItem>
 
         builder.Property(fi => fi.TransactionCodeId)
             .IsRequired();
+
+        builder.Property(fi => fi.TransactionType)
+            .IsRequired()
+            .HasConversion<int>();
 
         builder.Property(fi => fi.BusinessDate)
             .IsRequired();

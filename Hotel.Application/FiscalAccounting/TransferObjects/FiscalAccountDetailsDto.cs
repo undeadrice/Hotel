@@ -1,3 +1,4 @@
+using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.Domain.Transactions.Enums;
 
 namespace Hotel.Application.FiscalAccounting.TransferObjects;
@@ -13,6 +14,7 @@ public record FiscalAccountDetailsDto(
 public record FolioDto(
     Guid Id,
     DateTime CreatedAt,
+    FolioStatus Status,
     IReadOnlyCollection<FolioItemDto> Items);
 
 public record FolioItemDto(

@@ -1,4 +1,5 @@
 using Hotel.Domain.FiscalAccounting.Exceptions;
+using Hotel.Domain.Transactions.Enums;
 
 namespace Hotel.Domain.FiscalAccounting.Entities;
 
@@ -10,6 +11,7 @@ public class FolioItem
     public int Quantity { get; private set; }
     public decimal Amount { get; private set; }
     public Guid TransactionCodeId { get; private set; }
+    public TransactionType TransactionType { get; private set; }
     public DateOnly BusinessDate { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
@@ -24,6 +26,7 @@ public class FolioItem
         int quantity,
         decimal amount,
         Guid transactionCodeId,
+        TransactionType transactionType,
         DateOnly businessDate,
         DateTime createdAt)
     {
@@ -33,6 +36,7 @@ public class FolioItem
         Quantity = quantity;
         Amount = amount;
         TransactionCodeId = transactionCodeId;
+        TransactionType = transactionType;
         BusinessDate = businessDate;
         CreatedAt = createdAt;
     }
@@ -43,6 +47,7 @@ public class FolioItem
         int quantity,
         decimal amount,
         Guid transactionCodeId,
+        TransactionType transactionType,
         DateOnly businessDate)
     {
         if (string.IsNullOrWhiteSpace(description))
@@ -67,6 +72,7 @@ public class FolioItem
             quantity,
             amount,
             transactionCodeId,
+            transactionType,
             businessDate,
             DateTime.UtcNow);
     }

@@ -1,3 +1,6 @@
+using Hotel.Domain.FiscalAccounting.Exceptions;
+using Hotel.Domain.Transactions.Enums;
+
 namespace Hotel.Domain.FiscalAccounting.Entities;
 
 public class FiscalAccount
@@ -53,10 +56,47 @@ public class FiscalAccount
         return AddFolio();
     }
 
+    public FolioItem AddFolioItem(
+        Guid folioId,
+        string description,
+        int quantity,
+        decimal amount,
+        Guid transactionCodeId,
+        TransactionType transactionType,
+        DateOnly businessDate)
+    {
+        var folio = GetFolio(folioId);
+
+        return folio.AddItem(
+            description,
+            quantity,
+            amount,
+            transactionCodeId,
+            transactionType,
+            businessDate);
+    }
+
+    public void SettleFolio(Guid folioId)
+    {
+        GetFolio(folioId).Settle();
+    }
+
     private Folio AddFolio()
     {
         var folio = Folio.Create(Id);
         _folios.Add(folio);
+        return folio;
+    }
+
+    private Folio GetFolio(Guid folioId)
+    {
+        var folio = _folios.FirstOrDefault(f => f.Id == folioId);
+
+        if (folio is null)
+        {
+            throw new FolioNotFoundException(folioId);
+        }
+
         return folio;
     }
 }

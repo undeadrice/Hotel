@@ -14,4 +14,11 @@ public class FoliosController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return Ok(result);
     }
+
+    [HttpPost("settle")]
+    public async Task<IActionResult> SettleFolio(SettleFolioCommand command)
+    {
+        await mediator.Send(command);
+        return NoContent();
+    }
 }
