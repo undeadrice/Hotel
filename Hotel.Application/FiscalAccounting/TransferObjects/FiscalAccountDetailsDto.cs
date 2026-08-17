@@ -20,6 +20,7 @@ public record FolioItemDto(
     string Description,
     int Quantity,
     decimal Amount,
+    decimal TotalAmount,
     Guid TransactionCodeId,
     TransactionType TransactionGroupType,
     DateOnly BusinessDate,

@@ -5,6 +5,7 @@ export interface FolioItemResponse {
   description: string;
   quantity: number;
   amount: number;
+  totalAmount: number;
   transactionCodeId: string;
   transactionGroupType: TransactionType;
   businessDate: string;

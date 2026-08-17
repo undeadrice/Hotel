@@ -49,6 +49,7 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                                 i.Description,
                                 i.Quantity,
                                 i.Amount,
+                                i.Quantity * i.Amount,
                                 i.TransactionCodeId,
                                 dbContext.TransactionGroups
                                     .Where(tg => tg.Id == dbContext.TransactionCodes
