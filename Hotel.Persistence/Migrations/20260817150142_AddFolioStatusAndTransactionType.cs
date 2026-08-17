@@ -23,6 +23,15 @@ namespace Hotel.Persistence.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.Sql(
+                """
+                UPDATE fi
+                SET fi.TransactionType = tg.Type
+                FROM FolioItems fi
+                INNER JOIN TransactionCodes tc ON tc.Id = fi.TransactionCodeId
+                INNER JOIN TransactionGroups tg ON tg.Id = tc.TransactionGroupId
+                """);
         }
 
         /// <inheritdoc />
