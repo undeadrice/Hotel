@@ -1,3 +1,4 @@
+using Hotel.Application.FiscalAccounting.Commands;
 using Hotel.Application.FiscalAccounting.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,5 +21,12 @@ public class FiscalAccountsController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(new GetFiscalAccountByIdQuery(id));
         return Ok(result);
+    }
+
+    [HttpPost("{id:guid}/check-out")]
+    public async Task<IActionResult> CheckOut(Guid id)
+    {
+        await mediator.Send(new CheckOutFiscalAccountCommand(id));
+        return NoContent();
     }
 }

@@ -67,4 +67,18 @@ public class FiscalAccountRepository(PersistenceDbContext persistenceDbContext) 
 
         return account;
     }
+
+    public async Task<FiscalAccount> GetForCheckOut(Guid accountId, CancellationToken token)
+    {
+        var account = await persistenceDbContext.FiscalAccounts
+            .Include(a => a.Folios)
+            .FirstOrDefaultAsync(a => a.Id == accountId, cancellationToken: token);
+
+        if (account is null)
+        {
+            throw new NotFoundException($"FiscalAccount with id {accountId} doesn't exist");
+        }
+
+        return account;
+    }
 }

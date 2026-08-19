@@ -83,6 +83,21 @@ public class FiscalAccount
         GetFolio(folioId).Settle();
     }
 
+    public void CheckOut()
+    {
+        if (Status == FiscalAccountStatus.CheckedOut)
+        {
+            throw new FiscalAccountAlreadyCheckedOutException();
+        }
+
+        if (_folios.Any(f => f.Status != FolioStatus.Settled))
+        {
+            throw new FiscalAccountNotSettledException();
+        }
+
+        Status = FiscalAccountStatus.CheckedOut;
+    }
+
     private Folio AddFolio()
     {
         var folio = Folio.Create(Id);
