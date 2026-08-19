@@ -1,4 +1,5 @@
 using Hotel.Domain.Reservations.Entities;
+using Hotel.Domain.Reservations.Enums;
 using Hotel.Domain.Reservations.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -42,5 +43,13 @@ public class ReservationRepository(PersistenceDbContext persistenceDbContext) : 
             .AnyAsync(r => r.RoomId == roomId
                          && r.StartDate < endDate
                          && r.EndDate > startDate, cancellationToken: token);
+    }
+
+    public async Task<IReadOnlyCollection<Reservation>> GetForEndOfDay(DateOnly businessDate, CancellationToken token)
+    {
+        return await persistenceDbContext.Reservations
+            .Where(r => r.Status == ReservationStatus.Reserved && r.StartDate == businessDate
+                     || r.Status == ReservationStatus.DueIn)
+            .ToListAsync(cancellationToken: token);
     }
 }

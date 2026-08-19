@@ -29,4 +29,11 @@ public class ReservationsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(command);
         return Ok(result);
     }
+
+    [HttpPost("{id:guid}/check-in")]
+    public async Task<IActionResult> CheckIn(Guid id)
+    {
+        await mediator.Send(new CheckInReservationCommand(id));
+        return NoContent();
+    }
 }

@@ -1,4 +1,5 @@
 using Hotel.Domain.Reservations.Entities;
+using Hotel.Domain.Reservations.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -34,6 +35,11 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
 
         builder.Property(r => r.CreatedAt)
             .IsRequired();
+
+        builder.Property(r => r.Status)
+            .IsRequired()
+            .HasConversion<int>()
+            .HasDefaultValue(ReservationStatus.Reserved);
 
         builder.HasMany(r => r.Guests)
             .WithOne()

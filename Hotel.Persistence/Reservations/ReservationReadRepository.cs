@@ -32,6 +32,7 @@ public class ReservationReadRepository(PersistenceDbContext dbContext) : IReserv
                 r.EndDate,
                 r.ArrivalTime,
                 r.CreatedAt,
+                r.Status,
                 r.Guests.Count))
             .ToListAsync(cancellationToken);
     }
@@ -52,6 +53,7 @@ public class ReservationReadRepository(PersistenceDbContext dbContext) : IReserv
                 r.EndDate,
                 r.ArrivalTime,
                 r.CreatedAt,
+                r.Status,
                 r.Guests.Select(g => g.GuestId).ToList()))
             .FirstOrDefaultAsync(cancellationToken);
 

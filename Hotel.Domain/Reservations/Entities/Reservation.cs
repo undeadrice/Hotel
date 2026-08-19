@@ -1,3 +1,4 @@
+using Hotel.Domain.Reservations.Enums;
 using Hotel.Domain.Reservations.Exceptions;
 using Hotel.Domain.Reservations.Services;
 
@@ -14,6 +15,7 @@ public class Reservation
     public DateOnly EndDate { get; private set; }
     public DateTime? ArrivalTime { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public ReservationStatus Status { get; private set; }
 
     private readonly List<ReservationGuest> _guests = new();
     public IReadOnlyCollection<ReservationGuest> Guests => _guests.AsReadOnly();
@@ -42,6 +44,7 @@ public class Reservation
         EndDate = endDate;
         ArrivalTime = arrivalTime;
         CreatedAt = createdAt;
+        Status = ReservationStatus.Reserved;
     }
 
     public static async Task<Reservation> Create(
@@ -95,6 +98,30 @@ public class Reservation
         }
 
         return reservation;
+    }
+
+    public void CheckIn()
+    {
+        if (Status != ReservationStatus.DueIn)
+        {
+            throw new ReservationNotDueInException();
+        }
+
+        Status = ReservationStatus.InHouse;
+    }
+
+    public void TransitionOnEndOfDay(DateOnly businessDate)
+    {
+        if (Status == ReservationStatus.Reserved && StartDate == businessDate)
+        {
+            Status = ReservationStatus.DueIn;
+            return;
+        }
+
+        if (Status == ReservationStatus.DueIn)
+        {
+            Status = ReservationStatus.NoShow;
+        }
     }
 
     private void AddGuest(Guid guestId)

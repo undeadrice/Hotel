@@ -1,9 +1,12 @@
 using Hotel.Domain.Configurations.Services;
+using Hotel.Domain.Reservations.Services;
 using MediatR;
 
 namespace Hotel.Application.Configurations.Commands;
 
-public class PerformEndOfDayCommandHandler(IConfigurationRepository configurationRepository)
+public class PerformEndOfDayCommandHandler(
+    IConfigurationRepository configurationRepository,
+    IReservationRepository reservationRepository)
     : IRequestHandler<PerformEndOfDayCommand, DateOnly>
 {
     public async Task<DateOnly> Handle(PerformEndOfDayCommand request, CancellationToken cancellationToken)
@@ -12,6 +15,15 @@ public class PerformEndOfDayCommandHandler(IConfigurationRepository configuratio
 
         configuration.EndOfDay();
 
-        return configuration.CurrentBusinessDate;
+        var businessDate = configuration.CurrentBusinessDate;
+
+        var reservations = await reservationRepository.GetForEndOfDay(businessDate, cancellationToken);
+
+        foreach (var reservation in reservations)
+        {
+            reservation.TransitionOnEndOfDay(businessDate);
+        }
+
+        return businessDate;
     }
 }

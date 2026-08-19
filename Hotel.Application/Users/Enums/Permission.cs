@@ -19,6 +19,7 @@
 
         // Reservation
         ReservationCreate,
+        ReservationEdit,
         ReservationView,
 
         // Room

@@ -1,3 +1,5 @@
+using Hotel.Domain.Reservations.Enums;
+
 namespace Hotel.Application.Reservations.TransferObjects;
 
 public record ReservationDto(
@@ -10,4 +12,5 @@ public record ReservationDto(
     DateOnly EndDate,
     DateTime? ArrivalTime,
     DateTime CreatedAt,
+    ReservationStatus Status,
     List<Guid> GuestIds);
