@@ -55,6 +55,11 @@ public class FiscalAccount
 
     public Folio OpenFolio()
     {
+        if (Status == FiscalAccountStatus.CheckedOut)
+        {
+            throw new FiscalAccountAlreadyCheckedOutException();
+        }
+
         return AddFolio();
     }
 

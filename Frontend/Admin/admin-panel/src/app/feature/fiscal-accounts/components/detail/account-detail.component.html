@@ -15,10 +15,21 @@
     <mat-card class="account-card">
       <div class="card-header">
         <h2 class="card-title">Account Info</h2>
-        <button mat-raised-button color="primary" (click)="openCreateFolioDialog()">
-          <mat-icon>add</mat-icon>
-          Create Folio
-        </button>
+        <div class="card-actions">
+          <button mat-raised-button color="primary" (click)="openCreateFolioDialog()">
+            <mat-icon>add</mat-icon>
+            Create Folio
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            [disabled]="!canCheckOut()"
+            (click)="checkOutAccount()"
+          >
+            <mat-icon>logout</mat-icon>
+            Check Out
+          </button>
+        </div>
       </div>
 
       <div class="detail-grid">

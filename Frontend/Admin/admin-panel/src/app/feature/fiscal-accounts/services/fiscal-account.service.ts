@@ -30,4 +30,8 @@ export class FiscalAccountService extends BaseHttpService {
   settleFolio(request: SettleFolioRequest): Observable<void> {
     return this.post<void>('Folios/settle', request);
   }
+
+  checkOut(id: string): Observable<void> {
+    return this.post<void>(`FiscalAccounts/${id}/check-out`, {});
+  }
 }

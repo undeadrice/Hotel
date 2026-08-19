@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -48,6 +48,19 @@ export class AccountDetailComponent implements OnInit {
   readonly FolioStatus = FolioStatus;
   readonly FiscalAccountStatus = FiscalAccountStatus;
   readonly folioDisplayedColumns: string[] = ['description', 'type', 'amount', 'totalAmount', 'businessDate', 'createdAt'];
+
+  readonly canCheckOut = computed(() => {
+    const acc = this.account();
+    if (!acc) {
+      return false;
+    }
+
+    if (acc.status !== FiscalAccountStatus.Open) {
+      return false;
+    }
+
+    return acc.folios.length > 0 && acc.folios.every((folio) => folio.status === FolioStatus.Settled);
+  });
 
   fiscalAccountStatusLabel(status: FiscalAccountStatus): string {
     switch (status) {
@@ -116,6 +129,21 @@ export class AccountDetailComponent implements OnInit {
       error: () => {
         this.snackBar.open('Failed to load account details', 'Close', { duration: 5000 });
         this.loading.set(false);
+      },
+    });
+  }
+
+  checkOutAccount(): void {
+    const currentAccount = this.account();
+    if (!currentAccount) return;
+
+    this.accountService.checkOut(currentAccount.id).subscribe({
+      next: () => {
+        this.snackBar.open('Account checked out', 'Close', { duration: 3000 });
+        this.refreshAccount();
+      },
+      error: () => {
+        this.snackBar.open('Failed to check out account', 'Close', { duration: 5000 });
       },
     });
   }
