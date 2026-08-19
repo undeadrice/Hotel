@@ -10,6 +10,7 @@ public class FiscalAccount
     public Guid OwnerId { get; private set; }
     public string CycleIdentifier { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public FiscalAccountStatus Status { get; private set; }
 
     private readonly List<Folio> _folios = new();
     public IReadOnlyCollection<Folio> Folios => _folios.AsReadOnly();
@@ -30,6 +31,7 @@ public class FiscalAccount
         OwnerId = ownerId;
         CycleIdentifier = cycleIdentifier;
         CreatedAt = createdAt;
+        Status = FiscalAccountStatus.Open;
     }
 
     public static FiscalAccount Create(Guid originatorId, Guid ownerId, string cycleIdentifier)

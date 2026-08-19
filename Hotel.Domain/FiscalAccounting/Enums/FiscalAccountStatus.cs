@@ -1,0 +1,8 @@
+namespace Hotel.Domain.FiscalAccounting.Enums;
+
+public enum FiscalAccountStatus
+{
+    Invalid = 0,
+    Open = 1,
+    CheckedOut = 2
+}

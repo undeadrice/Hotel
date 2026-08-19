@@ -5,6 +5,7 @@ import { FiscalAccountListResponse } from '../models/fiscal-account-list.respons
 import { FiscalAccountDetailResponse } from '../models/fiscal-account-detail.response';
 import { CreateFolioRequest } from '../models/requests/create-folio.request';
 import { CreateFolioItemRequest } from '../models/requests/create-folio-item.request';
+import { SettleFolioRequest } from '../models/requests/settle-folio.request';
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +25,9 @@ export class FiscalAccountService extends BaseHttpService {
 
   createFolioItem(request: CreateFolioItemRequest): Observable<string> {
     return this.post<string>('FolioItems', request);
+  }
+
+  settleFolio(request: SettleFolioRequest): Observable<void> {
+    return this.post<void>('Folios/settle', request);
   }
 }

@@ -1,4 +1,5 @@
 using Hotel.Domain.FiscalAccounting.Entities;
+using Hotel.Domain.FiscalAccounting.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,6 +26,11 @@ public class FiscalAccountConfiguration : IEntityTypeConfiguration<FiscalAccount
 
         builder.Property(a => a.CreatedAt)
             .IsRequired();
+
+        builder.Property(a => a.Status)
+            .IsRequired()
+            .HasConversion<int>()
+            .HasDefaultValue(FiscalAccountStatus.Open);
 
         builder.HasMany(a => a.Folios)
             .WithOne()

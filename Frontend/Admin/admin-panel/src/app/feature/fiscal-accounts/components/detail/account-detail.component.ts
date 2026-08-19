@@ -69,13 +69,21 @@ export class AccountDetailComponent implements OnInit {
   }
 
   canSettleFolio(folio: FolioResponse): boolean {
+    if (folio.status === FolioStatus.Settled) {
+      return false;
+    }
+
+    if (folio.items.length === 0) {
+      return true;
+    }
+
     const payments = folio.items
       .filter((item) => item.transactionGroupType === FolioItemType.Payment)
-      .reduce((sum, item) => sum + item.amount, 0);
+      .reduce((sum, item) => sum + item.totalAmount, 0);
 
     const charges = folio.items
       .filter((item) => item.transactionGroupType === FolioItemType.Charge)
-      .reduce((sum, item) => sum + item.amount, 0);
+      .reduce((sum, item) => sum + item.totalAmount, 0);
 
     return payments === charges && charges !== 0;
   }
@@ -121,8 +129,20 @@ export class AccountDetailComponent implements OnInit {
   }
 
   settleFolio(folio: FolioResponse): void {
-    // Backend functionality is not implemented yet.
-    void folio;
+    const currentAccount = this.account();
+    if (!currentAccount) return;
+
+    this.accountService
+      .settleFolio({ accountId: currentAccount.id, folioId: folio.id })
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Folio settled', 'Close', { duration: 3000 });
+          this.refreshAccount();
+        },
+        error: () => {
+          this.snackBar.open('Failed to settle folio', 'Close', { duration: 5000 });
+        },
+      });
   }
 
   openAddFolioItemDialog(folio: FolioResponse): void {

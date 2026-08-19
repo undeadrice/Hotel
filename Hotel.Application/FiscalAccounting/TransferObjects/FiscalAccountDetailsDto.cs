@@ -8,6 +8,7 @@ public record FiscalAccountDetailsDto(
     string CycleIdentifier,
     string OwnerFullName,
     DateTime CreatedAt,
+    FiscalAccountStatus Status,
     IReadOnlyCollection<FolioDto> Folios);
 
 public record FolioDto(

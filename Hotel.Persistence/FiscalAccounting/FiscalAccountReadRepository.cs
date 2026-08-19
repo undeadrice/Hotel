@@ -19,7 +19,8 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                 dbContext.Guests
                     .Where(g => g.Id == a.OwnerId)
                     .Select(g => g.FirstName + " " + g.LastName)
-                    .FirstOrDefault() ?? "Unknown"))
+                    .FirstOrDefault() ?? "Unknown",
+                a.Status))
             .ToListAsync(cancellationToken);
     }
 
@@ -39,6 +40,7 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                     .Select(g => g.FirstName + " " + g.LastName)
                     .FirstOrDefault() ?? "Unknown",
                 a.CreatedAt,
+                a.Status,
                 a.Folios
                     .Select(f => new FolioDto(
                         f.Id,
