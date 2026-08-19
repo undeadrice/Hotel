@@ -16,6 +16,7 @@ import { FolioResponse } from '../../models/folio.response';
 import { CreateFolioDialogComponent } from '../dialogs/create-folio-dialog.component';
 import { AddFolioItemDialogComponent } from '../dialogs/add-folio-item-dialog.component';
 import { FolioItemType } from '../../enums/folio-item-type.enum';
+import { FolioStatus } from '../../enums/folio-status.enum';
 
 @Component({
   imports: [
@@ -43,7 +44,29 @@ export class AccountDetailComponent implements OnInit {
 
   readonly account = signal<FiscalAccountDetailResponse | null>(null);
   readonly loading = signal(true);
-  readonly folioDisplayedColumns: string[] = ['description', 'amount', 'totalAmount', 'businessDate', 'createdAt'];
+  readonly FolioStatus = FolioStatus;
+  readonly folioDisplayedColumns: string[] = ['description', 'type', 'amount', 'totalAmount', 'businessDate', 'createdAt'];
+
+  folioStatusLabel(status: FolioStatus): string {
+    switch (status) {
+      case FolioStatus.Settled:
+        return 'Settled';
+      case FolioStatus.Open:
+      default:
+        return 'Open';
+    }
+  }
+
+  folioItemTypeLabel(type: FolioItemType): string {
+    switch (type) {
+      case FolioItemType.Charge:
+        return 'Charge';
+      case FolioItemType.Payment:
+        return 'Payment';
+      default:
+        return 'Unknown';
+    }
+  }
 
   canSettleFolio(folio: FolioResponse): boolean {
     const payments = folio.items
