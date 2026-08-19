@@ -17,6 +17,7 @@ import { CreateFolioDialogComponent } from '../dialogs/create-folio-dialog.compo
 import { AddFolioItemDialogComponent } from '../dialogs/add-folio-item-dialog.component';
 import { FolioItemType } from '../../enums/folio-item-type.enum';
 import { FolioStatus } from '../../enums/folio-status.enum';
+import { FiscalAccountStatus } from '../../enums/fiscal-account-status.enum';
 
 @Component({
   imports: [
@@ -45,7 +46,19 @@ export class AccountDetailComponent implements OnInit {
   readonly account = signal<FiscalAccountDetailResponse | null>(null);
   readonly loading = signal(true);
   readonly FolioStatus = FolioStatus;
+  readonly FiscalAccountStatus = FiscalAccountStatus;
   readonly folioDisplayedColumns: string[] = ['description', 'type', 'amount', 'totalAmount', 'businessDate', 'createdAt'];
+
+  fiscalAccountStatusLabel(status: FiscalAccountStatus): string {
+    switch (status) {
+      case FiscalAccountStatus.CheckedOut:
+        return 'Checked out';
+      case FiscalAccountStatus.Open:
+        return 'Open';
+      default:
+        return 'Invalid';
+    }
+  }
 
   folioStatusLabel(status: FolioStatus): string {
     switch (status) {

@@ -1,3 +1,4 @@
+import { FiscalAccountStatus } from '../enums/fiscal-account-status.enum';
 import { FolioResponse } from './folio.response';
 
 export interface FiscalAccountDetailResponse {
@@ -6,5 +7,6 @@ export interface FiscalAccountDetailResponse {
   cycleIdentifier: string;
   ownerFullName: string;
   createdAt: string;
+  status: FiscalAccountStatus;
   folios: FolioResponse[];
 }

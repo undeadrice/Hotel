@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FiscalAccountService } from '../../services/fiscal-account.service';
 import { SHARED_IMPORTS } from '../../../../../shared-module';
 import { FiscalAccountListResponse } from '../../models/fiscal-account-list.response';
+import { FiscalAccountStatus } from '../../enums/fiscal-account-status.enum';
 
 @Component({
   imports: [...SHARED_IMPORTS],
@@ -19,8 +20,20 @@ export class AccountListComponent {
     'cycleIdentifier',
     'ownerFullName',
     'createdAt',
+    'status',
     'actions',
   ];
+
+  statusLabel(status: FiscalAccountStatus): string {
+    switch (status) {
+      case FiscalAccountStatus.CheckedOut:
+        return 'Checked out';
+      case FiscalAccountStatus.Open:
+        return 'Open';
+      default:
+        return 'Invalid';
+    }
+  }
 
   constructor() {
     this.accountService.getAccounts().subscribe((data) => {

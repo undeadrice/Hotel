@@ -35,6 +35,12 @@
           <span class="detail-value">{{ acc.createdAt | date: 'short' }}</span>
         </div>
         <div class="detail-item">
+          <span class="detail-label">Status</span>
+          <span class="status-badge" [class.status-checked-out]="acc.status === FiscalAccountStatus.CheckedOut">
+            {{ fiscalAccountStatusLabel(acc.status) }}
+          </span>
+        </div>
+        <div class="detail-item">
           <span class="detail-label">Reservation</span>
           <span class="detail-value">
             <button mat-stroked-button (click)="goToReservation()">
