@@ -20,4 +20,8 @@ export class ReservationService extends BaseHttpService {
   createReservation(request: CreateReservationRequest): Observable<string> {
     return this.post<string>('Reservations', request);
   }
+
+  checkIn(id: string): Observable<void> {
+    return this.post<void>(`Reservations/${id}/check-in`, {});
+  }
 }
