@@ -10,11 +10,12 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
 {
     public async Task<IReadOnlyCollection<RoomListDto>> GetAll(CancellationToken cancellationToken)
     {
-        return await dbContext.Rooms
-            .AsNoTracking()
-            .OrderBy(r => r.RoomNumber)
-            .Select(r => new RoomListDto(r.Id, r.RoomNumber))
-            .ToListAsync(cancellationToken);
+        return await (
+            from r in dbContext.Rooms.AsNoTracking()
+            join rt in dbContext.RoomTypes.AsNoTracking() on r.RoomTypeId equals rt.Id
+            orderby r.RoomNumber
+            select new RoomListDto(r.Id, r.RoomNumber, rt.Name)
+        ).ToListAsync(cancellationToken);
     }
 
     public async Task<RoomDto> GetById(Guid id, CancellationToken cancellationToken)
@@ -51,14 +52,14 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
             .SelectMany(rp => rp.Rooms.Select(rpr => rpr.RoomTypeId))
             .Distinct();
 
-        return await dbContext.Rooms
-            .AsNoTracking()
-            .Where(r =>
-                !reservedRoomIds.Contains(r.Id) &&
+        return await (
+            from r in dbContext.Rooms.AsNoTracking()
+            join rt in dbContext.RoomTypes.AsNoTracking() on r.RoomTypeId equals rt.Id
+            where !reservedRoomIds.Contains(r.Id) &&
                 r.IsActive &&
-                roomTypeIdsWithRatePlans.Contains(r.RoomTypeId))
-            .OrderBy(r => r.RoomNumber)
-            .Select(r => new RoomListDto(r.Id, r.RoomNumber))
-            .ToListAsync(cancellationToken);
+                roomTypeIdsWithRatePlans.Contains(r.RoomTypeId)
+            orderby r.RoomNumber
+            select new RoomListDto(r.Id, r.RoomNumber, rt.Name)
+        ).ToListAsync(cancellationToken);
     }
 }

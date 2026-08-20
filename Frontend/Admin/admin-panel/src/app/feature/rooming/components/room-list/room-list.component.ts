@@ -15,7 +15,7 @@ export class RoomListComponent {
   private readonly router = inject(Router);
 
   rooms = new MatTableDataSource<RoomListResponse>([]);
-  displayedColumns: string[] = ['roomNumber', 'actions'];
+  displayedColumns: string[] = ['roomNumber', 'roomType', 'actions'];
 
   constructor() {
     this.roomService.getRooms().subscribe((data) => {
