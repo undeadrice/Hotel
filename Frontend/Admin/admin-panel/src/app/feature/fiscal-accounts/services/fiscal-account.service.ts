@@ -34,4 +34,8 @@ export class FiscalAccountService extends BaseHttpService {
   checkOut(id: string): Observable<void> {
     return this.post<void>(`FiscalAccounts/${id}/check-out`, {});
   }
+
+  postRoomCharge(reservationId: string): Observable<string> {
+    return this.post<string>(`FiscalAccounts/${reservationId}/post-room-charge`, {});
+  }
 }

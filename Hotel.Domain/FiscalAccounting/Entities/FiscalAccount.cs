@@ -72,6 +72,11 @@ public class FiscalAccount
         FolioItemType transactionType,
         DateOnly businessDate)
     {
+        if (Status == FiscalAccountStatus.CheckedOut)
+        {
+            throw new FiscalAccountAlreadyCheckedOutException();
+        }
+
         var folio = GetFolio(folioId);
 
         return folio.AddItem(

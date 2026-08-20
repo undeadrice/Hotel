@@ -148,6 +148,21 @@ export class AccountDetailComponent implements OnInit {
     });
   }
 
+  postDailyCharges(): void {
+    const currentAccount = this.account();
+    if (!currentAccount) return;
+
+    this.accountService.postRoomCharge(currentAccount.originatorId).subscribe({
+      next: () => {
+        this.snackBar.open('Room charge posted', 'Close', { duration: 3000 });
+        this.refreshAccount();
+      },
+      error: () => {
+        this.snackBar.open('Failed to post room charge', 'Close', { duration: 5000 });
+      },
+    });
+  }
+
   openCreateFolioDialog(): void {
     const currentAccount = this.account();
     if (!currentAccount) return;
