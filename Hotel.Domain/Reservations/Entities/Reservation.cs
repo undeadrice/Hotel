@@ -110,6 +110,16 @@ public class Reservation
         Status = ReservationStatus.InHouse;
     }
 
+    internal void CheckOut()
+    {
+        if (Status != ReservationStatus.InHouse)
+        {
+            throw new ReservationNotInHouseException();
+        }
+
+        Status = ReservationStatus.CheckedOut;
+    }
+
     public void TransitionOnEndOfDay(DateOnly businessDate)
     {
         if (Status == ReservationStatus.Reserved && StartDate == businessDate)

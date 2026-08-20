@@ -15,6 +15,7 @@ public static class DIRegistrations
         services.AddScoped<IRoomUpdateService, RoomUpdateService>();
 
         services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
+        services.AddScoped<IReservationCheckOutService, ReservationCheckOutService>();
 
         services.AddScoped<INumberCycleService, NumberCycleService>();
 
