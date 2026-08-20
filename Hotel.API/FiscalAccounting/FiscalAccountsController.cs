@@ -29,4 +29,11 @@ public class FiscalAccountsController(IMediator mediator) : ControllerBase
         await mediator.Send(new CheckOutFiscalAccountCommand(id));
         return NoContent();
     }
+
+    [HttpPost("{reservationId:guid}/post-room-charge")]
+    public async Task<IActionResult> PostRoomCharge(Guid reservationId)
+    {
+        var result = await mediator.Send(new PostRoomChargeCommand(reservationId));
+        return Ok(result);
+    }
 }
