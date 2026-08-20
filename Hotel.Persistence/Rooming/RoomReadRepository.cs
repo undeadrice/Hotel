@@ -47,7 +47,7 @@ public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepos
 
         var roomTypeIdsWithRatePlans = dbContext.RatePlans
             .AsNoTracking()
-            .Where(rp => rp.StartDate <= endDate && rp.EndDate >= startDate)
+            .Where(rp => rp.StartDate <= startDate && rp.EndDate >= endDate)
             .SelectMany(rp => rp.Rooms.Select(rpr => rpr.RoomTypeId))
             .Distinct();
 
