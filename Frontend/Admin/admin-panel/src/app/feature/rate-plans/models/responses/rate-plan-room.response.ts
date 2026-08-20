@@ -1,4 +1,4 @@
 export interface RatePlanRoomResponse {
-  roomTypeId: string;
+  roomType: string;
   price: number;
 }

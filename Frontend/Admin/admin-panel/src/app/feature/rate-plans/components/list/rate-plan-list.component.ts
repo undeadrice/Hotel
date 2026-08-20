@@ -20,11 +20,16 @@ export class RatePlanListComponent {
     'StartDate',
     'EndDate',
     'IsActive',
+    'Actions',
   ];
 
   constructor() {
     this.ratePlanService.getRatePlans().subscribe((data) => {
       this.ratePlans.data = data;
     });
+  }
+
+  viewRatePlan(id: string): void {
+    this.router.navigate(['rate-plans', id]);
   }
 }

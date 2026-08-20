@@ -27,6 +27,7 @@ import { TransactionCodeEditComponent } from './feature/transaction-codes/compon
 import { DashboardComponent } from './feature/dashboard/components/dashboard.component';
 import { RatePlanListComponent } from './feature/rate-plans/components/list/rate-plan-list.component';
 import { RatePlanAddComponent } from './feature/rate-plans/components/add/rate-plan-add.component';
+import { RatePlanDetailComponent } from './feature/rate-plans/components/detail/rate-plan-detail.component';
 import { ReservationListComponent } from './feature/reservations/components/list/reservation-list.component';
 import { ReservationAddComponent } from './feature/reservations/components/add/reservation-add.component';
 import { AccountListComponent } from './feature/fiscal-accounts/components/list/account-list.component';
@@ -133,10 +134,14 @@ export const routes: Routes = [
           path: 'rate-plans',
           component: RatePlanListComponent,
         },
-         {
-           path: 'rate-plans/add',
-           component: RatePlanAddComponent,
-         },
+          {
+            path: 'rate-plans/add',
+            component: RatePlanAddComponent,
+          },
+          {
+            path: 'rate-plans/:id',
+            component: RatePlanDetailComponent,
+          },
          {
            path: 'reservations',
            component: ReservationListComponent,

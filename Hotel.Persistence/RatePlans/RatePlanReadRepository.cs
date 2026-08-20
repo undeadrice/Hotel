@@ -31,10 +31,20 @@ public class RatePlanReadRepository(PersistenceDbContext dbContext) : IRatePlanR
             .Select(rp => new RatePlanDto(
                 rp.Id,
                 rp.Name,
-                rp.TransactionCodeId,
+                dbContext.TransactionCodes
+                    .Where(tc => tc.Id == rp.TransactionCodeId)
+                    .Select(tc => tc.Name)
+                    .FirstOrDefault() ?? "Unknown",
                 rp.StartDate,
                 rp.EndDate,
-                rp.Rooms.Select(r => new RatePlanRoomDto(r.RoomTypeId, r.Price)).ToList()))
+                rp.Rooms
+                    .Select(r => new RatePlanRoomDto(
+                        dbContext.RoomTypes
+                            .Where(rt => rt.Id == r.RoomTypeId)
+                            .Select(rt => rt.Name)
+                            .FirstOrDefault() ?? "Unknown",
+                        r.Price))
+                    .ToList()))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (ratePlan is null)
