@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
+import { finalize } from 'rxjs';
 import { TransactionCodeService } from '../../services/transaction-code.service';
 import { TransactionGroupService } from '../../../transaction-groups/services/transaction-group.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -67,19 +68,12 @@ export class TransactionCodeAddComponent {
     this.submitting.set(true);
     this.transactionCodeService
       .createTransactionCode(this.form.value)
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Transaction code created successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/transaction-codes']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to create transaction code', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Transaction code created successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/transaction-codes']);
       });
   }
 }

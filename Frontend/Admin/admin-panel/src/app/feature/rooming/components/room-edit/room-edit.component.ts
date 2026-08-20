@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 
 @Component({
   imports: [
@@ -62,23 +62,16 @@ export class RoomEditComponent implements OnInit {
     forkJoin({
       room: this.roomService.getRoom(this.roomId),
       types: this.roomService.getRoomTypes(),
-    }).subscribe({
-      next: ({ room, types }) => {
+    })
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe(({ room, types }) => {
         this.form.patchValue({
           roomNumber: room.roomNumber,
           roomTypeId: room.roomTypeId,
         });
         this.isActive.set(room.isActive);
         this.roomTypes.set(types);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load room', 'Close', {
-          duration: 5000,
-        });
-        this.router.navigate(['/rooms']);
-      },
-    });
+      });
   }
 
   onSubmit(): void {
@@ -93,19 +86,12 @@ export class RoomEditComponent implements OnInit {
         roomNumber: this.form.get('roomNumber')!.value!,
         roomTypeId: this.form.get('roomTypeId')!.value!,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Room updated successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/rooms']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to update room', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Room updated successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/rooms']);
       });
   }
 
@@ -115,19 +101,14 @@ export class RoomEditComponent implements OnInit {
     }
 
     this.submitting.set(true);
-    this.roomService.deactivateRoom(this.roomId).subscribe({
-      next: () => {
+    this.roomService
+      .deactivateRoom(this.roomId)
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
         this.snackBar.open('Room deactivated successfully', 'Close', {
           duration: 3000,
         });
         this.router.navigate(['/rooms']);
-      },
-      error: () => {
-        this.snackBar.open('Failed to deactivate room', 'Close', {
-          duration: 5000,
-        });
-        this.submitting.set(false);
-      },
-    });
+      });
   }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
 import { GuestService } from '../../services/guest.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,8 +57,10 @@ export class GuestEditComponent implements OnInit {
       return;
     }
 
-    this.guestService.getGuest(this.guestId).subscribe({
-      next: (guest) => {
+    this.guestService
+      .getGuest(this.guestId)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((guest) => {
         this.form.patchValue({
           firstName: guest.firstName,
           lastName: guest.lastName,
@@ -65,16 +68,7 @@ export class GuestEditComponent implements OnInit {
           email: guest.email,
           documentNumber: guest.documentNumber,
         });
-
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load guest', 'Close', {
-          duration: 5000,
-        });
-        this.router.navigate(['/guests']);
-      },
-    });
+      });
   }
 
   onSubmit(): void {
@@ -88,19 +82,12 @@ export class GuestEditComponent implements OnInit {
         id: this.guestId,
         ...this.form.value,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Guest updated successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/guests']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to update guest', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Guest updated successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/guests']);
       });
   }
 }

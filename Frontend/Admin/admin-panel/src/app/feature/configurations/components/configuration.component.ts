@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs';
 import { ConfigurationService } from '../services/configuration.service';
 import { SHARED_IMPORTS } from '../../../../shared-module';
 import { MatSelectModule } from '@angular/material/select';
@@ -57,50 +58,35 @@ export class ConfigurationComponent implements OnInit {
         timeZoneId: value.timeZoneId,
         currentBusinessDate,
       })
-      .subscribe({
-        next: () => {
-          this.saving.set(false);
-          this.snackBar.open('Configuration saved successfully', 'Close', { duration: 3000 });
-        },
-        error: () => {
-          this.saving.set(false);
-          this.snackBar.open('Failed to save configuration', 'Close', { duration: 5000 });
-        },
+      .pipe(finalize(() => this.saving.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Configuration saved successfully', 'Close', { duration: 3000 });
       });
   }
 
   private loadTimeZones(): void {
-    this.configurationService.getServerTimeZones().subscribe({
-      next: (timeZones) => {
-        this.timeZones.set(
-          timeZones.map((tz) => ({
-            value: tz.id,
-            label: tz.displayName,
-          }))
-        );
-      },
-      error: () => {
-        this.snackBar.open('Failed to load time zones', 'Close', { duration: 5000 });
-      },
+    this.configurationService.getServerTimeZones().subscribe((timeZones) => {
+      this.timeZones.set(
+        timeZones.map((tz) => ({
+          value: tz.id,
+          label: tz.displayName,
+        }))
+      );
     });
   }
 
   private loadConfiguration(): void {
-    this.configurationService.getConfiguration().subscribe({
-      next: (configuration) => {
+    this.configurationService
+      .getConfiguration()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((configuration) => {
         if (configuration) {
           this.form.patchValue({
             timeZoneId: configuration.timeZoneId,
             currentBusinessDate: configuration.currentBusinessDate,
           });
         }
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load configuration', 'Close', { duration: 5000 });
-        this.loading.set(false);
-      },
-    });
+      });
   }
 
   private today(): Date {

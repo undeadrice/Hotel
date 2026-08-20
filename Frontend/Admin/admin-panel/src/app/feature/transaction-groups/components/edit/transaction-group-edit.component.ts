@@ -14,6 +14,7 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { finalize } from 'rxjs';
 import { TransactionGroupService } from '../../services/transaction-group.service';
 import { TransactionType } from '../../enums/transaction-type.enum';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -91,24 +92,15 @@ export class TransactionGroupEditComponent implements OnInit {
 
     this.transactionGroupService
       .getTransactionGroup(this.transactionGroupId)
-      .subscribe({
-        next: (group) => {
-          this.form.patchValue({
-            code: group.code,
-            name: group.name,
-            type: group.type,
-          });
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((group) => {
+        this.form.patchValue({
+          code: group.code,
+          name: group.name,
+          type: group.type,
+        });
 
-          this.transactionCodes.set(group.transactionCodes ?? []);
-
-          this.loading.set(false);
-        },
-        error: () => {
-          this.snackBar.open('Failed to load transaction group', 'Close', {
-            duration: 5000,
-          });
-          this.router.navigate(['/transaction-groups']);
-        },
+        this.transactionCodes.set(group.transactionCodes ?? []);
       });
   }
 
@@ -123,23 +115,16 @@ export class TransactionGroupEditComponent implements OnInit {
         id: this.transactionGroupId,
         ...this.form.value,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open(
-            'Transaction group updated successfully',
-            'Close',
-            {
-              duration: 3000,
-            }
-          );
-          this.router.navigate(['/transaction-groups']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to update transaction group', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open(
+          'Transaction group updated successfully',
+          'Close',
+          {
+            duration: 3000,
+          }
+        );
+        this.router.navigate(['/transaction-groups']);
       });
   }
 }

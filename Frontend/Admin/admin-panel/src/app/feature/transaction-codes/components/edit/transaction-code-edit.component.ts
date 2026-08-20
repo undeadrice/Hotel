@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { finalize } from 'rxjs';
 import { TransactionCodeService } from '../../services/transaction-code.service';
 import { TransactionGroupService } from '../../../transaction-groups/services/transaction-group.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -80,22 +81,13 @@ export class TransactionCodeEditComponent implements OnInit {
 
     this.transactionCodeService
       .getTransactionCode(this.transactionCodeId)
-      .subscribe({
-        next: (code) => {
-          this.form.patchValue({
-            transactionGroupId: code.transactionGroupId,
-            code: code.code,
-            name: code.name,
-          });
-
-          this.loading.set(false);
-        },
-        error: () => {
-          this.snackBar.open('Failed to load transaction code', 'Close', {
-            duration: 5000,
-          });
-          this.router.navigate(['/transaction-codes']);
-        },
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((code) => {
+        this.form.patchValue({
+          transactionGroupId: code.transactionGroupId,
+          code: code.code,
+          name: code.name,
+        });
       });
   }
 
@@ -110,23 +102,16 @@ export class TransactionCodeEditComponent implements OnInit {
         id: this.transactionCodeId,
         ...this.form.value,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open(
-            'Transaction code updated successfully',
-            'Close',
-            {
-              duration: 3000,
-            }
-          );
-          this.router.navigate(['/transaction-codes']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to update transaction code', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open(
+          'Transaction code updated successfully',
+          'Close',
+          {
+            duration: 3000,
+          }
+        );
+        this.router.navigate(['/transaction-codes']);
       });
   }
 }

@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
 import { FiscalAccountService } from '../../services/fiscal-account.service';
 import { FiscalAccountDetailResponse } from '../../models/fiscal-account-detail.response';
 import { FolioResponse } from '../../models/folio.response';
@@ -121,30 +122,21 @@ export class AccountDetailComponent implements OnInit {
       return;
     }
 
-    this.accountService.getAccount(id).subscribe({
-      next: (data) => {
+    this.accountService
+      .getAccount(id)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((data) => {
         this.account.set(data);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load account details', 'Close', { duration: 5000 });
-        this.loading.set(false);
-      },
-    });
+      });
   }
 
   checkOutAccount(): void {
     const currentAccount = this.account();
     if (!currentAccount) return;
 
-    this.accountService.checkOut(currentAccount.id).subscribe({
-      next: () => {
-        this.snackBar.open('Account checked out', 'Close', { duration: 3000 });
-        this.refreshAccount();
-      },
-      error: () => {
-        this.snackBar.open('Failed to check out account', 'Close', { duration: 5000 });
-      },
+    this.accountService.checkOut(currentAccount.id).subscribe(() => {
+      this.snackBar.open('Account checked out', 'Close', { duration: 3000 });
+      this.refreshAccount();
     });
   }
 
@@ -152,14 +144,9 @@ export class AccountDetailComponent implements OnInit {
     const currentAccount = this.account();
     if (!currentAccount) return;
 
-    this.accountService.postRoomCharge(currentAccount.originatorId).subscribe({
-      next: () => {
-        this.snackBar.open('Room charge posted', 'Close', { duration: 3000 });
-        this.refreshAccount();
-      },
-      error: () => {
-        this.snackBar.open('Failed to post room charge', 'Close', { duration: 5000 });
-      },
+    this.accountService.postRoomCharge(currentAccount.originatorId).subscribe(() => {
+      this.snackBar.open('Room charge posted', 'Close', { duration: 3000 });
+      this.refreshAccount();
     });
   }
 
@@ -190,14 +177,9 @@ export class AccountDetailComponent implements OnInit {
 
     this.accountService
       .settleFolio({ accountId: currentAccount.id, folioId: folio.id })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Folio settled', 'Close', { duration: 3000 });
-          this.refreshAccount();
-        },
-        error: () => {
-          this.snackBar.open('Failed to settle folio', 'Close', { duration: 5000 });
-        },
+      .subscribe(() => {
+        this.snackBar.open('Folio settled', 'Close', { duration: 3000 });
+        this.refreshAccount();
       });
   }
 
@@ -219,15 +201,11 @@ export class AccountDetailComponent implements OnInit {
     if (!currentAccount) return;
 
     this.loading.set(true);
-    this.accountService.getAccount(currentAccount.id).subscribe({
-      next: (data) => {
+    this.accountService
+      .getAccount(currentAccount.id)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((data) => {
         this.account.set(data);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to refresh account', 'Close', { duration: 5000 });
-        this.loading.set(false);
-      },
-    });
+      });
   }
 }

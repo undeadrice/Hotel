@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
 import { RoomService } from '../../services/room.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -51,16 +52,12 @@ export class RoomTypeAddComponent {
         name: this.form.get('name')!.value!,
         description: this.form.get('description')!.value || null,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Room type created successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/room-types']);
-        },
-        error: () => {
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Room type created successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/room-types']);
       });
   }
 }

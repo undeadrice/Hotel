@@ -61,9 +61,6 @@ export class ReservationListComponent {
         this.snackBar.open('Reservation checked in', 'Close', { duration: 3000 });
         this.loadReservations();
       },
-      error: () => {
-        this.snackBar.open('Failed to check in reservation', 'Close', { duration: 5000 });
-      },
     });
   }
 

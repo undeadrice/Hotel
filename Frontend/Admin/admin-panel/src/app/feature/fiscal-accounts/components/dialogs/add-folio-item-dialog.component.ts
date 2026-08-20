@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs';
 import { FiscalAccountService } from '../../services/fiscal-account.service';
 import { TransactionCodeService } from '../../../transaction-codes/services/transaction-code.service';
 import { TransactionCodeSimpleListResponse } from '../../../transaction-codes/models/responses/transaction-code-simple-list.response';
@@ -96,7 +96,6 @@ export class AddFolioItemDialogComponent {
   private readonly accountService = inject(FiscalAccountService);
   private readonly transactionCodeService = inject(TransactionCodeService);
   private readonly dialogRef = inject(MatDialogRef<AddFolioItemDialogComponent>);
-  private readonly snackBar = inject(MatSnackBar);
   readonly data: { folioId: string } = inject(MAT_DIALOG_DATA);
 
   readonly submitting = signal(false);
@@ -110,13 +109,9 @@ export class AddFolioItemDialogComponent {
   });
 
   constructor() {
-    this.transactionCodeService.getTransactionCodesSimpleList().subscribe({
-      next: (codes) => this.transactionCodes.set(codes),
-      error: () =>
-        this.snackBar.open('Failed to load transaction codes', 'Close', {
-          duration: 5000,
-        }),
-    });
+    this.transactionCodeService
+      .getTransactionCodesSimpleList()
+      .subscribe((codes) => this.transactionCodes.set(codes));
   }
 
   addItem(): void {
@@ -131,15 +126,9 @@ export class AddFolioItemDialogComponent {
         description: this.form.value.description,
         amount: this.form.value.amount,
       })
-      .subscribe({
-        next: () => {
-          this.submitting.set(false);
-          this.dialogRef.close(true);
-        },
-        error: () => {
-          this.submitting.set(false);
-          this.snackBar.open('Failed to add folio item', 'Close', { duration: 5000 });
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.dialogRef.close(true);
       });
   }
 }

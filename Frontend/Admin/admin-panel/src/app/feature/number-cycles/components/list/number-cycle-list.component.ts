@@ -53,20 +53,13 @@ export class NumberCycleListComponent {
   }
 
   deleteNumberCycle(id: string): void {
-    this.numberCycleService.deleteNumberCycle(id).subscribe({
-      next: () => {
-        this.snackBar.open('Number cycle deleted successfully', 'Close', {
-          duration: 3000,
-        });
-        this.numberCycleService.getNumberCycles().subscribe((data) => {
-          this.numberCycles.data = data;
-        });
-      },
-      error: () => {
-        this.snackBar.open('Failed to delete number cycle', 'Close', {
-          duration: 5000,
-        });
-      },
+    this.numberCycleService.deleteNumberCycle(id).subscribe(() => {
+      this.snackBar.open('Number cycle deleted successfully', 'Close', {
+        duration: 3000,
+      });
+      this.numberCycleService.getNumberCycles().subscribe((data) => {
+        this.numberCycles.data = data;
+      });
     });
   }
 }

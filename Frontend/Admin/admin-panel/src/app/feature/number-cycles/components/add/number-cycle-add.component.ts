@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
+import { finalize } from 'rxjs';
 import { NumberCycleService } from '../../services/number-cycle.service';
 import { NumberCycleTopic } from '../../enums/number-cycle-topic.enum';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -68,19 +69,14 @@ export class NumberCycleAddComponent {
     }
 
     this.submitting.set(true);
-    this.numberCycleService.createNumberCycle(this.form.value).subscribe({
-      next: () => {
+    this.numberCycleService
+      .createNumberCycle(this.form.value)
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
         this.snackBar.open('Number cycle created successfully', 'Close', {
           duration: 3000,
         });
         this.router.navigate(['/number-cycles']);
-      },
-      error: () => {
-        this.snackBar.open('Failed to create number cycle', 'Close', {
-          duration: 5000,
-        });
-        this.submitting.set(false);
-      },
-    });
+      });
   }
 }

@@ -24,7 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
-import { combineLatest, startWith } from 'rxjs';
+import { combineLatest, finalize, startWith } from 'rxjs';
 import { ReservationService } from '../../services/reservation.service';
 import { RoomService } from '../../../rooming/services/room.service';
 import { RatePlanService } from '../../../rate-plans/services/rate-plan.service';
@@ -168,19 +168,14 @@ export class ReservationAddComponent {
       guestIds: formValue.guestIds,
     };
 
-    this.reservationService.createReservation(request).subscribe({
-      next: () => {
+    this.reservationService
+      .createReservation(request)
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
         this.snackBar.open('Reservation created successfully', 'Close', {
           duration: 3000,
         });
         this.router.navigate(['/reservations']);
-      },
-      error: () => {
-        this.snackBar.open('Failed to create reservation', 'Close', {
-          duration: 5000,
-        });
-        this.submitting.set(false);
-      },
-    });
+      });
   }
 }

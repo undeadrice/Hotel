@@ -6,7 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs';
 import { FiscalAccountService } from '../../services/fiscal-account.service';
 
 @Component({
@@ -35,7 +35,6 @@ import { FiscalAccountService } from '../../services/fiscal-account.service';
 export class CreateFolioDialogComponent {
   private readonly accountService = inject(FiscalAccountService);
   private readonly dialogRef = inject(MatDialogRef<CreateFolioDialogComponent>);
-  private readonly snackBar = inject(MatSnackBar);
   readonly data: { fiscalAccountId: string } = inject(MAT_DIALOG_DATA);
 
   readonly submitting = signal(false);
@@ -44,15 +43,9 @@ export class CreateFolioDialogComponent {
     this.submitting.set(true);
     this.accountService
       .createFolio({ fiscalAccountId: this.data.fiscalAccountId })
-      .subscribe({
-        next: () => {
-          this.submitting.set(false);
-          this.dialogRef.close(true);
-        },
-        error: () => {
-          this.submitting.set(false);
-          this.snackBar.open('Failed to create folio', 'Close', { duration: 5000 });
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.dialogRef.close(true);
       });
   }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
 import { RoomService } from '../../services/room.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,21 +54,15 @@ export class RoomTypeEditComponent implements OnInit {
       return;
     }
 
-    this.roomService.getRoomType(this.roomTypeId).subscribe({
-      next: (roomType) => {
+    this.roomService
+      .getRoomType(this.roomTypeId)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((roomType) => {
         this.form.patchValue({
           name: roomType.name,
           description: roomType.description ?? '',
         });
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load room type', 'Close', {
-          duration: 5000,
-        });
-        this.router.navigate(['/room-types']);
-      },
-    });
+      });
   }
 
   onSubmit(): void {
@@ -82,19 +77,12 @@ export class RoomTypeEditComponent implements OnInit {
         name: this.form.get('name')!.value!,
         description: this.form.get('description')!.value || null,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Room type updated successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/room-types']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to update room type', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Room type updated successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/room-types']);
       });
   }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
 import { GuestService } from '../../services/guest.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -51,19 +52,12 @@ export class GuestAddComponent {
     this.submitting.set(true);
     this.guestService
       .createGuest(this.form.value)
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Guest created successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/guests']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to create guest', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Guest created successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/guests']);
       });
   }
 }

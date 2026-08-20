@@ -39,11 +39,6 @@ export class AuthorizedLayoutComponent {
           duration: 3000,
         });
       },
-      error: () => {
-        this.snackBar.open('Failed to perform end of day', 'Close', {
-          duration: 5000,
-        });
-      },
     });
   }
 }

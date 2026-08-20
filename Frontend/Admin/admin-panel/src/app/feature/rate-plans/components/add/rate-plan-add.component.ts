@@ -24,6 +24,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
 import { RatePlanService } from '../../services/rate-plan.service';
 import { TransactionCodeService } from '../../../transaction-codes/services/transaction-code.service';
 import { RoomService } from '../../../rooming/services/room.service';
@@ -135,19 +136,14 @@ export class RatePlanAddComponent {
       ),
     };
 
-    this.ratePlanService.createRatePlan(request).subscribe({
-      next: () => {
+    this.ratePlanService
+      .createRatePlan(request)
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
         this.snackBar.open('Rate plan created successfully', 'Close', {
           duration: 3000,
         });
         this.router.navigate(['/rate-plans']);
-      },
-      error: () => {
-        this.snackBar.open('Failed to create rate plan', 'Close', {
-          duration: 5000,
-        });
-        this.submitting.set(false);
-      },
-    });
+      });
   }
 }

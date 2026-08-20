@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { RoleService } from '../../../roles/services/role.service';
 import { RoleSimpleResponse } from '../../../roles/models/responses/role-simple.response';
@@ -56,15 +57,12 @@ export class UserAddComponent implements OnInit {
   readonly submitting = signal(false);
 
   ngOnInit(): void {
-    this.roleService.getRoles().subscribe({
-      next: (roles) => {
+    this.roleService
+      .getRoles()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((roles) => {
         this.roles.set(roles);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.loading.set(false);
-      },
-    });
+      });
   }
 
   onSubmit(): void {
@@ -88,16 +86,12 @@ export class UserAddComponent implements OnInit {
         dateOfBirth,
         roleIds: raw.roleIds,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('User created successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/users']);
-        },
-        error: () => {
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('User created successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/users']);
       });
   }
 }
