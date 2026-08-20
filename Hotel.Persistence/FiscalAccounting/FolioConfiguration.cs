@@ -27,6 +27,10 @@ public class FolioConfiguration : IEntityTypeConfiguration<Folio>
             .HasConversion<int>()
             .HasDefaultValue(FolioStatus.Open);
 
+        builder.Property(f => f.IsMainFolio)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasMany(f => f.Items)
             .WithOne()
             .HasForeignKey(fi => fi.FolioId)

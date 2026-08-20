@@ -105,7 +105,7 @@ public class FiscalAccount
 
     private Folio AddFolio()
     {
-        var folio = Folio.Create(Id);
+        var folio = Folio.Create(Id, _folios.Count == 0);
         _folios.Add(folio);
         return folio;
     }

@@ -9,6 +9,7 @@ public class Folio
     public Guid FiscalAccountId { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public FolioStatus Status { get; private set; }
+    public bool IsMainFolio { get; private set; }
 
     private readonly List<FolioItem> _items = new();
     public IReadOnlyCollection<FolioItem> Items => _items.AsReadOnly();
@@ -20,20 +21,23 @@ public class Folio
     private Folio(
         Guid id,
         Guid fiscalAccountId,
-        DateTime createdAt)
+        DateTime createdAt,
+        bool isMainFolio)
     {
         Id = id;
         FiscalAccountId = fiscalAccountId;
         CreatedAt = createdAt;
         Status = FolioStatus.Open;
+        IsMainFolio = isMainFolio;
     }
 
-    internal static Folio Create(Guid fiscalAccountId)
+    internal static Folio Create(Guid fiscalAccountId, bool isMainFolio)
     {
         return new Folio(
             Guid.NewGuid(),
             fiscalAccountId,
-            DateTime.UtcNow);
+            DateTime.UtcNow,
+            isMainFolio);
     }
 
     public FolioItem AddItem(

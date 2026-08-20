@@ -13,6 +13,7 @@ public record FiscalAccountDetailsDto(
 
 public record FolioDto(
     Guid Id,
+    bool IsMainFolio,
     DateTime CreatedAt,
     FolioStatus Status,
     IReadOnlyCollection<FolioItemDto> Items);
