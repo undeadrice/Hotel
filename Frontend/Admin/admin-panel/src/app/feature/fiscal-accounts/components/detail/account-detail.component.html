@@ -72,6 +72,9 @@
             <div class="folio-title-group">
               <div class="folio-title-row">
                 <h3 class="folio-title">Folio {{ $index + 1 }}</h3>
+                @if (folio.isMainFolio) {
+                  <span class="main-folio-badge">Main</span>
+                }
                 <span class="status-badge" [class.status-settled]="folio.status === FolioStatus.Settled">
                   {{ folioStatusLabel(folio.status) }}
                 </span>

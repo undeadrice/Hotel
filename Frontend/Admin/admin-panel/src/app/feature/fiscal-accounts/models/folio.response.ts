@@ -3,6 +3,7 @@ import { FolioStatus } from '../enums/folio-status.enum';
 
 export interface FolioResponse {
   id: string;
+  isMainFolio: boolean;
   createdAt: string;
   status: FolioStatus;
   items: FolioItemResponse[];

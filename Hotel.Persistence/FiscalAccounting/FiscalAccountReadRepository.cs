@@ -58,7 +58,6 @@ public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFisc
                                 i.TransactionType,
                                 i.BusinessDate,
                                 i.CreatedAt))
-                             .OrderBy(i => i.CreatedAt)
                             .ToList()
                             .AsReadOnly()))
                     .ToList()
