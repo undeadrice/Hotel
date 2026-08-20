@@ -53,6 +53,21 @@ public class FiscalAccountRepository(PersistenceDbContext persistenceDbContext) 
         return account;
     }
 
+    public async Task<FiscalAccount> GetByOriginatorId(Guid originatorId, CancellationToken token)
+    {
+        var account = await persistenceDbContext.FiscalAccounts
+            .Include(a => a.Folios)
+            .ThenInclude(f => f.Items)
+            .FirstOrDefaultAsync(a => a.OriginatorId == originatorId, cancellationToken: token);
+
+        if (account is null)
+        {
+            throw new NotFoundException($"FiscalAccount with originator id {originatorId} doesn't exist");
+        }
+
+        return account;
+    }
+
     public async Task<FiscalAccount> GetForSettlement(Guid accountId, Guid folioId, CancellationToken token)
     {
         var account = await persistenceDbContext.FiscalAccounts

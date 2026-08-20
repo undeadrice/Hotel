@@ -53,4 +53,13 @@ public class ReservationRepository(PersistenceDbContext persistenceDbContext) : 
                      || r.Status == ReservationStatus.DueIn)
             .ToListAsync(cancellationToken: token);
     }
+
+    public async Task<IReadOnlyCollection<Reservation>> GetInHouseForBusinessDate(DateOnly businessDate, CancellationToken token)
+    {
+        return await persistenceDbContext.Reservations
+            .Where(r => r.Status == ReservationStatus.InHouse
+                     && r.StartDate <= businessDate
+                     && r.EndDate > businessDate)
+            .ToListAsync(cancellationToken: token);
+    }
 }

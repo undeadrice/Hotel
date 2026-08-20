@@ -15,4 +15,6 @@ public interface IReservationRepository
     Task<bool> HasOverlappingReservation(Guid roomId, DateOnly startDate, DateOnly endDate, CancellationToken token = default);
 
     Task<IReadOnlyCollection<Reservation>> GetForEndOfDay(DateOnly businessDate, CancellationToken token = default);
+
+    Task<IReadOnlyCollection<Reservation>> GetInHouseForBusinessDate(DateOnly businessDate, CancellationToken token = default);
 }

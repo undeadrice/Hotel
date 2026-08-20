@@ -88,6 +88,24 @@ public class FiscalAccount
         GetFolio(folioId).Settle();
     }
 
+    public FolioItem PostChargeToMainFolio(
+        string description,
+        decimal amount,
+        Guid transactionCodeId,
+        DateOnly businessDate)
+    {
+        var mainFolio = _folios.First(f => f.IsMainFolio);
+
+        return AddFolioItem(
+            mainFolio.Id,
+            description,
+            quantity: 1,
+            amount,
+            transactionCodeId,
+            FolioItemType.Charge,
+            businessDate);
+    }
+
     public void CheckOut()
     {
         if (Status == FiscalAccountStatus.CheckedOut)
