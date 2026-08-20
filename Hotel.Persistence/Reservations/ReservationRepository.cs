@@ -41,8 +41,9 @@ public class ReservationRepository(PersistenceDbContext persistenceDbContext) : 
     {
         return await persistenceDbContext.Reservations
             .AnyAsync(r => r.RoomId == roomId
-                         && r.StartDate < endDate
-                         && r.EndDate > startDate, cancellationToken: token);
+                         && r.Status != ReservationStatus.NoShow
+                         && r.StartDate <= endDate
+                         && r.EndDate >= startDate, cancellationToken: token);
     }
 
     public async Task<IReadOnlyCollection<Reservation>> GetForEndOfDay(DateOnly businessDate, CancellationToken token)
