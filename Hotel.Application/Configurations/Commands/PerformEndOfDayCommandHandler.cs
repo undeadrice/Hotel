@@ -1,6 +1,7 @@
 using Hotel.Domain.Configurations.Services;
 using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Domain.RatePlans.Services;
+using Hotel.Domain.Reservations.Exceptions;
 using Hotel.Domain.Reservations.Services;
 using Hotel.Domain.Rooming.Services;
 using MediatR;
@@ -23,6 +24,14 @@ public class PerformEndOfDayCommandHandler(
         configuration.EndOfDay();
 
         var businessDate = configuration.CurrentBusinessDate;
+
+        var dueOutReservations = await reservationRepository.GetInHouseEndingOnDate(businessDate, cancellationToken);
+
+        if (dueOutReservations.Count > 0)
+        {
+            throw new ReservationDueOutException();
+        }
+
         var reservations = await reservationRepository.GetForEndOfDay(businessDate, cancellationToken);
 
         foreach (var reservation in reservations)

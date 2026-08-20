@@ -17,4 +17,6 @@ public interface IReservationRepository
     Task<IReadOnlyCollection<Reservation>> GetForEndOfDay(DateOnly businessDate, CancellationToken token = default);
 
     Task<IReadOnlyCollection<Reservation>> GetInHouseForBusinessDate(DateOnly businessDate, CancellationToken token = default);
+
+    Task<IReadOnlyCollection<Reservation>> GetInHouseEndingOnDate(DateOnly businessDate, CancellationToken token = default);
 }
