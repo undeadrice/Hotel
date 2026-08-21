@@ -13,9 +13,14 @@ public class RoomUpdateService(IRoomRepository roomRepository) : IRoomUpdateServ
             throw new RoomNumberAlreadyExistsException(roomNumber);
         }
 
-        room.UpdateRoomNumber(roomNumber);
-        room.ChangeRoomType(roomTypeId);
+        if(roomNumber != room.RoomNumber)
+        {
+            room.UpdateRoomNumber(roomNumber);
+        }
 
-        await roomRepository.Update(room, cancellationToken);
+        if(room.RoomTypeId != roomTypeId)
+        {
+            room.ChangeRoomType(roomTypeId);
+        }
     }
 }
