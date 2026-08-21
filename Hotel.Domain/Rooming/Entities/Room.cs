@@ -24,7 +24,7 @@ public class Room
     public Room() { }
 #pragma warning restore CS8618
 
-    public static Room Create(string roomNumber, Guid roomTypeId)
+    internal static Room Create(string roomNumber, Guid roomTypeId)
     {
         if (string.IsNullOrWhiteSpace(roomNumber))
         {

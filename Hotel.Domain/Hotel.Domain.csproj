@@ -9,7 +9,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
   </ItemGroup>
-
+	<ItemGroup>
+		<InternalsVisibleTo Include="Hotel.Domain.Tests" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hotel.Shared\Hotel.Shared.csproj" />
   </ItemGroup>
