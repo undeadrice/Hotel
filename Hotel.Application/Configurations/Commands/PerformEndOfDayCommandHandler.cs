@@ -25,7 +25,7 @@ public class PerformEndOfDayCommandHandler(
 
         var businessDate = configuration.CurrentBusinessDate;
 
-        var dueOutReservations = await reservationRepository.GetInHouseEndingOnDate(businessDate, cancellationToken);
+        var dueOutReservations = await reservationRepository.GetInHouseEndingOnDate(previousBusinessDate, cancellationToken);
 
         if (dueOutReservations.Count > 0)
         {
