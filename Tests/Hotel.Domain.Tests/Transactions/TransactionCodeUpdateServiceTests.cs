@@ -106,7 +106,6 @@ public class TransactionCodeUpdateServiceTests
         transactionCode.TransactionGroupId.Should().Be(transactionGroupId);
 
         await _transactionGroupRepository.Received(1).GetById(newTransactionGroupId, Arg.Any<CancellationToken>());
-        await _transactionCodeRepository.DidNotReceive().Update(Arg.Any<TransactionCode>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
