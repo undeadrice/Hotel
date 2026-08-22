@@ -1,6 +1,6 @@
 using Hotel.Domain.Configurations.Entities;
-using Hotel.Domain.Configurations.Services;
 using MediatR;
+using Hotel.Domain.Configurations.Repositories;
 
 namespace Hotel.Application.Configurations.Commands;
 

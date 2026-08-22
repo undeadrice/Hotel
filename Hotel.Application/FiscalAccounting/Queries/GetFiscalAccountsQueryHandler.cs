@@ -1,6 +1,6 @@
-using Hotel.Application.FiscalAccounting.Services;
 using Hotel.Application.FiscalAccounting.TransferObjects;
 using MediatR;
+using Hotel.Application.FiscalAccounting.Repositories;
 
 namespace Hotel.Application.FiscalAccounting.Queries;
 

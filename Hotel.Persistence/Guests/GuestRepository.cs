@@ -1,7 +1,7 @@
 using Hotel.Domain.Guests;
-using Hotel.Domain.Guests.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.Guests.Repositories;
 
 namespace Hotel.Persistence.Guests;
 

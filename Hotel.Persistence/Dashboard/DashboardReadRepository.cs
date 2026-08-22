@@ -1,6 +1,6 @@
-using Hotel.Application.Dashboard.Services;
 using Hotel.Application.Dashboard.TransferObjects;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Application.Dashboard.Repositories;
 
 namespace Hotel.Persistence.Dashboard;
 

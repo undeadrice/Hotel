@@ -4,6 +4,7 @@ using Hotel.Domain.Rooming.Exceptions;
 using Hotel.Domain.Rooming.Services;
 using NSubstitute;
 using Xunit;
+using Hotel.Domain.Rooming.Repositories;
 
 namespace Hotel.Domain.Tests.Rooming.Services;
 

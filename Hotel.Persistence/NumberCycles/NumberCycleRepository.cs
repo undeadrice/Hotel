@@ -3,6 +3,7 @@ using Hotel.Domain.NumberCycles.Enums;
 using Hotel.Domain.NumberCycles.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.NumberCycles.Repositories;
 
 namespace Hotel.Persistence.NumberCycles;
 

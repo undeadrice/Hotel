@@ -3,6 +3,7 @@ using Hotel.Domain.Reservations.Enums;
 using Hotel.Domain.Reservations.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.Reservations.Repositories;
 
 namespace Hotel.Persistence.Reservations;
 

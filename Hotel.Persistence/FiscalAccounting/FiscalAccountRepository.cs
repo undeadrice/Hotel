@@ -1,7 +1,7 @@
 using Hotel.Domain.FiscalAccounting.Entities;
-using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.FiscalAccounting.Repositories;
 
 namespace Hotel.Persistence.FiscalAccounting;
 

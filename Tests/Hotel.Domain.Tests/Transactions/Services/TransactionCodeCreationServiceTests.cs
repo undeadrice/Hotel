@@ -5,6 +5,7 @@ using Hotel.Domain.Transactions.Exceptions;
 using Hotel.Domain.Transactions.Services;
 using NSubstitute;
 using Xunit;
+using Hotel.Domain.Transactions.Repositories;
 
 namespace Hotel.Domain.Tests.Transactions.Services;
 

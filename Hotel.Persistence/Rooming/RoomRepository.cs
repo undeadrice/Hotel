@@ -2,6 +2,7 @@ using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Rooming.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.Rooming.Repositories;
 
 namespace Hotel.Persistence.Rooming;
 

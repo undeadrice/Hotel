@@ -1,6 +1,6 @@
-using Hotel.Application.RatePlans.Services;
 using Hotel.Application.RatePlans.TransferObjects;
 using MediatR;
+using Hotel.Application.RatePlans.Repositories;
 
 namespace Hotel.Application.RatePlans.Queries;
 

@@ -1,13 +1,15 @@
 using Hotel.Domain.FiscalAccounting.Entities;
-using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Domain.NumberCycles.Enums;
 using Hotel.Domain.NumberCycles.Services;
-using Hotel.Domain.RatePlans.Services;
 using Hotel.Domain.Reservations.Entities;
 using Hotel.Domain.Reservations.Exceptions;
 using Hotel.Domain.Reservations.Services;
 using Hotel.Domain.Rooming.Services;
 using MediatR;
+using Hotel.Domain.RatePlans.Repositories;
+using Hotel.Domain.Reservations.Repositories;
+using Hotel.Domain.Rooming.Repositories;
+using Hotel.Domain.FiscalAccounting.Repositories;
 
 namespace Hotel.Application.Reservations.Commands;
 

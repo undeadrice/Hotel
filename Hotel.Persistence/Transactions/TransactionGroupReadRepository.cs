@@ -1,7 +1,7 @@
-using Hotel.Application.Transactions.Services;
 using Hotel.Application.Transactions.TransferObjects;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Application.Transactions.Repositories;
 
 namespace Hotel.Persistence.Transactions;
 

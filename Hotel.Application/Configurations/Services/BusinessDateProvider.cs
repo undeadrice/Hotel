@@ -1,4 +1,4 @@
-using Hotel.Domain.Configurations.Services;
+using Hotel.Domain.Configurations.Repositories;
 
 namespace Hotel.Application.Configurations.Services;
 

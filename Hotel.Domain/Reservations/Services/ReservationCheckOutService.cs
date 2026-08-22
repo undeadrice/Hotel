@@ -1,4 +1,5 @@
 using Hotel.Domain.Reservations.Enums;
+using Hotel.Domain.Reservations.Repositories;
 
 namespace Hotel.Domain.Reservations.Services;
 

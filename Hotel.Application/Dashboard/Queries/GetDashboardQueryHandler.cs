@@ -1,7 +1,7 @@
 using Hotel.Application.Configurations.Services;
-using Hotel.Application.Dashboard.Services;
 using Hotel.Application.Dashboard.TransferObjects;
 using MediatR;
+using Hotel.Application.Dashboard.Repositories;
 
 namespace Hotel.Application.Dashboard.Queries;
 

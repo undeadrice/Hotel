@@ -1,6 +1,7 @@
 using Hotel.Domain.NumberCycles.Entities;
 using Hotel.Domain.NumberCycles.Enums;
 using Hotel.Domain.NumberCycles.Exceptions;
+using Hotel.Domain.NumberCycles.Repositories;
 
 namespace Hotel.Domain.NumberCycles.Services;
 

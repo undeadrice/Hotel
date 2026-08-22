@@ -1,7 +1,7 @@
-using Hotel.Application.RatePlans.Services;
 using Hotel.Application.RatePlans.TransferObjects;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Application.RatePlans.Repositories;
 
 namespace Hotel.Persistence.RatePlans;
 

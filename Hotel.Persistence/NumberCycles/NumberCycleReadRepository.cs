@@ -1,7 +1,7 @@
-using Hotel.Application.NumberCycles.Services;
 using Hotel.Application.NumberCycles.TransferObjects;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Application.NumberCycles.Repositories;
 
 namespace Hotel.Persistence.NumberCycles;
 

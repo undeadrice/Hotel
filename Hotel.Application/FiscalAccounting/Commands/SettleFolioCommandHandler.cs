@@ -1,5 +1,5 @@
-using Hotel.Domain.FiscalAccounting.Services;
 using MediatR;
+using Hotel.Domain.FiscalAccounting.Repositories;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 

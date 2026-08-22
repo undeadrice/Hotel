@@ -1,9 +1,10 @@
 using Hotel.Application.Configurations.Services;
 using Hotel.Domain.FiscalAccounting.Enums;
-using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Domain.Transactions.Enums;
 using Hotel.Domain.Transactions.Services;
 using MediatR;
+using Hotel.Domain.Transactions.Repositories;
+using Hotel.Domain.FiscalAccounting.Repositories;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 

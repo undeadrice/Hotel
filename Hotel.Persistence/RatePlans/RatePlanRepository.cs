@@ -1,7 +1,7 @@
 using Hotel.Domain.RatePlans.Entities;
-using Hotel.Domain.RatePlans.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.RatePlans.Repositories;
 
 namespace Hotel.Persistence.RatePlans;
 

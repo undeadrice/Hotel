@@ -1,6 +1,7 @@
 using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Rooming.Services;
 using MediatR;
+using Hotel.Domain.Rooming.Repositories;
 
 namespace Hotel.Application.Rooming.Commands;
 

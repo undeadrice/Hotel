@@ -1,6 +1,7 @@
 using Hotel.Domain.Transactions.Entities;
 using Hotel.Domain.Transactions.Enums;
 using Hotel.Domain.Transactions.Exceptions;
+using Hotel.Domain.Transactions.Repositories;
 
 namespace Hotel.Domain.Transactions.Services;
 

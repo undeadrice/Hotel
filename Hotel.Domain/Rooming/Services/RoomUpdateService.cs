@@ -1,4 +1,5 @@
 using Hotel.Domain.Rooming.Exceptions;
+using Hotel.Domain.Rooming.Repositories;
 
 namespace Hotel.Domain.Rooming.Services;
 

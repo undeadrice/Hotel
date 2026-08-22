@@ -1,6 +1,6 @@
-using Hotel.Domain.FiscalAccounting.Services;
 using Hotel.Domain.Reservations.Services;
 using MediatR;
+using Hotel.Domain.FiscalAccounting.Repositories;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 

@@ -2,6 +2,7 @@ using Hotel.Domain.Transactions.Entities;
 using Hotel.Domain.Transactions.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.Transactions.Repositories;
 
 namespace Hotel.Persistence.Transactions;
 
@@ -10,6 +11,12 @@ public class TransactionCodeRepository(PersistenceDbContext dbContext) : ITransa
     public async Task Add(TransactionCode transactionCode, CancellationToken token = default)
     {
         await dbContext.TransactionCodes.AddAsync(transactionCode, token);
+    }
+
+    public async Task Update(TransactionCode transactionCode, CancellationToken token = default)
+    {
+        dbContext.TransactionCodes.Update(transactionCode);
+        await Task.CompletedTask;
     }
 
     public async Task<TransactionCode> GetById(Guid id, CancellationToken token = default)

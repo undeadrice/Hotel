@@ -1,8 +1,8 @@
-using Hotel.Application.RatePlans.Services;
 using Hotel.Application.RatePlans.TransferObjects;
-using Hotel.Application.Rooming.Services;
 using Hotel.Shared.Exceptions;
 using MediatR;
+using Hotel.Application.RatePlans.Repositories;
+using Hotel.Application.Rooming.Repositories;
 
 namespace Hotel.Application.RatePlans.Queries;
 

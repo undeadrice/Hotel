@@ -1,10 +1,6 @@
-using Hotel.Application.NumberCycles.Services;
 using Hotel.Application.Roles.Services;
-using Hotel.Application.Rooming.Services;
-using Hotel.Application.Transactions.Services;
 using Hotel.Application.Users.Contracts;
 using Hotel.Application.Users.Services;
-using Hotel.Domain.Configurations.Services;
 using Hotel.Domain.NumberCycles.Enums;
 using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.Persistence;
@@ -12,6 +8,11 @@ using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Rooming.Services;
 using Hotel.Domain.Transactions.Enums;
 using Hotel.Domain.Transactions.Services;
+using Hotel.Domain.Rooming.Repositories;
+using Hotel.Domain.Configurations.Repositories;
+using Hotel.Application.Transactions.Repositories;
+using Hotel.Application.NumberCycles.Repositories;
+using Hotel.Application.Rooming.Repositories;
 
 namespace Hotel.Application.Seeding;
 

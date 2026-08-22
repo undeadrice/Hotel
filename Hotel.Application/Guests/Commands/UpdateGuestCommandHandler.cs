@@ -1,5 +1,5 @@
-using Hotel.Domain.Guests.Services;
 using MediatR;
+using Hotel.Domain.Guests.Repositories;
 
 namespace Hotel.Application.Guests.Commands;
 

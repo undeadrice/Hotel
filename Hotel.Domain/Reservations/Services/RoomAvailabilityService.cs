@@ -1,3 +1,4 @@
+using Hotel.Domain.Reservations.Repositories;
 namespace Hotel.Domain.Reservations.Services;
 
 public class RoomAvailabilityService(IReservationRepository reservationRepository) : IRoomAvailabilityService

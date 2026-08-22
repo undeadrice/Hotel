@@ -1,6 +1,6 @@
-using Hotel.Application.Transactions.Services;
 using Hotel.Application.Transactions.TransferObjects;
 using MediatR;
+using Hotel.Application.Transactions.Repositories;
 
 namespace Hotel.Application.Transactions.Queries;
 

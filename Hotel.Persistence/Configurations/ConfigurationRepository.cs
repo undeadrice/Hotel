@@ -1,7 +1,7 @@
 using Hotel.Domain.Configurations.Entities;
-using Hotel.Domain.Configurations.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Domain.Configurations.Repositories;
 
 namespace Hotel.Persistence.Configurations;
 

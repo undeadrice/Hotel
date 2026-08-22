@@ -11,6 +11,10 @@ public class TransactionGroup
     public TransactionType Type { get; private set; }
     public bool IsActive { get; private set; }
 
+    private readonly List<TransactionCode> _transactionCodes = new();
+
+    public IReadOnlyCollection<TransactionCode> TransactionCodes => _transactionCodes.AsReadOnly();
+
 #pragma warning disable CS8618
     public TransactionGroup() { }
 #pragma warning restore CS8618

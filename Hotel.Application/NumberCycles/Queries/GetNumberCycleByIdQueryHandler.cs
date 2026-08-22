@@ -1,6 +1,6 @@
-using Hotel.Application.NumberCycles.Services;
 using Hotel.Application.NumberCycles.TransferObjects;
 using MediatR;
+using Hotel.Application.NumberCycles.Repositories;
 
 namespace Hotel.Application.NumberCycles.Queries;
 

@@ -1,7 +1,7 @@
-﻿using Hotel.Application.Rooming.Services;
 using Hotel.Application.Rooming.TransferObjects;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Application.Rooming.Repositories;
 
 namespace Hotel.Persistence.Rooming;
 

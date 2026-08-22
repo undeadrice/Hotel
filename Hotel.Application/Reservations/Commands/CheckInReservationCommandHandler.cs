@@ -1,5 +1,6 @@
 using Hotel.Domain.Reservations.Services;
 using MediatR;
+using Hotel.Domain.Reservations.Repositories;
 
 namespace Hotel.Application.Reservations.Commands;
 
