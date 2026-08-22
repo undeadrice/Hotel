@@ -34,7 +34,7 @@ public class Room
         return new Room(Guid.NewGuid(), roomNumber, roomTypeId);
     }
 
-    public void UpdateRoomNumber(string roomNumber)
+    internal void UpdateRoomNumber(string roomNumber)
     {
         if (string.IsNullOrWhiteSpace(roomNumber))
         {
@@ -44,7 +44,7 @@ public class Room
         RoomNumber = roomNumber;
     }
 
-    public void ChangeRoomType(Guid roomTypeId)
+    internal void ChangeRoomType(Guid roomTypeId)
     {
         RoomTypeId = roomTypeId;
     }
