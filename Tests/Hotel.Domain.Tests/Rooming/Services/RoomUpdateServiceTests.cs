@@ -5,7 +5,7 @@ using Hotel.Domain.Rooming.Services;
 using NSubstitute;
 using Xunit;
 
-namespace Hotel.Domain.Tests.Rooming;
+namespace Hotel.Domain.Tests.Rooming.Services;
 
 public class RoomUpdateServiceTests
 {

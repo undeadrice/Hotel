@@ -4,7 +4,7 @@ using Hotel.Domain.Transactions.Enums;
 using Hotel.Domain.Transactions.Exceptions;
 using Xunit;
 
-namespace Hotel.Domain.Tests.Transactions;
+namespace Hotel.Domain.Tests.Transactions.Entities;
 
 public class TransactionGroupTests
 {

@@ -3,7 +3,7 @@ using Hotel.Domain.Transactions.Entities;
 using Hotel.Domain.Transactions.Exceptions;
 using Xunit;
 
-namespace Hotel.Domain.Tests.Transactions;
+namespace Hotel.Domain.Tests.Transactions.Entities;
 
 public class TransactionCodeTests
 {

@@ -2,7 +2,7 @@ using FluentAssertions;
 using Hotel.Domain.Configurations.Entities;
 using Xunit;
 
-namespace Hotel.Domain.Tests.Configurations;
+namespace Hotel.Domain.Tests.Configurations.Entities;
 
 public class ConfigurationTests
 {

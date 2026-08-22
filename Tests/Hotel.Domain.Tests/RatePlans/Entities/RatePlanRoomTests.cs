@@ -3,7 +3,7 @@ using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.RatePlans.Exceptions;
 using Xunit;
 
-namespace Hotel.Domain.Tests.RatePlans;
+namespace Hotel.Domain.Tests.RatePlans.Entities;
 
 public class RatePlanRoomTests
 {

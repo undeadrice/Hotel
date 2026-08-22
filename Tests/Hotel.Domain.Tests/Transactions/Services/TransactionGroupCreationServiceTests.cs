@@ -6,7 +6,7 @@ using Hotel.Domain.Transactions.Services;
 using NSubstitute;
 using Xunit;
 
-namespace Hotel.Domain.Tests.Transactions;
+namespace Hotel.Domain.Tests.Transactions.Services;
 
 public class TransactionGroupCreationServiceTests
 {
