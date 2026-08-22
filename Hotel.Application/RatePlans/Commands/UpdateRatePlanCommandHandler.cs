@@ -1,3 +1,4 @@
+using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.RatePlans.Services;
 using MediatR;
 
@@ -10,7 +11,7 @@ public class UpdateRatePlanCommandHandler(IRatePlanRepository ratePlanRepository
     {
         var ratePlan = await ratePlanRepository.GetById(request.Id, cancellationToken);
 
-        var rooms = request.Rooms.Select(r => (r.RoomTypeId, r.Price));
+        var rooms = request.Rooms.Select(r => new RoomTypePriceDefinition(r.RoomTypeId, r.Price));
 
         ratePlan.Update(
             request.Name,

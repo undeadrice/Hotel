@@ -33,7 +33,7 @@ public class RatePlan
         IsActive = true;
     }
 
-    public static RatePlan Create(string name, Guid transactionCodeId, DateOnly startDate, DateOnly endDate, IEnumerable<(Guid RoomTypeId, decimal Price)> rooms)
+    public static RatePlan Create(string name, Guid transactionCodeId, DateOnly startDate, DateOnly endDate, IEnumerable<RoomTypePriceDefinition> rooms)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -59,25 +59,20 @@ public class RatePlan
 
         var ratePlan = new RatePlan(Guid.NewGuid(), name, transactionCodeId, startDate, endDate);
 
-        foreach (var (roomTypeId, price) in roomList)
+        foreach (var room in roomList)
         {
-            if (roomTypeId == Guid.Empty)
+            if (room.RoomTypeId == Guid.Empty)
             {
                 throw new RatePlanRoomTypeRequiredException();
             }
 
-            if (price <= 0)
-            {
-                throw new RatePlanPriceInvalidException();
-            }
-
-            ratePlan.AddRoom(roomTypeId, price);
+            ratePlan.AddRoom(room.RoomTypeId, room.Price);
         }
 
         return ratePlan;
     }
 
-    public void Update(string name, Guid transactionCodeId, DateOnly startDate, DateOnly endDate, IEnumerable<(Guid RoomTypeId, decimal Price)> rooms)
+    public void Update(string name, Guid transactionCodeId, DateOnly startDate, DateOnly endDate, IEnumerable<RoomTypePriceDefinition> rooms)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -107,26 +102,23 @@ public class RatePlan
         EndDate = endDate;
 
         _rooms.Clear();
-        foreach (var (roomTypeId, price) in roomList)
+        foreach (var room in roomList)
         {
-            if (roomTypeId == Guid.Empty)
+            if (room.RoomTypeId == Guid.Empty)
             {
                 throw new RatePlanRoomTypeRequiredException();
             }
 
-            if (price <= 0)
-            {
-                throw new RatePlanPriceInvalidException();
-            }
-
-            AddRoom(roomTypeId, price);
+            AddRoom(room.RoomTypeId, room.Price);
         }
     }
 
     private void AddRoom(Guid roomTypeId, decimal price)
     {
-        var room = new RatePlanRoom(roomTypeId, price);
+        var room = RatePlanRoom.Create(roomTypeId, price);
         room.SetRatePlanId(Id);
         _rooms.Add(room);
     }
 }
+
+public record RoomTypePriceDefinition(Guid RoomTypeId, decimal Price);

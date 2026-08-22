@@ -9,7 +9,7 @@ public class CreateRatePlanCommandHandler(IRatePlanRepository ratePlanRepository
 {
     public async Task<Guid> Handle(CreateRatePlanCommand request, CancellationToken cancellationToken)
     {
-        var rooms = request.Rooms.Select(r => (r.RoomTypeId, r.Price));
+        var rooms = request.Rooms.Select(r => new RoomTypePriceDefinition(r.RoomTypeId, r.Price));
 
         var ratePlan = RatePlan.Create(
             request.Name,
