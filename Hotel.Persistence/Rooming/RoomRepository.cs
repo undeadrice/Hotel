@@ -12,11 +12,6 @@ public class RoomRepository(PersistenceDbContext persistenceDbContext) : IRoomRe
         await persistenceDbContext.Rooms.AddAsync(room);
     }
 
-    public async Task Update(Room room, CancellationToken token)
-    {
-        persistenceDbContext.Rooms.Update(room);
-    }
-
     public async Task<Room> GetById(Guid id, CancellationToken token)
     {
         var result = await persistenceDbContext.Rooms

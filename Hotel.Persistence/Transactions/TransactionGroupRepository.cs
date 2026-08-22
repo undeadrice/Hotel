@@ -12,12 +12,6 @@ public class TransactionGroupRepository(PersistenceDbContext dbContext) : ITrans
         await dbContext.TransactionGroups.AddAsync(transactionGroup, token);
     }
 
-    public Task Update(TransactionGroup transactionGroup, CancellationToken token = default)
-    {
-        dbContext.TransactionGroups.Update(transactionGroup);
-        return Task.CompletedTask;
-    }
-
     public async Task<TransactionGroup> GetById(Guid id, CancellationToken token = default)
     {
         var result = await dbContext.TransactionGroups.FirstOrDefaultAsync(tg => tg.Id == id, token);
