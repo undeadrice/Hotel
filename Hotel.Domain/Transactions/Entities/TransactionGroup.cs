@@ -5,8 +5,6 @@ namespace Hotel.Domain.Transactions.Entities;
 
 public class TransactionGroup
 {
-    private readonly List<TransactionCode> _transactionCodes = [];
-
     public Guid Id { get; private set; }
 
     public string Code { get; private set; }
@@ -16,8 +14,6 @@ public class TransactionGroup
     public TransactionType Type { get; private set; }
 
     public bool IsActive { get; private set; }
-
-    public IReadOnlyCollection<TransactionCode> TransactionCodes => _transactionCodes.AsReadOnly();
 
 #pragma warning disable CS8618
     public TransactionGroup() { }
