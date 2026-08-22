@@ -1,3 +1,5 @@
+using Hotel.Domain.Guests.Exceptions;
+
 namespace Hotel.Domain.Guests;
 
 public class Guest
@@ -9,7 +11,9 @@ public class Guest
     public string Email { get; private set; }
     public string DocumentNumber { get; private set; }
 
-    public Guest() { }
+#pragma warning disable CS8618
+    internal Guest() { }
+#pragma warning restore CS8618
 
     private Guest(
         Guid id,
@@ -34,6 +38,8 @@ public class Guest
         string email,
         string documentNumber)
     {
+        Validate(firstName, lastName, phone, email, documentNumber);
+
         return new Guest(
             Guid.NewGuid(),
             firstName,
@@ -50,10 +56,45 @@ public class Guest
         string email,
         string documentNumber)
     {
+        Validate(firstName, lastName, phone, email, documentNumber);
+
         FirstName = firstName;
         LastName = lastName;
         Phone = phone;
         Email = email;
         DocumentNumber = documentNumber;
+    }
+
+    private static void Validate(
+        string firstName,
+        string lastName,
+        string phone,
+        string email,
+        string documentNumber)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            throw new GuestFirstNameRequiredException();
+        }
+
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            throw new GuestLastNameRequiredException();
+        }
+
+        if (string.IsNullOrWhiteSpace(phone))
+        {
+            throw new GuestPhoneRequiredException();
+        }
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            throw new GuestEmailRequiredException();
+        }
+
+        if (string.IsNullOrWhiteSpace(documentNumber))
+        {
+            throw new GuestDocumentNumberRequiredException();
+        }
     }
 }
