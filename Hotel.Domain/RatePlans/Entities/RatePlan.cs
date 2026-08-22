@@ -17,6 +17,7 @@ public class RatePlan
     public bool IsActive { get; private set; }
 
     private readonly List<RatePlanRoom> _rooms = new();
+
     public IReadOnlyCollection<RatePlanRoom> Rooms => _rooms.AsReadOnly();
 
 #pragma warning disable CS8618
@@ -115,8 +116,7 @@ public class RatePlan
 
     private void AddRoom(Guid roomTypeId, decimal price)
     {
-        var room = RatePlanRoom.Create(roomTypeId, price);
-        room.SetRatePlanId(Id);
+        var room = RatePlanRoom.Create(Id, roomTypeId, price);
         _rooms.Add(room);
     }
 }
