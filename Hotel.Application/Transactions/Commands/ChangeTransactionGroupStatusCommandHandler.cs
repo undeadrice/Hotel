@@ -19,7 +19,5 @@ public class ChangeTransactionGroupStatusCommandHandler(ITransactionGroupReposit
         {
             transactionGroup.Deactivate();
         }
-
-        await transactionGroupRepository.Update(transactionGroup, cancellationToken);
     }
 }

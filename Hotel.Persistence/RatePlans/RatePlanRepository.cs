@@ -11,12 +11,6 @@ public class RatePlanRepository(PersistenceDbContext persistenceDbContext) : IRa
     {
         await persistenceDbContext.RatePlans.AddAsync(ratePlan, token);
     }
-
-    public async Task Update(RatePlan ratePlan, CancellationToken token)
-    {
-        persistenceDbContext.RatePlans.Update(ratePlan);
-    }
-
     public async Task<RatePlan> GetById(Guid id, CancellationToken token)
     {
         var result = await persistenceDbContext.RatePlans

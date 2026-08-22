@@ -19,7 +19,5 @@ public class ChangeTransactionCodeStatusCommandHandler(ITransactionCodeRepositor
         {
             transactionCode.Deactivate();
         }
-
-        await transactionCodeRepository.Update(transactionCode, cancellationToken);
     }
 }

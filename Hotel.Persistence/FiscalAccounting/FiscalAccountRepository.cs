@@ -12,12 +12,6 @@ public class FiscalAccountRepository(PersistenceDbContext persistenceDbContext) 
         await persistenceDbContext.FiscalAccounts.AddAsync(account, token);
     }
 
-    public Task Update(FiscalAccount account, CancellationToken token)
-    {
-        persistenceDbContext.FiscalAccounts.Update(account);
-        return Task.CompletedTask;
-    }
-
     public async Task<FiscalAccount?> FindById(Guid id, CancellationToken token)
     {
         return await persistenceDbContext.FiscalAccounts

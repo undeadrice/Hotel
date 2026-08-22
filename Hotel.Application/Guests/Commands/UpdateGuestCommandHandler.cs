@@ -15,7 +15,5 @@ public class UpdateGuestCommandHandler(IGuestRepository guestRepository)
             request.Phone,
             request.Email,
             request.DocumentNumber);
-
-        await guestRepository.Update(guest, cancellationToken);
     }
 }

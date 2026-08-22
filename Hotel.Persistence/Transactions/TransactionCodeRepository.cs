@@ -13,12 +13,6 @@ public class TransactionCodeRepository(PersistenceDbContext dbContext) : ITransa
         await dbContext.TransactionCodes.AddAsync(transactionCode, token);
     }
 
-    public async Task Update(TransactionCode transactionCode, CancellationToken token = default)
-    {
-        dbContext.TransactionCodes.Update(transactionCode);
-        await Task.CompletedTask;
-    }
-
     public async Task<TransactionCode> GetById(Guid id, CancellationToken token = default)
     {
         var result = await dbContext.TransactionCodes.FirstOrDefaultAsync(tc => tc.Id == id, token);

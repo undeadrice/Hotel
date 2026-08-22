@@ -6,8 +6,6 @@ public interface ITransactionCodeRepository
 {
     Task Add(TransactionCode transactionCode, CancellationToken token = default);
 
-    Task Update(TransactionCode transactionCode, CancellationToken token = default);
-
     Task<TransactionCode> GetById(Guid id, CancellationToken token = default);
 
     Task<TransactionCode?> FindById(Guid id, CancellationToken token = default);

@@ -13,12 +13,6 @@ public class ReservationRepository(PersistenceDbContext persistenceDbContext) : 
     {
         await persistenceDbContext.Reservations.AddAsync(reservation, token);
     }
-
-    public async Task Update(Reservation reservation, CancellationToken token)
-    {
-        persistenceDbContext.Reservations.Update(reservation);
-    }
-
     public async Task<Reservation?> FindById(Guid id, CancellationToken token)
     {
         return await persistenceDbContext.Reservations

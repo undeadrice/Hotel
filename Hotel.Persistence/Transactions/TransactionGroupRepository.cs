@@ -1,5 +1,4 @@
 using Hotel.Domain.Transactions.Entities;
-using Hotel.Domain.Transactions.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Hotel.Domain.Transactions.Repositories;
@@ -11,12 +10,6 @@ public class TransactionGroupRepository(PersistenceDbContext dbContext) : ITrans
     public async Task Add(TransactionGroup transactionGroup, CancellationToken token = default)
     {
         await dbContext.TransactionGroups.AddAsync(transactionGroup, token);
-    }
-
-    public async Task Update(TransactionGroup transactionGroup, CancellationToken token = default)
-    {
-        dbContext.TransactionGroups.Update(transactionGroup);
-        await Task.CompletedTask;
     }
 
     public async Task<TransactionGroup> GetById(Guid id, CancellationToken token = default)

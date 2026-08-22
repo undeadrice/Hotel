@@ -19,7 +19,5 @@ public class UpdateRatePlanCommandHandler(IRatePlanRepository ratePlanRepository
             request.StartDate,
             request.EndDate,
             rooms);
-
-        await ratePlanRepository.Update(ratePlan, cancellationToken);
     }
 }

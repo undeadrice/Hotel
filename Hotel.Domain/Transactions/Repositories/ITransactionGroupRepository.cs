@@ -6,8 +6,6 @@ public interface ITransactionGroupRepository
 {
     Task Add(TransactionGroup transactionGroup, CancellationToken token = default);
 
-    Task Update(TransactionGroup transactionGroup, CancellationToken token = default);
-
     Task<TransactionGroup> GetById(Guid id, CancellationToken token = default);
 
     Task<TransactionGroup?> FindById(Guid id, CancellationToken token = default);

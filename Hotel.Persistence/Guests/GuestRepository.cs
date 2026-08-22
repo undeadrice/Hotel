@@ -11,12 +11,6 @@ public class GuestRepository(PersistenceDbContext persistenceDbContext) : IGuest
     {
         await persistenceDbContext.Guests.AddAsync(guest, token);
     }
-
-    public async Task Update(Guest guest, CancellationToken token)
-    {
-        persistenceDbContext.Guests.Update(guest);
-    }
-
     public async Task<Guest> GetById(Guid id, CancellationToken token)
     {
         var result = await persistenceDbContext.Guests.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: token);
