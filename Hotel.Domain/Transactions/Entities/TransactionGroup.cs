@@ -6,13 +6,9 @@ namespace Hotel.Domain.Transactions.Entities;
 public class TransactionGroup
 {
     public Guid Id { get; private set; }
-
     public string Code { get; private set; }
-
     public string Name { get; private set; }
-
     public TransactionType Type { get; private set; }
-
     public bool IsActive { get; private set; }
 
 #pragma warning disable CS8618
@@ -32,10 +28,7 @@ public class TransactionGroup
         IsActive = true;
     }
 
-    public static TransactionGroup Create(
-        string code,
-        string name,
-        TransactionType type)
+    internal static TransactionGroup Create(string code, string name, TransactionType type)
     {
         Validate(code, name);
 
@@ -46,10 +39,7 @@ public class TransactionGroup
             type);
     }
 
-    public void Update(
-        string code,
-        string name,
-        TransactionType type)
+    internal void Update(string code, string name, TransactionType type)
     {
         Validate(code, name);
 

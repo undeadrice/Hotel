@@ -27,7 +27,7 @@ public class TransactionCode
         IsActive = true;
     }
 
-    public static TransactionCode Create(Guid transactionGroupId, string code, string name)
+    internal static TransactionCode Create(Guid transactionGroupId, string code, string name)
     {
         Validate(code, name);
 
@@ -38,7 +38,7 @@ public class TransactionCode
             name.Trim());
     }
 
-    public void Update(string code, string name)
+    internal void Update(string code, string name)
     {
         Validate(code, name);
 
