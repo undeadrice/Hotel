@@ -15,7 +15,7 @@ public class TransactionGroupUpdateService(ITransactionGroupRepository transacti
     {
         var transactionGroup = await transactionGroupRepository.GetById(id, cancellationToken);
 
-        var normalizedCode = code?.Trim().ToUpperInvariant();
+        var normalizedCode = code.Trim().ToUpperInvariant();
 
         if (transactionGroup.Code != normalizedCode
             && !string.IsNullOrWhiteSpace(normalizedCode)
@@ -24,8 +24,6 @@ public class TransactionGroupUpdateService(ITransactionGroupRepository transacti
             throw new TransactionGroupCodeAlreadyExistsException(normalizedCode);
         }
 
-        transactionGroup.Update(code!, name, type);
-
-        await transactionGroupRepository.Update(transactionGroup, cancellationToken);
+        transactionGroup.Update(code, name, type);
     }
 }
