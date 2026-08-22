@@ -61,17 +61,17 @@ public class Reservation
     {
         if (startDate >= endDate)
         {
-            throw new ArgumentException("Start date must be before end date.");
+            throw new ReservationInvalidDateRangeException();
         }
 
         if (!guestIds.Any())
         {
-            throw new ArgumentException("At least one guest must be assigned.");
+            throw new ReservationGuestRequiredException();
         }
 
         if (string.IsNullOrWhiteSpace(cycleIdentifier))
         {
-            throw new ArgumentException("Cycle identifier is required.", nameof(cycleIdentifier));
+            throw new ReservationCycleIdentifierRequiredException();
         }
 
         var isOccupied = await roomAvailabilityService.IsRoomOccupied(roomId, startDate, endDate, cancellationToken);
