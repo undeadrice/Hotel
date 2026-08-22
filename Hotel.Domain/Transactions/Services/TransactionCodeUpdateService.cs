@@ -28,7 +28,7 @@ public class TransactionCodeUpdateService(
             transactionCode.ChangeGroup(transactionGroupId);
         }
 
-        var normalizedCode = code?.Trim().ToUpperInvariant();
+        var normalizedCode = code.Trim().ToUpperInvariant();
 
         if (transactionCode.Code != normalizedCode
             && !string.IsNullOrWhiteSpace(normalizedCode)
@@ -37,8 +37,6 @@ public class TransactionCodeUpdateService(
             throw new TransactionCodeAlreadyExistsException(normalizedCode);
         }
 
-        transactionCode.Update(code!, name);
-
-        await transactionCodeRepository.Update(transactionCode, cancellationToken);
+        transactionCode.Update(code, name);
     }
 }
