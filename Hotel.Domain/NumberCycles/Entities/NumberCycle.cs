@@ -1,4 +1,5 @@
 using Hotel.Domain.NumberCycles.Enums;
+using Hotel.Domain.NumberCycles.Exceptions;
 
 namespace Hotel.Domain.NumberCycles.Entities;
 
@@ -56,17 +57,17 @@ public class NumberCycle
     {
         if (!Enum.IsDefined(topic))
         {
-            throw new ArgumentException("Invalid number cycle topic.", nameof(topic));
+            throw new NumberCycleInvalidTopicException();
         }
 
         if (string.IsNullOrWhiteSpace(prefix))
         {
-            throw new ArgumentException("Prefix is required.", nameof(prefix));
+            throw new NumberCyclePrefixRequiredException();
         }
 
         if (startIndex < 0)
         {
-            throw new ArgumentException("Start index must be zero or greater.", nameof(startIndex));
+            throw new NumberCycleStartIndexInvalidException();
         }
     }
 }
