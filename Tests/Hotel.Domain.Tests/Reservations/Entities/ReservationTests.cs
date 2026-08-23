@@ -183,6 +183,22 @@ public class ReservationTests
     }
 
     [Fact]
+    public async Task CheckOut_WhenNoShow_ShouldThrowReservationNoShowException()
+    {
+        // Arrange
+        var reservation = await CreateReservation();
+        reservation.TransitionOnEndOfDay(StartDate);
+        reservation.TransitionOnEndOfDay(StartDate.AddDays(1));
+
+        // Act
+        Action act = () => reservation.CheckOut();
+
+        // Assert
+        act.Should().Throw<ReservationNoShowException>();
+        reservation.Status.Should().Be(ReservationStatus.NoShow);
+    }
+
+    [Fact]
     public async Task TransitionOnEndOfDay_WhenReservedAndStartDateIsBusinessDate_ShouldSetDueIn()
     {
         // Arrange

@@ -110,8 +110,13 @@ public class Reservation
         Status = ReservationStatus.InHouse;
     }
 
-    internal void CheckOut()
+    public void CheckOut()
     {
+        if (Status == ReservationStatus.NoShow)
+        {
+            throw new ReservationNoShowException();
+        }
+
         if (Status != ReservationStatus.InHouse)
         {
             throw new ReservationNotInHouseException();
