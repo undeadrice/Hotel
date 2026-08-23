@@ -38,7 +38,7 @@ public class FiscalAccount
     {
         if (string.IsNullOrWhiteSpace(cycleIdentifier))
         {
-            throw new ArgumentException("Cycle identifier is required.", nameof(cycleIdentifier));
+            throw new FiscalAccountCycleIdentifierRequiredException();
         }
 
         var account = new FiscalAccount(
