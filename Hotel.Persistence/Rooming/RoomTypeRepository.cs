@@ -1,5 +1,4 @@
 using Hotel.Domain.Rooming.Entities;
-using Hotel.Domain.Rooming.Services;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Hotel.Domain.Rooming.Repositories;
@@ -11,11 +10,6 @@ public class RoomTypeRepository(PersistenceDbContext persistenceDbContext) : IRo
     public async Task Add(RoomType roomType, CancellationToken token)
     {
         await persistenceDbContext.RoomTypes.AddAsync(roomType);
-    }
-
-    public async Task Update(RoomType roomType, CancellationToken token)
-    {
-        persistenceDbContext.RoomTypes.Update(roomType);
     }
 
     public async Task<RoomType> GetById(Guid id, CancellationToken token)
