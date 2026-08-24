@@ -9,18 +9,31 @@ internal class GetPermissionsQueryHandler
     private static readonly IReadOnlyCollection<PermissionGroupDto> _groups =
     [
         new PermissionGroupDto("Role", ["RoleCreate", "RoleEdit", "RoleDelete", "RoleView"]),
+
         new PermissionGroupDto("User", ["UserCreate", "UserEdit", "UserDelete", "UserView"]),
+
         new PermissionGroupDto("Permissions", ["PermissionView"]),
+
         new PermissionGroupDto("Reservation", ["ReservationCreate", "ReservationEdit", "ReservationView"]),
+
         new PermissionGroupDto("Room", ["RoomCreate", "RoomEdit", "RoomDelete", "RoomView"]),
+
         new PermissionGroupDto("RoomType", ["RoomTypeCreate", "RoomTypeEdit", "RoomTypeDelete", "RoomTypeView"]),
+
         new PermissionGroupDto("RatePlan", ["RatePlanCreate", "RatePlanEdit", "RatePlanDelete", "RatePlanView"]),
+
         new PermissionGroupDto("Guest", ["GuestCreate", "GuestEdit", "GuestDelete", "GuestView"]),
+
         new PermissionGroupDto("NumberCycle", ["NumberCycleCreate", "NumberCycleDelete", "NumberCycleView"]),
+
         new PermissionGroupDto("FiscalAccount", ["FiscalAccountEdit", "FiscalAccountView"]),
+
         new PermissionGroupDto("Configuration", ["ConfigurationView", "ConfigurationEdit"]),
+
         new PermissionGroupDto("TransactionCode", ["TransactionCodeCreate", "TransactionCodeEdit", "TransactionCodeView"]),
+
         new PermissionGroupDto("TransactionGroup", ["TransactionGroupCreate", "TransactionGroupEdit", "TransactionGroupView"]),
+
         new PermissionGroupDto("Dashboard", ["DashboardView"]),
     ];
 
