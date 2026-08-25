@@ -1,5 +1,4 @@
 using Hotel.Application.RatePlans.TransferObjects;
-using Hotel.Shared.Exceptions;
 using MediatR;
 using Hotel.Application.RatePlans.Repositories;
 using Hotel.Application.Rooming.Repositories;
