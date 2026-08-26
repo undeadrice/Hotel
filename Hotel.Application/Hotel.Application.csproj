@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Guests\Queries\SearchGuestsQueryHandler.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Guests\Queries\SearchGuestsQueryHandler.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <InternalsVisibleTo Include="Hotel.Application.Tests" />
   </ItemGroup>
 
