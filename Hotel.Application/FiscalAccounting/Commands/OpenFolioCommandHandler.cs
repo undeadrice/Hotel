@@ -1,4 +1,3 @@
-using Hotel.Application.Pipeline;
 using MediatR;
 using Hotel.Domain.FiscalAccounting.Repositories;
 
