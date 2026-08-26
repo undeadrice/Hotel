@@ -1,7 +1,5 @@
 using Hotel.Application.Configurations.Services;
 using Hotel.Domain.Reservations.Exceptions;
-using Hotel.Domain.Reservations.Services;
-using Hotel.Domain.Rooming.Services;
 using MediatR;
 using Hotel.Domain.RatePlans.Repositories;
 using Hotel.Domain.Reservations.Repositories;
