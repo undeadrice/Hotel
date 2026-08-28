@@ -1,3 +1,4 @@
+using Hotel.Application.Common;
 using Hotel.Application.Configurations.Services;
 using Hotel.Domain.Reservations.Exceptions;
 using MediatR;
@@ -13,7 +14,8 @@ public class PostRoomChargeCommandHandler(
     IRatePlanRepository ratePlanRepository,
     IRoomRepository roomRepository,
     IFiscalAccountRepository fiscalAccountRepository,
-    IBusinessDateProvider businessDateProvider)
+    IBusinessDateProvider businessDateProvider,
+    IDateTimeProvider dateTimeProvider)
     : IRequestHandler<PostRoomChargeCommand, Guid>
 {
     public async Task<Guid> Handle(PostRoomChargeCommand request, CancellationToken cancellationToken)
@@ -38,7 +40,8 @@ public class PostRoomChargeCommandHandler(
             "Room charge",
             ratePlanRoom.Price,
             ratePlan.TransactionCodeId,
-            businessDate);
+            businessDate,
+            dateTimeProvider.UtcNow);
 
         return item.Id;
     }

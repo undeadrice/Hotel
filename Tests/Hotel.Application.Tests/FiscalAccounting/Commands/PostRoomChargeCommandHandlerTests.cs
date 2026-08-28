@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Hotel.Application.Common;
 using Hotel.Application.Configurations.Services;
 using Hotel.Application.FiscalAccounting.Commands;
 using Hotel.Domain.FiscalAccounting.Entities;
@@ -25,6 +26,7 @@ public class PostRoomChargeCommandHandlerTests
     private readonly IFiscalAccountRepository _fiscalAccountRepository;
     private readonly IBusinessDateProvider _businessDateProvider;
     private readonly IRoomAvailabilityService _roomAvailabilityService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly PostRoomChargeCommandHandler _handler;
 
     public PostRoomChargeCommandHandlerTests()
@@ -35,12 +37,14 @@ public class PostRoomChargeCommandHandlerTests
         _fiscalAccountRepository = Substitute.For<IFiscalAccountRepository>();
         _businessDateProvider = Substitute.For<IBusinessDateProvider>();
         _roomAvailabilityService = Substitute.For<IRoomAvailabilityService>();
+        _dateTimeProvider = Substitute.For<IDateTimeProvider>();
         _handler = new PostRoomChargeCommandHandler(
             _reservationRepository,
             _ratePlanRepository,
             _roomRepository,
             _fiscalAccountRepository,
-            _businessDateProvider);
+            _businessDateProvider,
+            _dateTimeProvider);
     }
 
     [Fact]
@@ -66,16 +70,19 @@ public class PostRoomChargeCommandHandlerTests
             new DateOnly(2026, 8, 10),
             new DateOnly(2026, 8, 12),
             null,
+            DateTime.UtcNow,
             [Guid.NewGuid()],
             _roomAvailabilityService);
 
-        var fiscalAccount = FiscalAccount.Create(reservation.Id, Guid.NewGuid(), "CY-1");
+        var fiscalAccount = FiscalAccount.Create(reservation.Id, Guid.NewGuid(), "CY-1", DateTime.UtcNow);
+        var createdAt = new DateTime(2026, 8, 11, 10, 30, 0, DateTimeKind.Utc);
 
         _reservationRepository.GetById(reservation.Id, Arg.Any<CancellationToken>()).Returns(reservation);
         _ratePlanRepository.GetById(ratePlan.Id, Arg.Any<CancellationToken>()).Returns(ratePlan);
         _roomRepository.GetById(room.Id, Arg.Any<CancellationToken>()).Returns(room);
         _fiscalAccountRepository.GetByOriginatorId(reservation.Id, Arg.Any<CancellationToken>()).Returns(fiscalAccount);
         _businessDateProvider.GetCurrentBusinessDate(Arg.Any<CancellationToken>()).Returns(new DateOnly(2026, 8, 11));
+        _dateTimeProvider.UtcNow.Returns(createdAt);
 
         var command = new PostRoomChargeCommand(reservation.Id);
 
@@ -92,6 +99,7 @@ public class PostRoomChargeCommandHandlerTests
         item.Quantity.Should().Be(1);
         item.TransactionCodeId.Should().Be(ratePlan.TransactionCodeId);
         item.TransactionType.Should().Be(FolioItemType.Charge);
+        item.CreatedAt.Should().Be(createdAt);
     }
 
     [Fact]
@@ -115,6 +123,7 @@ public class PostRoomChargeCommandHandlerTests
             new DateOnly(2026, 8, 10),
             new DateOnly(2026, 8, 12),
             null,
+            DateTime.UtcNow,
             [Guid.NewGuid()],
             _roomAvailabilityService);
 
