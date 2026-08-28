@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Hotel.Application.Common;
 using Hotel.Application.FiscalAccounting.Commands;
 using Hotel.Domain.FiscalAccounting.Entities;
 using Hotel.Domain.FiscalAccounting.Repositories;
@@ -10,19 +11,24 @@ namespace Hotel.Application.Tests.FiscalAccounting.Commands;
 public class OpenFolioCommandHandlerTests
 {
     private readonly IFiscalAccountRepository _fiscalAccountRepository;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly OpenFolioCommandHandler _handler;
 
     public OpenFolioCommandHandlerTests()
     {
         _fiscalAccountRepository = Substitute.For<IFiscalAccountRepository>();
-        _handler = new OpenFolioCommandHandler(_fiscalAccountRepository);
+        _dateTimeProvider = Substitute.For<IDateTimeProvider>();
+        _handler = new OpenFolioCommandHandler(_fiscalAccountRepository, _dateTimeProvider);
     }
 
     [Fact]
     public async Task Handle_ShouldOpenFolioAndReturnFolioId()
     {
         // Arrange
-        var account = FiscalAccount.Create(Guid.NewGuid(), Guid.NewGuid(), "CY-1");
+        var account = FiscalAccount.Create(Guid.NewGuid(), Guid.NewGuid(), "CY-1", DateTime.UtcNow);
+        var createdAt = new DateTime(2026, 8, 11, 10, 30, 0, DateTimeKind.Utc);
+
+        _dateTimeProvider.UtcNow.Returns(createdAt);
 
         _fiscalAccountRepository
             .GetById(account.Id, Arg.Any<CancellationToken>())
@@ -40,6 +46,7 @@ public class OpenFolioCommandHandlerTests
         var openedFolio = account.Folios.Last();
         openedFolio.IsMainFolio.Should().BeFalse();
         openedFolio.Id.Should().Be(result);
+        openedFolio.CreatedAt.Should().Be(createdAt);
 
         await _fiscalAccountRepository.Received(1).GetById(account.Id, Arg.Any<CancellationToken>());
     }
