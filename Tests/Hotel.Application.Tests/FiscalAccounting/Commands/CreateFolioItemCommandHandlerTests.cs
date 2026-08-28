@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Hotel.Application.Common;
 using Hotel.Application.Configurations.Services;
 using Hotel.Application.FiscalAccounting.Commands;
 using Hotel.Domain.FiscalAccounting.Entities;
@@ -18,6 +19,7 @@ public class CreateFolioItemCommandHandlerTests
     private readonly IBusinessDateProvider _businessDateProvider;
     private readonly ITransactionCodeRepository _transactionCodeRepository;
     private readonly ITransactionGroupRepository _transactionGroupRepository;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly CreateFolioItemCommandHandler _handler;
 
     public CreateFolioItemCommandHandlerTests()
@@ -26,11 +28,13 @@ public class CreateFolioItemCommandHandlerTests
         _businessDateProvider = Substitute.For<IBusinessDateProvider>();
         _transactionCodeRepository = Substitute.For<ITransactionCodeRepository>();
         _transactionGroupRepository = Substitute.For<ITransactionGroupRepository>();
+        _dateTimeProvider = Substitute.For<IDateTimeProvider>();
         _handler = new CreateFolioItemCommandHandler(
             _fiscalAccountRepository,
             _businessDateProvider,
             _transactionCodeRepository,
-            _transactionGroupRepository);
+            _transactionGroupRepository,
+            _dateTimeProvider);
     }
 
     [Theory]
@@ -41,14 +45,16 @@ public class CreateFolioItemCommandHandlerTests
         // Arrange
         var group = TransactionGroup.Create("GRP", "Group", groupType);
         var code = TransactionCode.Create(group.Id, "CODE", "Code");
-        var account = FiscalAccount.Create(Guid.NewGuid(), Guid.NewGuid(), "CY-1");
+        var account = FiscalAccount.Create(Guid.NewGuid(), Guid.NewGuid(), "CY-1", DateTime.UtcNow);
         var folio = account.Folios.Single();
         var businessDate = new DateOnly(2026, 8, 11);
+        var createdAt = new DateTime(2026, 8, 11, 10, 30, 0, DateTimeKind.Utc);
 
         _transactionCodeRepository.GetById(code.Id, Arg.Any<CancellationToken>()).Returns(code);
         _transactionGroupRepository.GetById(group.Id, Arg.Any<CancellationToken>()).Returns(group);
         _fiscalAccountRepository.GetByFolioId(folio.Id, Arg.Any<CancellationToken>()).Returns(account);
         _businessDateProvider.GetCurrentBusinessDate(Arg.Any<CancellationToken>()).Returns(businessDate);
+        _dateTimeProvider.UtcNow.Returns(createdAt);
 
         var command = new CreateFolioItemCommand(folio.Id, "Room charge", 1, 100m, code.Id);
 
@@ -66,6 +72,7 @@ public class CreateFolioItemCommandHandlerTests
         item.TransactionCodeId.Should().Be(code.Id);
         item.TransactionType.Should().Be(expectedItemType);
         item.BusinessDate.Should().Be(businessDate);
+        item.CreatedAt.Should().Be(createdAt);
 
         await _fiscalAccountRepository.Received(1).GetByFolioId(folio.Id, Arg.Any<CancellationToken>());
         await _transactionCodeRepository.Received(1).GetById(code.Id, Arg.Any<CancellationToken>());

@@ -1,3 +1,4 @@
+using Hotel.Application.Common;
 using Hotel.Application.Configurations.Services;
 using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.Domain.Transactions.Enums;
@@ -11,7 +12,8 @@ public class CreateFolioItemCommandHandler(
     IFiscalAccountRepository fiscalAccountRepository,
     IBusinessDateProvider businessDateProvider,
     ITransactionCodeRepository transactionCodeRepository,
-    ITransactionGroupRepository transactionGroupRepository)
+    ITransactionGroupRepository transactionGroupRepository,
+    IDateTimeProvider dateTimeProvider)
     : IRequestHandler<CreateFolioItemCommand, Guid>
 {
     public async Task<Guid> Handle(CreateFolioItemCommand request, CancellationToken cancellationToken)
@@ -34,7 +36,8 @@ public class CreateFolioItemCommandHandler(
             request.Amount,
             request.TransactionCodeId,
             itemType,
-            businessDate);
+            businessDate,
+            dateTimeProvider.UtcNow);
 
         return item.Id;
     }
