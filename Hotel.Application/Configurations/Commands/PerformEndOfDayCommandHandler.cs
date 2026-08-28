@@ -1,3 +1,4 @@
+using Hotel.Application.Common;
 using Hotel.Domain.Reservations.Exceptions;
 using MediatR;
 using Hotel.Domain.RatePlans.Repositories;
@@ -13,7 +14,8 @@ public class PerformEndOfDayCommandHandler(
     IReservationRepository reservationRepository,
     IFiscalAccountRepository fiscalAccountRepository,
     IRoomRepository roomRepository,
-    IRatePlanRepository ratePlanRepository)
+    IRatePlanRepository ratePlanRepository,
+    IDateTimeProvider dateTimeProvider)
     : IRequestHandler<PerformEndOfDayCommand, DateOnly>
 {
     public async Task<DateOnly> Handle(PerformEndOfDayCommand request, CancellationToken cancellationToken)
@@ -66,7 +68,8 @@ public class PerformEndOfDayCommandHandler(
                 "Room charge",
                 ratePlanRoom.Price,
                 ratePlan.TransactionCodeId,
-                businessDate);
+                businessDate,
+                dateTimeProvider.UtcNow);
         }
     }
 }
