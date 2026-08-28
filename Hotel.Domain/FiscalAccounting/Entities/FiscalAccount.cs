@@ -34,7 +34,7 @@ public class FiscalAccount
         Status = FiscalAccountStatus.Open;
     }
 
-    public static FiscalAccount Create(Guid originatorId, Guid ownerId, string cycleIdentifier)
+    public static FiscalAccount Create(Guid originatorId, Guid ownerId, string cycleIdentifier, DateTime createdAt)
     {
         if (string.IsNullOrWhiteSpace(cycleIdentifier))
         {
@@ -46,21 +46,21 @@ public class FiscalAccount
             originatorId,
             ownerId,
             cycleIdentifier,
-            DateTime.UtcNow);
+            createdAt);
 
-        account.AddFolio();
+        account.AddFolio(createdAt);
 
         return account;
     }
 
-    public Folio OpenFolio()
+    public Folio OpenFolio(DateTime createdAt)
     {
         if (Status == FiscalAccountStatus.CheckedOut)
         {
             throw new FiscalAccountAlreadyCheckedOutException();
         }
 
-        return AddFolio();
+        return AddFolio(createdAt);
     }
 
     public FolioItem AddFolioItem(
@@ -70,7 +70,8 @@ public class FiscalAccount
         decimal amount,
         Guid transactionCodeId,
         FolioItemType transactionType,
-        DateOnly businessDate)
+        DateOnly businessDate,
+        DateTime createdAt)
     {
         if (Status == FiscalAccountStatus.CheckedOut)
         {
@@ -85,7 +86,8 @@ public class FiscalAccount
             amount,
             transactionCodeId,
             transactionType,
-            businessDate);
+            businessDate,
+            createdAt);
     }
 
     public void SettleFolio(Guid folioId)
@@ -97,7 +99,8 @@ public class FiscalAccount
         string description,
         decimal amount,
         Guid transactionCodeId,
-        DateOnly businessDate)
+        DateOnly businessDate,
+        DateTime createdAt)
     {
         var mainFolio = _folios.First(f => f.IsMainFolio);
 
@@ -108,7 +111,8 @@ public class FiscalAccount
             amount,
             transactionCodeId,
             FolioItemType.Charge,
-            businessDate);
+            businessDate,
+            createdAt);
     }
 
     public void CheckOut()
@@ -126,9 +130,9 @@ public class FiscalAccount
         Status = FiscalAccountStatus.CheckedOut;
     }
 
-    private Folio AddFolio()
+    private Folio AddFolio(DateTime createdAt)
     {
-        var folio = Folio.Create(Id, _folios.Count == 0);
+        var folio = Folio.Create(Id, createdAt, _folios.Count == 0);
         _folios.Add(folio);
         return folio;
     }
