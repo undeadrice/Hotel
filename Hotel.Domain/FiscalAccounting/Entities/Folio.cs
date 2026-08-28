@@ -31,12 +31,12 @@ public class Folio
         IsMainFolio = isMainFolio;
     }
 
-    internal static Folio Create(Guid fiscalAccountId, bool isMainFolio)
+    internal static Folio Create(Guid fiscalAccountId, DateTime createdAt, bool isMainFolio)
     {
         return new Folio(
             Guid.NewGuid(),
             fiscalAccountId,
-            DateTime.UtcNow,
+            createdAt,
             isMainFolio);
     }
 
@@ -46,7 +46,8 @@ public class Folio
         decimal amount,
         Guid transactionCodeId,
         FolioItemType transactionType,
-        DateOnly businessDate)
+        DateOnly businessDate,
+        DateTime createdAt)
     {
         var item = FolioItem.Create(
             Id,
@@ -55,7 +56,8 @@ public class Folio
             amount,
             transactionCodeId,
             transactionType,
-            businessDate);
+            businessDate,
+            createdAt);
 
         _items.Add(item);
         return item;

@@ -12,11 +12,12 @@ public class FolioTests
     private static readonly Guid OwnerId = Guid.NewGuid();
     private static readonly Guid TransactionCodeId = Guid.NewGuid();
     private static readonly DateOnly BusinessDate = DateOnly.FromDateTime(DateTime.UtcNow);
+    private static readonly DateTime CreatedAt = DateTime.UtcNow;
 
     private static Folio CreateFolio(bool isMain = true)
     {
-        var account = FiscalAccount.Create(OriginatorId, OwnerId, "CY-123");
-        return isMain ? account.Folios.Single() : account.OpenFolio();
+        var account = FiscalAccount.Create(OriginatorId, OwnerId, "CY-123", CreatedAt);
+        return isMain ? account.Folios.Single() : account.OpenFolio(CreatedAt);
     }
 
     [Fact]
@@ -26,7 +27,7 @@ public class FolioTests
         var folio = CreateFolio();
 
         // Act
-        var item = folio.AddItem("Room charge", 2, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate);
+        var item = folio.AddItem("Room charge", 2, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
 
         // Assert
         folio.Items.Should().ContainSingle().Which.Should().Be(item);
@@ -37,8 +38,8 @@ public class FolioTests
     {
         // Arrange
         var folio = CreateFolio();
-        folio.AddItem("Room charge", 1, 100m, TransactionCodeId, FolioItemType.Charge, BusinessDate);
-        folio.AddItem("Payment", 1, 100m, TransactionCodeId, FolioItemType.Payment, BusinessDate);
+        folio.AddItem("Room charge", 1, 100m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
+        folio.AddItem("Payment", 1, 100m, TransactionCodeId, FolioItemType.Payment, BusinessDate, CreatedAt);
 
         // Act
         folio.Settle();
@@ -52,7 +53,7 @@ public class FolioTests
     {
         // Arrange
         var folio = CreateFolio();
-        folio.AddItem("Room charge", 1, 100m, TransactionCodeId, FolioItemType.Charge, BusinessDate);
+        folio.AddItem("Room charge", 1, 100m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
 
         // Act
         Action act = () => folio.Settle();
