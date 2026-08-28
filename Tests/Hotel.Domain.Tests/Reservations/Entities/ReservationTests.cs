@@ -17,6 +17,7 @@ public class ReservationTests
     private static readonly DateOnly StartDate = new(2026, 8, 10);
     private static readonly DateOnly EndDate = new(2026, 8, 12);
     private static readonly Guid[] GuestIds = [Guid.NewGuid(), Guid.NewGuid()];
+    private static readonly DateTime CreatedAt = DateTime.UtcNow;
 
     private readonly IRoomAvailabilityService _roomAvailabilityService;
 
@@ -43,6 +44,7 @@ public class ReservationTests
             startDate ?? StartDate,
             endDate ?? EndDate,
             null,
+            CreatedAt,
             guestIds ?? GuestIds,
             _roomAvailabilityService);
     }
@@ -59,6 +61,7 @@ public class ReservationTests
         reservation.RoomId.Should().Be(RoomId);
         reservation.RatePlanId.Should().Be(RatePlanId);
         reservation.CycleIdentifier.Should().Be(CycleIdentifier);
+        reservation.CreatedAt.Should().Be(CreatedAt);
         reservation.StartDate.Should().Be(StartDate);
         reservation.EndDate.Should().Be(EndDate);
         reservation.Status.Should().Be(ReservationStatus.Reserved);

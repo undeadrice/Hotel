@@ -55,6 +55,7 @@ public class Reservation
         DateOnly startDate,
         DateOnly endDate,
         DateTime? arrivalTime,
+        DateTime createdAt,
         IEnumerable<Guid> guestIds,
         IRoomAvailabilityService roomAvailabilityService,
         CancellationToken cancellationToken = default)
@@ -90,7 +91,7 @@ public class Reservation
             startDate,
             endDate,
             arrivalTime,
-            DateTime.UtcNow);
+            createdAt);
 
         foreach (var guestId in guestIds)
         {
