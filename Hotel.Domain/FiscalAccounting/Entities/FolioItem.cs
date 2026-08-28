@@ -48,7 +48,8 @@ public class FolioItem
         decimal amount,
         Guid transactionCodeId,
         FolioItemType transactionType,
-        DateOnly businessDate)
+        DateOnly businessDate,
+        DateTime createdAt)
     {
         if (string.IsNullOrWhiteSpace(description))
         {
@@ -74,6 +75,6 @@ public class FolioItem
             transactionCodeId,
             transactionType,
             businessDate,
-            DateTime.UtcNow);
+            createdAt);
     }
 }

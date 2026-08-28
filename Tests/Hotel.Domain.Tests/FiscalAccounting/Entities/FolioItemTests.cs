@@ -11,12 +11,13 @@ public class FolioItemTests
     private static readonly Guid FolioId = Guid.NewGuid();
     private static readonly Guid TransactionCodeId = Guid.NewGuid();
     private static readonly DateOnly BusinessDate = DateOnly.FromDateTime(DateTime.UtcNow);
+    private static readonly DateTime CreatedAt = DateTime.UtcNow;
 
     [Fact]
     public void Create_WithValidArguments_ShouldSetProperties()
     {
         // Act
-        var item = FolioItem.Create(FolioId, "Room charge", 2, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate);
+        var item = FolioItem.Create(FolioId, "Room charge", 2, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
 
         // Assert
         item.Id.Should().NotBe(Guid.Empty);
@@ -27,7 +28,7 @@ public class FolioItemTests
         item.TransactionCodeId.Should().Be(TransactionCodeId);
         item.TransactionType.Should().Be(FolioItemType.Charge);
         item.BusinessDate.Should().Be(BusinessDate);
-        item.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+        item.CreatedAt.Should().Be(CreatedAt);
     }
 
     [Theory]
@@ -37,7 +38,7 @@ public class FolioItemTests
     public void Create_WhenDescriptionInvalid_ShouldThrowInvalidFolioItemDescriptionException(string? description)
     {
         // Act
-        Action act = () => FolioItem.Create(FolioId, description!, 1, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate);
+        Action act = () => FolioItem.Create(FolioId, description!, 1, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
 
         // Assert
         act.Should().Throw<InvalidFolioItemDescriptionException>();
@@ -49,7 +50,7 @@ public class FolioItemTests
     public void Create_WhenQuantityInvalid_ShouldThrowInvalidFolioItemQuantityException(int quantity)
     {
         // Act
-        Action act = () => FolioItem.Create(FolioId, "Room charge", quantity, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate);
+        Action act = () => FolioItem.Create(FolioId, "Room charge", quantity, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
 
         // Assert
         act.Should().Throw<InvalidFolioItemQuantityException>();
@@ -59,7 +60,7 @@ public class FolioItemTests
     public void Create_WhenAmountNegative_ShouldThrowInvalidFolioItemAmountException()
     {
         // Act
-        Action act = () => FolioItem.Create(FolioId, "Room charge", 1, -1m, TransactionCodeId, FolioItemType.Charge, BusinessDate);
+        Action act = () => FolioItem.Create(FolioId, "Room charge", 1, -1m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
 
         // Assert
         act.Should().Throw<InvalidFolioItemAmountException>();
