@@ -127,4 +127,20 @@ public class CreateRatePlanCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor("Rooms[0].RoomTypeId");
     }
+
+    [Fact]
+    public void Validate_WithRoomWithNegativePrice_ShouldHaveValidationError()
+    {
+        // Arrange
+        var command = CreateValidCommand() with
+        {
+            Rooms = new List<CreateRatePlanRoomCommand> { new(Guid.NewGuid(), -1m) }
+        };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor("Rooms[0].Price");
+    }
 }
