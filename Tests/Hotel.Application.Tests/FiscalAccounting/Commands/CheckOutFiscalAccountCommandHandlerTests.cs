@@ -29,7 +29,7 @@ public class CheckOutFiscalAccountCommandHandlerTests
 
     private static FiscalAccount CreateSettledAccount(Guid originatorId)
     {
-        var account = FiscalAccount.Create(originatorId, Guid.NewGuid(), "CY-1");
+        var account = FiscalAccount.Create(originatorId, Guid.NewGuid(), "CY-1", DateTime.UtcNow);
         account.SettleFolio(account.Folios.Single().Id);
         return account;
     }
@@ -44,6 +44,7 @@ public class CheckOutFiscalAccountCommandHandlerTests
             new DateOnly(2026, 8, 10),
             new DateOnly(2026, 8, 12),
             null,
+            DateTime.UtcNow,
             [Guid.NewGuid()],
             _roomAvailabilityService);
 

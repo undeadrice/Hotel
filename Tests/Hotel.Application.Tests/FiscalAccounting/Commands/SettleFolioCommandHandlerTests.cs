@@ -23,7 +23,7 @@ public class SettleFolioCommandHandlerTests
     public async Task Handle_ShouldSettleFolio()
     {
         // Arrange
-        var account = FiscalAccount.Create(Guid.NewGuid(), Guid.NewGuid(), "CY-1");
+        var account = FiscalAccount.Create(Guid.NewGuid(), Guid.NewGuid(), "CY-1", DateTime.UtcNow);
         var folio = account.Folios.Single();
 
         _fiscalAccountRepository

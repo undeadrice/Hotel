@@ -32,6 +32,7 @@ public class CheckInReservationCommandHandlerTests
             new DateOnly(2026, 8, 10),
             new DateOnly(2026, 8, 12),
             null,
+            DateTime.UtcNow,
             [Guid.NewGuid()],
             _roomAvailabilityService);
 
