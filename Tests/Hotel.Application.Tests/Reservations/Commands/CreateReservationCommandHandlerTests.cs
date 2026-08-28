@@ -1,12 +1,15 @@
 using FluentAssertions;
+using Hotel.Application.Common;
 using Hotel.Application.Reservations.Commands;
 using Hotel.Domain.FiscalAccounting.Entities;
+using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.Domain.FiscalAccounting.Repositories;
 using Hotel.Domain.NumberCycles.Enums;
 using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.RatePlans.Repositories;
 using Hotel.Domain.Reservations.Entities;
+using Hotel.Domain.Reservations.Enums;
 using Hotel.Domain.Reservations.Exceptions;
 using Hotel.Domain.Reservations.Repositories;
 using Hotel.Domain.Reservations.Services;
@@ -28,6 +31,7 @@ public class CreateReservationCommandHandlerTests
     private readonly IRatePlanRepository _ratePlanRepository;
     private readonly IRoomAvailabilityService _roomAvailabilityService;
     private readonly INumberCycleService _numberCycleService;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly CreateReservationCommandHandler _handler;
 
     private readonly Guid _creatorId = Guid.NewGuid();
@@ -45,6 +49,7 @@ public class CreateReservationCommandHandlerTests
         _ratePlanRepository = Substitute.For<IRatePlanRepository>();
         _roomAvailabilityService = Substitute.For<IRoomAvailabilityService>();
         _numberCycleService = Substitute.For<INumberCycleService>();
+        _dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
         _handler = new CreateReservationCommandHandler(
             _reservationRepository,
@@ -52,7 +57,8 @@ public class CreateReservationCommandHandlerTests
             _roomRepository,
             _ratePlanRepository,
             _roomAvailabilityService,
-            _numberCycleService);
+            _numberCycleService,
+            _dateTimeProvider);
 
         _room = Room.Create("101", _roomTypeId);
         _ratePlan = RatePlan.Create(
@@ -105,26 +111,6 @@ public class CreateReservationCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldCreateFiscalAccountLinkedToReservation()
-    {
-        // Arrange
-        var command = CreateCommand();
-        FiscalAccount? addedAccount = null;
-
-        await _fiscalAccountRepository.Add(
-            Arg.Do<FiscalAccount>(account => addedAccount = account),
-            Arg.Any<CancellationToken>());
-
-        // Act
-        var reservationId = await _handler.Handle(command, CancellationToken.None);
-
-        // Assert
-        addedAccount.Should().NotBeNull();
-        addedAccount.OriginatorId.Should().Be(reservationId);
-        addedAccount.OwnerId.Should().Be(_creatorId);
-    }
-
-    [Fact]
     public async Task Handle_ShouldPassServiceIdentifiersToReservationAndFiscalAccount()
     {
         // Arrange
@@ -152,6 +138,50 @@ public class CreateReservationCommandHandlerTests
 
         await _numberCycleService.Received(1).NextIdentifier(NumberCycleTopic.Reservation, Arg.Any<CancellationToken>());
         await _numberCycleService.Received(1).NextIdentifier(NumberCycleTopic.FiscalAccount, Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task Handle_ShouldCreateReservationAndFiscalAccountWithExpectedFields()
+    {
+        // Arrange
+        var command = CreateCommand();
+        var createdAt = new DateTime(2026, 8, 11, 10, 30, 0, DateTimeKind.Utc);
+
+        Reservation? addedReservation = null;
+        FiscalAccount? addedAccount = null;
+
+        _dateTimeProvider.UtcNow.Returns(createdAt);
+
+        await _reservationRepository.Add(
+            Arg.Do<Reservation>(reservation => addedReservation = reservation),
+            Arg.Any<CancellationToken>());
+
+        await _fiscalAccountRepository.Add(
+            Arg.Do<FiscalAccount>(account => addedAccount = account),
+            Arg.Any<CancellationToken>());
+
+        // Act
+        var reservationId = await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        addedReservation.Should().NotBeNull();
+        addedReservation.CycleIdentifier.Should().Be(ReservationIdentifier);
+        addedReservation!.Id.Should().Be(reservationId);
+        addedReservation.CreatorId.Should().Be(_creatorId);
+        addedReservation.RoomId.Should().Be(_room.Id);
+        addedReservation.RatePlanId.Should().Be(_ratePlan.Id);
+        addedReservation.StartDate.Should().Be(_startDate);
+        addedReservation.EndDate.Should().Be(_endDate);
+        addedReservation.CreatedAt.Should().Be(createdAt);
+        addedReservation.Status.Should().Be(ReservationStatus.Reserved);
+        addedReservation.Guests.Should().HaveCount(1);
+
+        addedAccount.Should().NotBeNull();
+        addedAccount!.OriginatorId.Should().Be(reservationId);
+        addedAccount.OwnerId.Should().Be(_creatorId);
+        addedAccount.CycleIdentifier.Should().Be(FiscalAccountIdentifier);
+        addedAccount.CreatedAt.Should().Be(createdAt);
+        addedAccount.Status.Should().Be(FiscalAccountStatus.Open);
     }
 
     [Fact]
