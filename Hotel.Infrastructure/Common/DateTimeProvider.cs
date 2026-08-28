@@ -1,4 +1,6 @@
-namespace Hotel.Application.Common;
+using Hotel.Application.Common;
+
+namespace Hotel.Infrastructure.Common;
 
 public class DateTimeProvider : IDateTimeProvider
 {

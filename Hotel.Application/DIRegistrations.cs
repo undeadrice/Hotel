@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Hotel.Application.Common;
 using Hotel.Application.Configurations.Services;
 using Hotel.Application.Pipeline;
 using Hotel.Application.Seeding;
@@ -25,8 +24,6 @@ public static class DIRegistrations
         services.AddScoped<ISeedingService, SeedingService>();
 
         services.AddScoped<IBusinessDateProvider, BusinessDateProvider>();
-
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         return services;
     }
