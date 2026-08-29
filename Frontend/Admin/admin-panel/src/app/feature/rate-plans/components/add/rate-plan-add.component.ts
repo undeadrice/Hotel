@@ -27,7 +27,7 @@ import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
 import { RatePlanService } from '../../services/rate-plan.service';
 import { TransactionCodeService } from '../../../transaction-codes/services/transaction-code.service';
-import { RoomService } from '../../../rooming/services/room.service';
+import { RoomTypeService } from '../../../rooming/services/room-type.service';
 import { TransactionCodeListResponse } from '../../../transaction-codes/models/responses/transaction-code-list.response';
 import { RoomTypeListResponse } from '../../../rooming/models/responses/room-type-list.response';
 import { CreateRatePlanRequest } from '../../models/requests/create-rate-plan.request';
@@ -55,7 +55,7 @@ export class RatePlanAddComponent {
   private readonly fb = inject(FormBuilder);
   private readonly ratePlanService = inject(RatePlanService);
   private readonly transactionCodeService = inject(TransactionCodeService);
-  private readonly roomService = inject(RoomService);
+  private readonly roomTypeService = inject(RoomTypeService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly router = inject(Router);
 
@@ -77,7 +77,7 @@ export class RatePlanAddComponent {
       this.transactionCodes.set(codes);
     });
 
-    this.roomService.getRoomTypes().subscribe((types) => {
+    this.roomTypeService.getRoomTypes().subscribe((types) => {
       this.roomTypes.set(types);
     });
 

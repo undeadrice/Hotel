@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 import { RoomService } from '../../services/room.service';
+import { RoomTypeService } from '../../services/room-type.service';
 import { RoomTypeListResponse } from '../../models/responses/room-type-list.response';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,6 +35,7 @@ import { finalize, forkJoin } from 'rxjs';
 export class RoomEditComponent implements OnInit {
   private fb = inject(FormBuilder);
   private roomService = inject(RoomService);
+  private roomTypeService = inject(RoomTypeService);
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -61,7 +63,7 @@ export class RoomEditComponent implements OnInit {
 
     forkJoin({
       room: this.roomService.getRoom(this.roomId),
-      types: this.roomService.getRoomTypes(),
+      types: this.roomTypeService.getRoomTypes(),
     })
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe(({ room, types }) => {

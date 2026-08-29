@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 import { finalize } from 'rxjs';
 import { RoomService } from '../../services/room.service';
+import { RoomTypeService } from '../../services/room-type.service';
 import { RoomTypeListResponse } from '../../models/responses/room-type-list.response';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,6 +35,7 @@ import { CommonModule } from '@angular/common';
 export class RoomAddComponent implements OnInit {
   private fb = inject(FormBuilder);
   private roomService = inject(RoomService);
+  private roomTypeService = inject(RoomTypeService);
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
 
@@ -47,7 +49,7 @@ export class RoomAddComponent implements OnInit {
   readonly submitting = signal(false);
 
   ngOnInit(): void {
-    this.roomService
+    this.roomTypeService
       .getRoomTypes()
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((types) => {

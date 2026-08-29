@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 import { finalize } from 'rxjs';
-import { RoomService } from '../../services/room.service';
+import { RoomTypeService } from '../../services/room-type.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RoomTypeEditComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private roomService = inject(RoomService);
+  private roomTypeService = inject(RoomTypeService);
   private snackBar = inject(MatSnackBar);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -54,7 +54,7 @@ export class RoomTypeEditComponent implements OnInit {
       return;
     }
 
-    this.roomService
+    this.roomTypeService
       .getRoomType(this.roomTypeId)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((roomType) => {
@@ -71,7 +71,7 @@ export class RoomTypeEditComponent implements OnInit {
     }
 
     this.submitting.set(true);
-    this.roomService
+    this.roomTypeService
       .updateRoomType({
         id: this.roomTypeId,
         name: this.form.get('name')!.value!,
