@@ -1,16 +1,20 @@
-﻿using Hotel.Persistence;
+﻿using Hotel.Application.Seeding;
+using Hotel.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Hotel.IntegrationTests.Infrastructure;
 
-public class InventoryWebApplicationFactory : WebApplicationFactory<Program>
+public class HotelWebApplicationFactory : WebApplicationFactory<Program>
 {
-    private readonly string _dbName = "InventoryTestDb_" + Guid.NewGuid().ToString("N");
+    private readonly string _dbName = "HotelTestDb_" + Guid.NewGuid().ToString("N");
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -18,6 +22,7 @@ public class InventoryWebApplicationFactory : WebApplicationFactory<Program>
         {
             var toRemove = services
                 .Where(d =>
+                    d.ServiceType == typeof(ISeedingService) ||
                     d.ServiceType == typeof(PersistenceDbContext) ||
                     d.ServiceType == typeof(DbContextOptions<PersistenceDbContext>) ||
                     d.ServiceType == typeof(DbContextOptions) ||
@@ -44,6 +49,8 @@ public class InventoryWebApplicationFactory : WebApplicationFactory<Program>
 
             services.AddDbContext<PersistenceDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<ISeedingService, TestSeedingService>();
         });
 
         builder.UseEnvironment("Development");
@@ -61,5 +68,26 @@ public class InventoryWebApplicationFactory : WebApplicationFactory<Program>
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
         await dbContext.Database.EnsureDeletedAsync();
+    }
+
+    public async Task<HttpClient> CreateAuthenticatedClientAsync(
+        string email = "sa@sa.pl",
+        string password = "Admin123!")
+    {
+        var client = CreateClient();
+
+        var loginResponse = await client.PostAsJsonAsync(
+            "/api/auth/login",
+            new { email, password });
+
+        loginResponse.EnsureSuccessStatusCode();
+
+        using var json = JsonDocument.Parse(await loginResponse.Content.ReadAsStringAsync());
+        var token = json.RootElement.GetProperty("token").GetString();
+
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+
+        return client;
     }
 }
