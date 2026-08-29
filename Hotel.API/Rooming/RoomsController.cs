@@ -35,8 +35,8 @@ public class RoomsController(IMediator mediator) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateRoom(CreateRoomCommand command)
     {
-        await mediator.Send(command);
-        return NoContent();
+        var result = await mediator.Send(command);
+        return Ok(result);
     }
 
     [HttpPut]
