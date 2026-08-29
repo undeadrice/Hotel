@@ -52,31 +52,4 @@ public class RoomsController(IMediator mediator) : ControllerBase
         await mediator.Send(command);
         return NoContent();
     }
-    [HttpGet("types")]
-    public async Task<IActionResult> GetRoomTypes()
-    {
-        var result = await mediator.Send(new GetRoomTypesQuery());
-        return Ok(result);
-    }
-
-    [HttpGet("types/{id:guid}")]
-    public async Task<IActionResult> GetRoomTypeById(Guid id)
-    {
-        var result = await mediator.Send(new GetRoomTypeByIdQuery(id));
-        return Ok(result);
-    }
-
-    [HttpPost("types")]
-    public async Task<IActionResult> CreateRoomType(CreateRoomTypeCommand command)
-    {
-        var result = await mediator.Send(command);
-        return Ok(result);
-    }
-
-    [HttpPut("types")]
-    public async Task<IActionResult> UpdateRoomType(UpdateRoomTypeCommand command)
-    {
-        await mediator.Send(command);
-        return NoContent();
-    }
 }
