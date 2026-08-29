@@ -34,7 +34,7 @@ public class GetRoomTypeByIdQueryValidationTests : IClassFixture<HotelWebApplica
         var emptyId = Guid.Empty;
 
         // Act
-        var response = await _client.GetAsync($"/api/rooms/types/{emptyId}");
+        var response = await _client.GetAsync($"/api/roomtypes/{emptyId}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
