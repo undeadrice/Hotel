@@ -67,8 +67,7 @@ public class RoomQueryTests : IClassFixture<HotelWebApplicationFactory>, IAsyncL
     {
         // Arrange
         var roomTypeId = await RoomTypeTestData.CreateRoomTypeAsync(_client, "Suite", "Luxury suite");
-        await RoomTestData.CreateRoomAsync(_client, "101", roomTypeId);
-        var roomId = await RoomTestData.GetRoomIdAsync(_client, "101");
+        var roomId = await RoomTestData.CreateRoomAsync(_client, "101", roomTypeId);
 
         // Act
         var response = await _client.GetAsync($"/api/rooms/{roomId}");
