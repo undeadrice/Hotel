@@ -36,7 +36,7 @@ public class UpdateRoomTypeCommandValidationTests : IClassFixture<HotelWebApplic
         var command = new UpdateRoomTypeCommand(Guid.Empty, "Standard", null);
 
         // Act
-        var response = await _client.PutAsJsonAsync("/api/rooms/types", command);
+        var response = await _client.PutAsJsonAsync("/api/roomtypes", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -49,7 +49,7 @@ public class UpdateRoomTypeCommandValidationTests : IClassFixture<HotelWebApplic
         var command = new UpdateRoomTypeCommand(Guid.NewGuid(), string.Empty, null);
 
         // Act
-        var response = await _client.PutAsJsonAsync("/api/rooms/types", command);
+        var response = await _client.PutAsJsonAsync("/api/roomtypes", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -62,7 +62,7 @@ public class UpdateRoomTypeCommandValidationTests : IClassFixture<HotelWebApplic
         var command = new UpdateRoomTypeCommand(Guid.NewGuid(), new string('A', 101), null);
 
         // Act
-        var response = await _client.PutAsJsonAsync("/api/rooms/types", command);
+        var response = await _client.PutAsJsonAsync("/api/roomtypes", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -75,7 +75,7 @@ public class UpdateRoomTypeCommandValidationTests : IClassFixture<HotelWebApplic
         var command = new UpdateRoomTypeCommand(Guid.NewGuid(), "Standard", new string('A', 501));
 
         // Act
-        var response = await _client.PutAsJsonAsync("/api/rooms/types", command);
+        var response = await _client.PutAsJsonAsync("/api/roomtypes", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

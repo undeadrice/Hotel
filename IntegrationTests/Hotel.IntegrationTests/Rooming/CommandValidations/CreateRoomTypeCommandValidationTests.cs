@@ -36,7 +36,7 @@ public class CreateRoomTypeCommandValidationTests : IClassFixture<HotelWebApplic
         var command = new CreateRoomTypeCommand(string.Empty, null);
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/rooms/types", command);
+        var response = await _client.PostAsJsonAsync("/api/roomtypes", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -49,7 +49,7 @@ public class CreateRoomTypeCommandValidationTests : IClassFixture<HotelWebApplic
         var command = new CreateRoomTypeCommand(new string('A', 101), null);
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/rooms/types", command);
+        var response = await _client.PostAsJsonAsync("/api/roomtypes", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -62,7 +62,7 @@ public class CreateRoomTypeCommandValidationTests : IClassFixture<HotelWebApplic
         var command = new CreateRoomTypeCommand("Standard", new string('A', 501));
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/rooms/types", command);
+        var response = await _client.PostAsJsonAsync("/api/roomtypes", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
