@@ -6,8 +6,13 @@ using Hotel.Domain.Reservations.Repositories;
 using Hotel.Domain.Rooming.Repositories;
 using Hotel.Domain.Configurations.Repositories;
 using Hotel.Domain.FiscalAccounting.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.Configurations.Commands;
+
+[CheckPermission(Permission.ConfigurationEdit)]
+public record PerformEndOfDayCommand : ICommand<DateOnly>;
 
 public class PerformEndOfDayCommandHandler(
     IConfigurationRepository configurationRepository,

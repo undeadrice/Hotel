@@ -2,8 +2,13 @@ using Hotel.Application.Configurations.Services;
 using Hotel.Application.Dashboard.TransferObjects;
 using MediatR;
 using Hotel.Application.Dashboard.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.Dashboard.Queries;
+
+[CheckPermission(Permission.DashboardView)]
+public record GetDashboardQuery() : IRequest<DashboardDto>;
 
 internal class GetDashboardQueryHandler(
     IDashboardReadRepository dashboardReadRepository,

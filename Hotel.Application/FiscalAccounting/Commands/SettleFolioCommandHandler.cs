@@ -1,9 +1,14 @@
 using MediatR;
 using Hotel.Domain.FiscalAccounting.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 
-public class SettleFolioCommandHandler(IFiscalAccountRepository fiscalAccountRepository)
+[CheckPermission(Permission.FiscalAccountEdit)]
+public record SettleFolioCommand(Guid AccountId, Guid FolioId) : ICommand;
+
+internal class SettleFolioCommandHandler(IFiscalAccountRepository fiscalAccountRepository)
     : IRequestHandler<SettleFolioCommand>
 {
     public async Task Handle(SettleFolioCommand request, CancellationToken cancellationToken)

@@ -10,8 +10,20 @@ using Hotel.Domain.RatePlans.Repositories;
 using Hotel.Domain.Reservations.Repositories;
 using Hotel.Domain.Rooming.Repositories;
 using Hotel.Domain.FiscalAccounting.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.Reservations.Commands;
+
+[CheckPermission(Permission.ReservationCreate)]
+public record CreateReservationCommand(
+    Guid CreatorId,
+    Guid RoomId,
+    Guid RatePlanId,
+    DateOnly StartDate,
+    DateOnly EndDate,
+    DateTime? ArrivalTime,
+    List<Guid> GuestIds) : ICommand<Guid>;
 
 public class CreateReservationCommandHandler(
     IReservationRepository reservationRepository,

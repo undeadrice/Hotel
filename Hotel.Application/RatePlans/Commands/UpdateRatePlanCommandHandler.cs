@@ -1,10 +1,25 @@
 using Hotel.Domain.RatePlans.Entities;
 using MediatR;
 using Hotel.Domain.RatePlans.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.RatePlans.Commands;
 
-public class UpdateRatePlanCommandHandler(IRatePlanRepository ratePlanRepository)
+[CheckPermission(Permission.RatePlanEdit)]
+public record UpdateRatePlanCommand(
+    Guid Id,
+    string Name,
+    Guid TransactionCodeId,
+    DateOnly StartDate,
+    DateOnly EndDate,
+    List<UpdateRatePlanRoomCommand> Rooms) : IRequest;
+
+public record UpdateRatePlanRoomCommand(
+    Guid RoomTypeId,
+    decimal Price);
+
+internal class UpdateRatePlanCommandHandler(IRatePlanRepository ratePlanRepository)
     : IRequestHandler<UpdateRatePlanCommand>
 {
     public async Task Handle(UpdateRatePlanCommand request, CancellationToken cancellationToken)

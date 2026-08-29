@@ -5,10 +5,21 @@ using Hotel.Domain.Transactions.Enums;
 using MediatR;
 using Hotel.Domain.Transactions.Repositories;
 using Hotel.Domain.FiscalAccounting.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 
-public class CreateFolioItemCommandHandler(
+[CheckPermission(Permission.FiscalAccountEdit)]
+public record CreateFolioItemCommand(
+    Guid FolioId,
+    string Description,
+    int Quantity,
+    decimal Amount,
+    Guid TransactionCodeId)
+    : ICommand<Guid>;
+
+internal class CreateFolioItemCommandHandler(
     IFiscalAccountRepository fiscalAccountRepository,
     IBusinessDateProvider businessDateProvider,
     ITransactionCodeRepository transactionCodeRepository,

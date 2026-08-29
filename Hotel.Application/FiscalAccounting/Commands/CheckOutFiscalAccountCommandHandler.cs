@@ -1,10 +1,15 @@
 using MediatR;
 using Hotel.Domain.FiscalAccounting.Repositories;
 using Hotel.Domain.Reservations.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 
-public class CheckOutFiscalAccountCommandHandler(
+[CheckPermission(Permission.FiscalAccountEdit)]
+public record CheckOutFiscalAccountCommand(Guid AccountId) : ICommand;
+
+internal class CheckOutFiscalAccountCommandHandler(
     IFiscalAccountRepository fiscalAccountRepository,
     IReservationRepository reservationRepository)
     : IRequestHandler<CheckOutFiscalAccountCommand>

@@ -6,10 +6,15 @@ using Hotel.Domain.RatePlans.Repositories;
 using Hotel.Domain.Reservations.Repositories;
 using Hotel.Domain.Rooming.Repositories;
 using Hotel.Domain.FiscalAccounting.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 
-public class PostRoomChargeCommandHandler(
+[CheckPermission(Permission.FiscalAccountEdit)]
+public record PostRoomChargeCommand(Guid ReservationId) : ICommand<Guid>;
+
+internal class PostRoomChargeCommandHandler(
     IReservationRepository reservationRepository,
     IRatePlanRepository ratePlanRepository,
     IRoomRepository roomRepository,

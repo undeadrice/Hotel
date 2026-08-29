@@ -1,8 +1,13 @@
 using Hotel.Application.Common;
 using MediatR;
 using Hotel.Domain.FiscalAccounting.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
+
+[CheckPermission(Permission.FiscalAccountEdit)]
+public record OpenFolioCommand(Guid FiscalAccountId) : ICommand<Guid>;
 
 internal class OpenFolioCommandHandler(
     IFiscalAccountRepository fiscalAccountRepository,

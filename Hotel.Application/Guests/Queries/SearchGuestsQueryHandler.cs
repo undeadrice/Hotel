@@ -1,8 +1,18 @@
 using Hotel.Application.Guests.TransferObjects;
 using MediatR;
 using Hotel.Application.Guests.Repositories;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 
 namespace Hotel.Application.Guests.Queries;
+
+[CheckPermission(Permission.GuestView)]
+public record SearchGuestsQuery(
+    string? Name,
+    string? Phone,
+    string? Email,
+    string? DocumentNumber)
+    : IRequest<IReadOnlyCollection<GuestListDto>>;
 
 internal class SearchGuestsQueryHandler(IGuestReadRepository guestReadRepository)
     : IRequestHandler<SearchGuestsQuery, IReadOnlyCollection<GuestListDto>>
