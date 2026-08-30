@@ -52,7 +52,7 @@ public class UpdateRoleCommandTests : IClassFixture<HotelWebApplicationFactory>,
         var role = await getResponse.Content.ReadFromJsonAsync<RoleDto>();
         role.Should().NotBeNull();
         role!.Name.Should().Be(updatedName);
-        role.Permissions.Should().BeEquivalentTo(new[] { "RoleView", "RoleEdit" });
+        role.Permissions.Should().BeEquivalentTo(["RoleView", "RoleEdit"]);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class UpdateRoleCommandTests : IClassFixture<HotelWebApplicationFactory>,
         var command = new UpdateRoleCommand(
             Guid.NewGuid(),
             "Updated Role",
-            new[] { "RoleView" });
+            ["RoleView"]);
 
         // Act
         var response = await _client.PutAsJsonAsync("/api/roles/update", command);
