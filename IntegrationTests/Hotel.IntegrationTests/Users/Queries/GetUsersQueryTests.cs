@@ -45,6 +45,11 @@ public class GetUsersQueryTests : IClassFixture<HotelWebApplicationFactory>, IAs
 
         var users = await response.Content.ReadFromJsonAsync<List<UserContract>>();
         users.Should().ContainSingle(u => u.Email == email);
-        users.Should().Contain(u => u.FirstName == "John" && u.LastName == "Doe");
+
+        var user = users!.Single(u => u.Email == email);
+        user.FirstName.Should().Be("John");
+        user.LastName.Should().Be("Doe");
+        user.DateOfBirth.Should().Be(new DateOnly(1990, 1, 1));
+        user.Id.Should().NotBeEmpty();
     }
 }
