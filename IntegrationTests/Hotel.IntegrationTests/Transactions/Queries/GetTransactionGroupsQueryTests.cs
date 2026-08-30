@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Hotel.Application.Transactions.TransferObjects;
+using Hotel.Domain.Transactions.Enums;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
 using System.Net;
@@ -34,8 +35,8 @@ public class GetTransactionGroupsQueryTests : IClassFixture<HotelWebApplicationF
     public async Task GetTransactionGroups_WhenGroupsExist_ReturnsGroups()
     {
         // Arrange
-        await TransactionGroupTestData.CreateTransactionGroupAsync(_client, "CHARGE", "Charge Group");
-        await TransactionGroupTestData.CreateTransactionGroupAsync(_client, "PAYMENT", "Payment Group");
+        var chargeGroupId = await TransactionGroupTestData.CreateTransactionGroupAsync(_client, "CHARGE", "Charge Group", TransactionType.Charge);
+        var paymentGroupId = await TransactionGroupTestData.CreateTransactionGroupAsync(_client, "PAYMENT", "Payment Group", TransactionType.Payment);
 
         // Act
         var response = await _client.GetAsync("/api/transactiongroups");
@@ -46,5 +47,21 @@ public class GetTransactionGroupsQueryTests : IClassFixture<HotelWebApplicationF
         var transactionGroups = await response.Content.ReadFromJsonAsync<List<TransactionGroupListDto>>();
         transactionGroups.Should().NotBeNull();
         transactionGroups!.Should().HaveCount(2);
+
+        transactionGroups.Should().ContainSingle(g =>
+            g.Id == chargeGroupId &&
+            g.Code == "CHARGE" &&
+            g.Name == "Charge Group" &&
+            g.Type == TransactionType.Charge &&
+            g.IsActive &&
+            g.TransactionCodesCount == 0);
+
+        transactionGroups.Should().ContainSingle(g =>
+            g.Id == paymentGroupId &&
+            g.Code == "PAYMENT" &&
+            g.Name == "Payment Group" &&
+            g.Type == TransactionType.Payment &&
+            g.IsActive &&
+            g.TransactionCodesCount == 0);
     }
 }
