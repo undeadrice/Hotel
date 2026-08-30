@@ -48,6 +48,22 @@ public class GetTransactionCodesQueryTests : IClassFixture<HotelWebApplicationFa
         var transactionCodes = await response.Content.ReadFromJsonAsync<List<TransactionCodeListDto>>();
         transactionCodes.Should().NotBeNull();
         transactionCodes!.Should().HaveCount(2);
+
+        transactionCodes.Should().ContainSingle(c =>
+            c.Id != Guid.Empty &&
+            c.TransactionGroupId == transactionGroupId &&
+            c.TransactionGroupName == "Charges" &&
+            c.Code == "ROOM" &&
+            c.Name == "Room Charge" &&
+            c.IsActive);
+
+        transactionCodes.Should().ContainSingle(c =>
+            c.Id != Guid.Empty &&
+            c.TransactionGroupId == transactionGroupId &&
+            c.TransactionGroupName == "Charges" &&
+            c.Code == "TAX" &&
+            c.Name == "Tax" &&
+            c.IsActive);
     }
 
     [Fact]
@@ -55,11 +71,12 @@ public class GetTransactionCodesQueryTests : IClassFixture<HotelWebApplicationFa
     {
         // Arrange
         var transactionGroupId = await TransactionGroupTestData.CreateTransactionGroupAsync(_client);
-        var transactionCodeId = await TransactionCodeTestData.CreateTransactionCodeAsync(_client, transactionGroupId, "ROOM", "Room Charge");
+        var activeCodeId = await TransactionCodeTestData.CreateTransactionCodeAsync(_client, transactionGroupId, "ROOM", "Room Charge");
+        var inactiveCodeId = await TransactionCodeTestData.CreateTransactionCodeAsync(_client, transactionGroupId, "TAX", "Tax");
 
         await _client.PutAsJsonAsync(
             "/api/transactioncodes/status",
-            new ChangeTransactionCodeStatusCommand(transactionCodeId, false));
+            new ChangeTransactionCodeStatusCommand(inactiveCodeId, false));
 
         // Act
         var response = await _client.GetAsync("/api/transactioncodes?isActive=true");
@@ -69,7 +86,17 @@ public class GetTransactionCodesQueryTests : IClassFixture<HotelWebApplicationFa
 
         var transactionCodes = await response.Content.ReadFromJsonAsync<List<TransactionCodeListDto>>();
         transactionCodes.Should().NotBeNull();
-        transactionCodes!.Should().BeEmpty();
+        transactionCodes!.Should().ContainSingle();
+
+        transactionCodes[0].Should().BeEquivalentTo(new
+        {
+            Id = activeCodeId,
+            TransactionGroupId = transactionGroupId,
+            TransactionGroupName = "Charges",
+            Code = "ROOM",
+            Name = "Room Charge",
+            IsActive = true
+        });
     }
 
     [Fact]
@@ -91,6 +118,13 @@ public class GetTransactionCodesQueryTests : IClassFixture<HotelWebApplicationFa
         var transactionCodes = await response.Content.ReadFromJsonAsync<List<TransactionCodeListDto>>();
         transactionCodes.Should().NotBeNull();
         transactionCodes!.Should().HaveCount(1);
-        transactionCodes[0].TransactionGroupId.Should().Be(groupAId);
+        transactionCodes[0].Should().BeEquivalentTo(new
+        {
+            TransactionGroupId = groupAId,
+            TransactionGroupName = "Charge Group",
+            Code = "ROOM",
+            Name = "Room Charge",
+            IsActive = true
+        });
     }
 }
