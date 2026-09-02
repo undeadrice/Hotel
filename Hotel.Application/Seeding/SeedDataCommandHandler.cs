@@ -1,8 +1,10 @@
 using Hotel.Application.Pipeline;
+using Hotel.Application.Users.Enums;
 using MediatR;
 
 namespace Hotel.Application.Seeding;
 
+[CheckRole([UserRole.SuperAdmin])]
 public record SeedDataCommand(
     string TimeZoneId,
     DateOnly CurrentBusinessDate,
