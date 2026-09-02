@@ -24,5 +24,9 @@ public class ConfigurationEntityTypeConfiguration : IEntityTypeConfiguration<Con
 
         builder.Property(c => c.CurrentBusinessDate)
             .IsRequired();
+
+        builder.Property(c => c.IsSeeded)
+            .IsRequired()
+            .HasDefaultValue(false);
     }
 }
