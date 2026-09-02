@@ -4,6 +4,7 @@ import { BaseHttpService } from '../../../core/http/base-http.service';
 import { ConfigurationResponse } from '../models/responses/configuration.response';
 import { TimeZoneResponse } from '../models/responses/time-zone.response';
 import { UpsertConfigurationRequest } from '../models/requests/upsert-configuration.request';
+import { SeedDataRequest } from '../models/requests/seed-data.request';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,14 @@ export class ConfigurationService extends BaseHttpService {
 
   upsertConfiguration(request: UpsertConfigurationRequest): Observable<string> {
     return this.post<string>('Configurations', request);
+  }
+
+  seedData(request: SeedDataRequest): Observable<string> {
+    return this.post<string>('Configurations/seed', request);
+  }
+
+  getSeedStatus(): Observable<boolean> {
+    return this.get<boolean>('Configurations/seed-status');
   }
 
   performEndOfDay(): Observable<string> {

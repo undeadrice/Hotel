@@ -9,6 +9,8 @@ import { UserAddComponent } from './feature/users/components/add/user-add.compon
 import { UserEditComponent } from './feature/users/components/edit/user-edit.component';
 import { LoginComponent } from './feature/authorization/components/login.component';
 import { authGuard } from './core/auth/auth.guard';
+import { seedStatusGuard } from './core/auth/seed-status.guard';
+import { SetupComponent } from './feature/configurations/components/setup/setup.component';
 import { RoomListComponent } from './feature/rooming/components/room-list/room-list.component';
 import { RoomAddComponent } from './feature/rooming/components/room-add/room-add.component';
 import { RoomEditComponent } from './feature/rooming/components/room-edit/room-edit.component';
@@ -40,7 +42,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AuthorizedLayoutComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, seedStatusGuard],
     children: [
       {
         path: 'roles',
@@ -184,6 +186,10 @@ export const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+      },
+      {
+        path: 'setup',
+        component: SetupComponent,
       },
     ],
   },
