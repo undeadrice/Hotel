@@ -1,5 +1,6 @@
 using Hotel.Application.Configurations.Commands;
 using Hotel.Application.Configurations.Queries;
+using Hotel.Application.Seeding;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +24,22 @@ public class ConfigurationsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("seed-status")]
+    public async Task<IActionResult> GetSeedStatus()
+    {
+        var result = await mediator.Send(new GetConfigurationSeedStatusQuery());
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> UpsertConfiguration(UpsertConfigurationCommand command)
+    {
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpPost("seed")]
+    public async Task<IActionResult> SeedData(SeedDataCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(result);
