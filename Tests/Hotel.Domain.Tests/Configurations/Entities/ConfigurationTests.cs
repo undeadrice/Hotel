@@ -32,6 +32,20 @@ public class ConfigurationTests
     }
 
     [Fact]
+    public void MarkSeeded_ShouldSetIsSeededToTrue()
+    {
+        // Arrange
+        var configuration = Configuration.Create(TimeZoneId, BusinessDate);
+        configuration.IsSeeded.Should().BeFalse();
+
+        // Act
+        configuration.MarkSeeded();
+
+        // Assert
+        configuration.IsSeeded.Should().BeTrue();
+    }
+
+    [Fact]
     public void EndOfDay_ShouldAdvanceCurrentBusinessDateByOneDay()
     {
         // Arrange
