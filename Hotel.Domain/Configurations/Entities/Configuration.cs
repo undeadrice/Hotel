@@ -8,28 +8,30 @@ public class Configuration
 
     public DateOnly CurrentBusinessDate { get; private set; }
 
+    public bool IsSeeded { get; private set; }
+
 #pragma warning disable CS8618
     public Configuration() { }
 #pragma warning restore CS8618
 
-    private Configuration(Guid id, TimeZoneInfo timeZone, DateOnly currentBusinessDate)
+    private Configuration(Guid id, TimeZoneInfo timeZone, DateOnly currentBusinessDate, bool isSeeded)
     {
         Id = id;
         TimeZone = timeZone;
         CurrentBusinessDate = currentBusinessDate;
+        IsSeeded = isSeeded;
     }
 
-    public static Configuration Create(string timeZoneId, DateOnly currentBusinessDate)
+    public static Configuration Create(string timeZoneId, DateOnly currentBusinessDate, bool isSeeded = false)
     {
         var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
 
-        return new Configuration(Guid.NewGuid(), timeZone, currentBusinessDate);
+        return new Configuration(Guid.NewGuid(), timeZone, currentBusinessDate, isSeeded);
     }
 
-    public void Update(string timeZoneId, DateOnly currentBusinessDate)
+    public void MarkSeeded()
     {
-        TimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
-        CurrentBusinessDate = currentBusinessDate;
+        IsSeeded = true;
     }
 
     public void EndOfDay()
