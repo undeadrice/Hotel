@@ -31,13 +31,6 @@ public class ConfigurationsController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> UpsertConfiguration(UpsertConfigurationCommand command)
-    {
-        var result = await mediator.Send(command);
-        return Ok(result);
-    }
-
     [HttpPost("seed")]
     public async Task<IActionResult> SeedData(SeedDataCommand command)
     {

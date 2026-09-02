@@ -32,35 +32,6 @@ public class ConfigurationTests
     }
 
     [Fact]
-    public void Update_WithValidArguments_ShouldUpdateConfiguration()
-    {
-        // Arrange
-        var configuration = Configuration.Create(TimeZoneId, BusinessDate);
-        var newTimeZoneId = "UTC";
-        var newBusinessDate = new DateOnly(2026, 12, 31);
-
-        // Act
-        configuration.Update(newTimeZoneId, newBusinessDate);
-
-        // Assert
-        configuration.TimeZone.Id.Should().Be(newTimeZoneId);
-        configuration.CurrentBusinessDate.Should().Be(newBusinessDate);
-    }
-
-    [Fact]
-    public void Update_WithInvalidTimeZoneId_ShouldThrowTimeZoneNotFoundException()
-    {
-        // Arrange
-        var configuration = Configuration.Create(TimeZoneId, BusinessDate);
-
-        // Act
-        Action act = () => configuration.Update("Invalid/TimeZone", BusinessDate);
-
-        // Assert
-        act.Should().Throw<TimeZoneNotFoundException>();
-    }
-
-    [Fact]
     public void EndOfDay_ShouldAdvanceCurrentBusinessDateByOneDay()
     {
         // Arrange
