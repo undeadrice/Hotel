@@ -16,8 +16,8 @@ public static class RatePlanTestData
         DateOnly? startDate = null,
         DateOnly? endDate = null)
     {
-        var start = startDate ?? new DateOnly(2026, 1, 1);
-        var end = endDate ?? new DateOnly(2027, 12, 31);
+        var start = startDate ?? RatePlanDates.ValidStartDate;
+        var end = endDate ?? RatePlanDates.ValidEndDate;
 
         var response = await client.PostAsJsonAsync(
             "/api/rateplans",
