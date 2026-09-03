@@ -9,6 +9,7 @@ public class RatePlanTests
 {
     private static readonly DateOnly StartDate = new(2026, 1, 1);
     private static readonly DateOnly EndDate = new(2026, 12, 31);
+    private static readonly DateOnly BusinessDate = new(2025, 12, 31);
 
     private static List<RoomTypePriceDefinition> ValidRooms() =>
     [
@@ -25,7 +26,7 @@ public class RatePlanTests
         var rooms = ValidRooms();
 
         // Act
-        var ratePlan = RatePlan.Create(name, transactionCodeId, StartDate, EndDate, rooms);
+        var ratePlan = RatePlan.Create(name, transactionCodeId, StartDate, EndDate, BusinessDate, rooms);
 
         // Assert
         ratePlan.Id.Should().NotBe(Guid.Empty);
@@ -40,6 +41,16 @@ public class RatePlanTests
         ratePlan.Rooms.Select(r => r.Price).Should().Equal(rooms.Select(r => r.Price));
     }
 
+    [Fact]
+    public void Create_WhenStartDateEqualsBusinessDate_ShouldCreateRatePlan()
+    {
+        // Act
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), BusinessDate, EndDate, BusinessDate, ValidRooms());
+
+        // Assert
+        ratePlan.StartDate.Should().Be(BusinessDate);
+    }
+
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -47,7 +58,7 @@ public class RatePlanTests
     public void Create_WithInvalidName_ShouldThrowRatePlanNameRequiredException(string? name)
     {
         // Act
-        Action act = () => RatePlan.Create(name!, Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        Action act = () => RatePlan.Create(name!, Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Assert
         act.Should().Throw<RatePlanNameRequiredException>();
@@ -57,17 +68,27 @@ public class RatePlanTests
     public void Create_WithEmptyTransactionCodeId_ShouldThrowRatePlanTransactionCodeRequiredException()
     {
         // Act
-        Action act = () => RatePlan.Create("Peak Season", Guid.Empty, StartDate, EndDate, ValidRooms());
+        Action act = () => RatePlan.Create("Peak Season", Guid.Empty, StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Assert
         act.Should().Throw<RatePlanTransactionCodeRequiredException>();
     }
 
     [Fact]
+    public void Create_WhenStartDateIsBeforeBusinessDate_ShouldThrowRatePlanStartDateInvalidException()
+    {
+        // Act
+        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), BusinessDate.AddDays(-1), EndDate, BusinessDate, ValidRooms());
+
+        // Assert
+        act.Should().Throw<RatePlanStartDateInvalidException>();
+    }
+
+    [Fact]
     public void Create_WhenEndDateIsEqualToStartDate_ShouldThrowRatePlanDateRangeInvalidException()
     {
         // Act
-        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, StartDate, ValidRooms());
+        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, StartDate, BusinessDate, ValidRooms());
 
         // Assert
         act.Should().Throw<RatePlanDateRangeInvalidException>();
@@ -77,7 +98,7 @@ public class RatePlanTests
     public void Create_WhenEndDateIsBeforeStartDate_ShouldThrowRatePlanDateRangeInvalidException()
     {
         // Act
-        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), EndDate, StartDate, ValidRooms());
+        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), EndDate, StartDate, BusinessDate, ValidRooms());
 
         // Assert
         act.Should().Throw<RatePlanDateRangeInvalidException>();
@@ -87,7 +108,7 @@ public class RatePlanTests
     public void Create_WithNoRooms_ShouldThrowRatePlanRoomsRequiredException()
     {
         // Act
-        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, []);
+        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, []);
 
         // Assert
         act.Should().Throw<RatePlanRoomsRequiredException>();
@@ -104,7 +125,7 @@ public class RatePlanTests
         };
 
         // Act
-        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, rooms);
+        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, rooms);
 
         // Assert
         act.Should().Throw<RatePlanRoomTypeRequiredException>();
@@ -121,7 +142,7 @@ public class RatePlanTests
         };
 
         // Act
-        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, rooms);
+        Action act = () => RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, rooms);
 
         // Assert
         act.Should().Throw<RatePlanPriceInvalidException>();
@@ -131,7 +152,7 @@ public class RatePlanTests
     public void Update_WithValidArguments_ShouldUpdateRatePlanAndReplaceRooms()
     {
         // Arrange
-        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
         var newName = "Off Season";
         var newTransactionCodeId = Guid.NewGuid();
         var newStartDate = new DateOnly(2027, 1, 1);
@@ -142,7 +163,7 @@ public class RatePlanTests
         };
 
         // Act
-        ratePlan.Update(newName, newTransactionCodeId, newStartDate, newEndDate, newRooms);
+        ratePlan.Update(newName, newTransactionCodeId, newStartDate, newEndDate, BusinessDate, newRooms);
 
         // Assert
         ratePlan.Name.Should().Be(newName);
@@ -155,6 +176,19 @@ public class RatePlanTests
         ratePlan.Rooms.Single().RatePlanId.Should().Be(ratePlan.Id);
     }
 
+    [Fact]
+    public void Update_WhenStartDateEqualsBusinessDate_ShouldUpdateRatePlan()
+    {
+        // Arrange
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
+
+        // Act
+        ratePlan.Update("Peak Season", Guid.NewGuid(), BusinessDate, EndDate, BusinessDate, ValidRooms());
+
+        // Assert
+        ratePlan.StartDate.Should().Be(BusinessDate);
+    }
+
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -162,10 +196,10 @@ public class RatePlanTests
     public void Update_WithInvalidName_ShouldThrowRatePlanNameRequiredException(string? name)
     {
         // Arrange
-        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Act
-        Action act = () => ratePlan.Update(name!, Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        Action act = () => ratePlan.Update(name!, Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Assert
         act.Should().Throw<RatePlanNameRequiredException>();
@@ -175,23 +209,36 @@ public class RatePlanTests
     public void Update_WithEmptyTransactionCodeId_ShouldThrowRatePlanTransactionCodeRequiredException()
     {
         // Arrange
-        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Act
-        Action act = () => ratePlan.Update("Peak Season", Guid.Empty, StartDate, EndDate, ValidRooms());
+        Action act = () => ratePlan.Update("Peak Season", Guid.Empty, StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Assert
         act.Should().Throw<RatePlanTransactionCodeRequiredException>();
     }
 
     [Fact]
+    public void Update_WhenStartDateIsBeforeBusinessDate_ShouldThrowRatePlanStartDateInvalidException()
+    {
+        // Arrange
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
+
+        // Act
+        Action act = () => ratePlan.Update("Peak Season", Guid.NewGuid(), BusinessDate.AddDays(-1), EndDate, BusinessDate, ValidRooms());
+
+        // Assert
+        act.Should().Throw<RatePlanStartDateInvalidException>();
+    }
+
+    [Fact]
     public void Update_WhenEndDateIsEqualToStartDate_ShouldThrowRatePlanDateRangeInvalidException()
     {
         // Arrange
-        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Act
-        Action act = () => ratePlan.Update("Peak Season", Guid.NewGuid(), StartDate, StartDate, ValidRooms());
+        Action act = () => ratePlan.Update("Peak Season", Guid.NewGuid(), StartDate, StartDate, BusinessDate, ValidRooms());
 
         // Assert
         act.Should().Throw<RatePlanDateRangeInvalidException>();
@@ -201,10 +248,10 @@ public class RatePlanTests
     public void Update_WithNoRooms_ShouldThrowRatePlanRoomsRequiredException()
     {
         // Arrange
-        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
 
         // Act
-        Action act = () => ratePlan.Update("Peak Season", Guid.NewGuid(), StartDate, EndDate, []);
+        Action act = () => ratePlan.Update("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, []);
 
         // Assert
         act.Should().Throw<RatePlanRoomsRequiredException>();
@@ -214,14 +261,14 @@ public class RatePlanTests
     public void Update_WithEmptyRoomTypeId_ShouldThrowRatePlanRoomTypeRequiredException()
     {
         // Arrange
-        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, ValidRooms());
+        var ratePlan = RatePlan.Create("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, ValidRooms());
         var rooms = new List<RoomTypePriceDefinition>
         {
             new(Guid.Empty, 150m),
         };
 
         // Act
-        Action act = () => ratePlan.Update("Peak Season", Guid.NewGuid(), StartDate, EndDate, rooms);
+        Action act = () => ratePlan.Update("Peak Season", Guid.NewGuid(), StartDate, EndDate, BusinessDate, rooms);
 
         // Assert
         act.Should().Throw<RatePlanRoomTypeRequiredException>();
