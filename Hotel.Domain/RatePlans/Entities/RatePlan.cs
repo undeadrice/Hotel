@@ -34,7 +34,13 @@ public class RatePlan
         IsActive = true;
     }
 
-    public static RatePlan Create(string name, Guid transactionCodeId, DateOnly startDate, DateOnly endDate, IEnumerable<RoomTypePriceDefinition> rooms)
+    public static RatePlan Create(
+        string name,
+        Guid transactionCodeId,
+        DateOnly startDate,
+        DateOnly endDate,
+        DateOnly businessDate,
+        IEnumerable<RoomTypePriceDefinition> rooms)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -44,6 +50,11 @@ public class RatePlan
         if (transactionCodeId == Guid.Empty)
         {
             throw new RatePlanTransactionCodeRequiredException();
+        }
+
+        if (startDate < businessDate)
+        {
+            throw new RatePlanStartDateInvalidException();
         }
 
         if (endDate <= startDate)
@@ -73,7 +84,13 @@ public class RatePlan
         return ratePlan;
     }
 
-    public void Update(string name, Guid transactionCodeId, DateOnly startDate, DateOnly endDate, IEnumerable<RoomTypePriceDefinition> rooms)
+    public void Update(
+        string name,
+        Guid transactionCodeId,
+        DateOnly startDate,
+        DateOnly endDate,
+        DateOnly businessDate,
+        IEnumerable<RoomTypePriceDefinition> rooms)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -83,6 +100,11 @@ public class RatePlan
         if (transactionCodeId == Guid.Empty)
         {
             throw new RatePlanTransactionCodeRequiredException();
+        }
+
+        if (startDate < businessDate)
+        {
+            throw new RatePlanStartDateInvalidException();
         }
 
         if (endDate <= startDate)
