@@ -1,4 +1,5 @@
 ﻿using Hotel.Application.Seeding;
+using MediatR;
 using Hotel.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -14,6 +15,8 @@ namespace Hotel.IntegrationTests.Infrastructure;
 
 public class HotelWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private const string TestTimeZoneId = "Greenwich Standard Time";
+
     private readonly string _dbName = "HotelTestDb_" + Guid.NewGuid().ToString("N");
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -58,9 +61,28 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
 
     public async Task CreateDatabase()
     {
+        using (var scope = Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
+            await dbContext.Database.EnsureCreatedAsync();
+        }
+
+        await InitializeApplicationAsync();
+    }
+
+    private async Task InitializeApplicationAsync()
+    {
         using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
+        var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<SeedDataCommand, Guid>>();
+
+        var businessDate = DateOnly.FromDateTime(DateTime.UtcNow.AddYears(1));
+
+        var command = new SeedDataCommand(
+            TestTimeZoneId,
+            businessDate,
+            SeedBusinessData: false);
+
+        await handler.Handle(command, CancellationToken.None);
     }
 
     public async Task DeleteDatabase()
