@@ -65,7 +65,7 @@ public class RatePlanReadRepository(PersistenceDbContext dbContext) : IRatePlanR
             .AsNoTracking()
             .Where(rp =>
                 rp.Rooms.Any(r => r.RoomTypeId == roomTypeId) &&
-                rp.StartDate <= endDate && rp.EndDate >= startDate)
+                rp.StartDate <= startDate && rp.EndDate >= endDate)
             .OrderBy(rp => rp.Name)
             .Select(rp => new RatePlanListSimpleDto(rp.Id, rp.Name))
             .ToListAsync(cancellationToken);
