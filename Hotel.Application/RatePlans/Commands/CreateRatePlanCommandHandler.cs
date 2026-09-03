@@ -3,6 +3,7 @@ using MediatR;
 using Hotel.Domain.RatePlans.Repositories;
 using Hotel.Application.Pipeline;
 using Hotel.Application.Users.Enums;
+using Hotel.Application.Configurations.Services;
 
 namespace Hotel.Application.RatePlans.Commands;
 
@@ -18,11 +19,15 @@ public record CreateRatePlanRoomCommand(
     Guid RoomTypeId,
     decimal Price);
 
-internal class CreateRatePlanCommandHandler(IRatePlanRepository ratePlanRepository)
+internal class CreateRatePlanCommandHandler(
+    IRatePlanRepository ratePlanRepository,
+    IBusinessDateProvider businessDateProvider)
     : IRequestHandler<CreateRatePlanCommand, Guid>
 {
     public async Task<Guid> Handle(CreateRatePlanCommand request, CancellationToken cancellationToken)
     {
+        var businessDate = await businessDateProvider.GetCurrentBusinessDate(cancellationToken);
+
         var rooms = request.Rooms.Select(r => new RoomTypePriceDefinition(r.RoomTypeId, r.Price));
 
         var ratePlan = RatePlan.Create(
@@ -30,6 +35,7 @@ internal class CreateRatePlanCommandHandler(IRatePlanRepository ratePlanReposito
             request.TransactionCodeId,
             request.StartDate,
             request.EndDate,
+            businessDate,
             rooms);
 
         await ratePlanRepository.Add(ratePlan, cancellationToken);
