@@ -84,6 +84,9 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
 
             var identityContext = scope.ServiceProvider.GetRequiredService<InfraIdentityDbContext>();
             await identityContext.Database.EnsureCreatedAsync();
+
+            var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
+            await seedingService.SeedAsync();
         }
 
         await InitializeApplicationAsync();
