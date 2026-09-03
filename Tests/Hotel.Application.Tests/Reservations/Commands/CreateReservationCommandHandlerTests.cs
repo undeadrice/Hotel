@@ -66,6 +66,7 @@ public class CreateReservationCommandHandlerTests
             Guid.NewGuid(),
             new DateOnly(2026, 8, 1),
             new DateOnly(2026, 8, 31),
+            new DateOnly(2026, 7, 31),
             [new RoomTypePriceDefinition(_roomTypeId, 100m)]);
 
         _roomRepository.GetById(Arg.Any<Guid>(), Arg.Any<CancellationToken>()).Returns(_room);

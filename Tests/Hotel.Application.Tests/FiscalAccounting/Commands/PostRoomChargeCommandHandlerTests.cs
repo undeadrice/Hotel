@@ -58,6 +58,7 @@ public class PostRoomChargeCommandHandlerTests
             Guid.NewGuid(),
             new DateOnly(2026, 1, 1),
             new DateOnly(2026, 12, 31),
+            new DateOnly(2025, 12, 31),
             [new RoomTypePriceDefinition(roomTypeId, 150m)]);
 
         var room = Room.Create("101", roomTypeId);
@@ -111,6 +112,7 @@ public class PostRoomChargeCommandHandlerTests
             Guid.NewGuid(),
             new DateOnly(2026, 1, 1),
             new DateOnly(2026, 12, 31),
+            new DateOnly(2025, 12, 31),
             [new RoomTypePriceDefinition(Guid.NewGuid(), 150m)]);
 
         var room = Room.Create("101", Guid.NewGuid());

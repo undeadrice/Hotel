@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Hotel.Application.Configurations.Services;
 using Hotel.Application.RatePlans.Commands;
 using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.RatePlans.Repositories;
@@ -10,12 +11,17 @@ namespace Hotel.Application.Tests.RatePlans.Commands;
 public class CreateRatePlanCommandHandlerTests
 {
     private readonly IRatePlanRepository _ratePlanRepository;
+    private readonly IBusinessDateProvider _businessDateProvider;
     private readonly CreateRatePlanCommandHandler _handler;
 
     public CreateRatePlanCommandHandlerTests()
     {
         _ratePlanRepository = Substitute.For<IRatePlanRepository>();
-        _handler = new CreateRatePlanCommandHandler(_ratePlanRepository);
+        _businessDateProvider = Substitute.For<IBusinessDateProvider>();
+        _businessDateProvider
+            .GetCurrentBusinessDate(Arg.Any<CancellationToken>())
+            .Returns(new DateOnly(2025, 12, 31));
+        _handler = new CreateRatePlanCommandHandler(_ratePlanRepository, _businessDateProvider);
     }
 
     [Fact]
