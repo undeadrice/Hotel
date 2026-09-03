@@ -1,6 +1,7 @@
 ﻿using Hotel.Application.Seeding;
-using MediatR;
+using Hotel.Infrastructure;
 using Hotel.Persistence;
+using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -18,6 +19,7 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
     private const string TestTimeZoneId = "Greenwich Standard Time";
 
     private readonly string _dbName = "HotelTestDb_" + Guid.NewGuid().ToString("N");
+    private readonly string _identityDbName = "HotelAuthTestDb_" + Guid.NewGuid().ToString("N");
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -28,9 +30,12 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
                     d.ServiceType == typeof(ISeedingService) ||
                     d.ServiceType == typeof(PersistenceDbContext) ||
                     d.ServiceType == typeof(DbContextOptions<PersistenceDbContext>) ||
+                    d.ServiceType == typeof(InfraIdentityDbContext) ||
+                    d.ServiceType == typeof(DbContextOptions<InfraIdentityDbContext>) ||
                     d.ServiceType == typeof(DbContextOptions) ||
-                    d.ServiceType.FullName?.StartsWith("Microsoft.EntityFrameworkCore") == true &&
-                    d.ServiceType.FullName.Contains("PersistenceDbContext"))
+                    (d.ServiceType.FullName?.StartsWith("Microsoft.EntityFrameworkCore") == true &&
+                     (d.ServiceType.FullName.Contains("PersistenceDbContext") ||
+                      d.ServiceType.FullName.Contains("InfraIdentityDbContext"))))
                 .ToList();
 
             foreach (var d in toRemove)
@@ -38,25 +43,36 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
                 services.Remove(d);
             }
 
-            var optionsConfigType = typeof(IDbContextOptionsConfiguration<PersistenceDbContext>);
-            var optionsConfigs = services
-                .Where(d => d.ServiceType == optionsConfigType)
-                .ToList();
-
-            foreach (var d in optionsConfigs)
-            {
-                services.Remove(d);
-            }
+            RemoveOptionsConfigurations<PersistenceDbContext>(services);
+            RemoveOptionsConfigurations<InfraIdentityDbContext>(services);
 
             var connectionString = $"Server=(localdb)\\mssqllocaldb;Database={_dbName};Trusted_Connection=True;MultipleActiveResultSets=true";
+            var identityConnectionString = $"Server=(localdb)\\mssqllocaldb;Database={_identityDbName};Trusted_Connection=True;MultipleActiveResultSets=true";
 
             services.AddDbContext<PersistenceDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddDbContext<InfraIdentityDbContext>(options =>
+                options.UseSqlServer(identityConnectionString));
 
             services.AddScoped<ISeedingService, TestSeedingService>();
         });
 
         builder.UseEnvironment("Development");
+    }
+
+    private static void RemoveOptionsConfigurations<TContext>(IServiceCollection services)
+        where TContext : DbContext
+    {
+        var optionsConfigType = typeof(IDbContextOptionsConfiguration<TContext>);
+        var optionsConfigs = services
+            .Where(d => d.ServiceType == optionsConfigType)
+            .ToList();
+
+        foreach (var d in optionsConfigs)
+        {
+            services.Remove(d);
+        }
     }
 
     public async Task CreateDatabase()
@@ -65,6 +81,9 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
             await dbContext.Database.EnsureCreatedAsync();
+
+            var identityContext = scope.ServiceProvider.GetRequiredService<InfraIdentityDbContext>();
+            await identityContext.Database.EnsureCreatedAsync();
         }
 
         await InitializeApplicationAsync();
@@ -88,8 +107,12 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
     public async Task DeleteDatabase()
     {
         using var scope = Services.CreateScope();
+
         var dbContext = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
         await dbContext.Database.EnsureDeletedAsync();
+
+        var identityContext = scope.ServiceProvider.GetRequiredService<InfraIdentityDbContext>();
+        await identityContext.Database.EnsureDeletedAsync();
     }
 
     public async Task<HttpClient> CreateAuthenticatedClientAsync(
