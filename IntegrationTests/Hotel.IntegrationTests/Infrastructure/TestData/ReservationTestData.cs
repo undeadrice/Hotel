@@ -32,8 +32,8 @@ public static class ReservationTestData
 
         var guestId = await GuestTestData.CreateGuestAsync(client);
 
-        var start = startDate ?? new DateOnly(2026, 8, 10);
-        var end = endDate ?? new DateOnly(2026, 8, 12);
+        var start = startDate ?? RatePlanDates.ValidStartDate;
+        var end = endDate ?? RatePlanDates.ValidStartDate.AddDays(2);
 
         var response = await client.PostAsJsonAsync(
             "/api/reservations",
