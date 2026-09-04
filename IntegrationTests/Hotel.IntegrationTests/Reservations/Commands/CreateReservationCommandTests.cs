@@ -3,6 +3,7 @@ using Hotel.Application.Reservations.Commands;
 using Hotel.Domain.NumberCycles.Enums;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -42,6 +43,11 @@ public class CreateReservationCommandTests : IClassFixture<HotelWebApplicationFa
 
         var getResponse = await _client.GetAsync($"/api/reservations/{reservationId}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var fiscalAccount = await DataAccess.FiscalAccount(_factory)
+            .SingleOrDefaultAsync(a => a.OriginatorId == reservationId);
+
+        fiscalAccount.Should().NotBeNull();
     }
 
     [Fact]
