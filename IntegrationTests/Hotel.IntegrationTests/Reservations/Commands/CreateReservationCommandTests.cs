@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Hotel.Application.Reservations.Commands;
+using Hotel.Domain.NumberCycles.Enums;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
 using System.Net;
@@ -101,6 +102,40 @@ public class CreateReservationCommandTests : IClassFixture<HotelWebApplicationFa
             RatePlanDates.ValidEndDate.AddDays(1),
             null,
             [context.CreatorId]);
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/reservations", command);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task CreateReservation_WithRoomNotInRatePlan_ReturnsBadRequest()
+    {
+        // Arrange
+        var ratePlanRoomTypeId = await RoomTypeTestData.CreateRoomTypeAsync(_client, "Standard");
+        var otherRoomTypeId = await RoomTypeTestData.CreateRoomTypeAsync(_client, "Suite");
+        var roomId = await RoomTestData.CreateRoomAsync(_client, "201", otherRoomTypeId);
+
+        var transactionGroupId = await TransactionGroupTestData.CreateTransactionGroupAsync(_client);
+        var transactionCodeId = await TransactionCodeTestData.CreateTransactionCodeAsync(_client, transactionGroupId);
+
+        var ratePlanId = await RatePlanTestData.CreateRatePlanAsync(_client, transactionCodeId, ratePlanRoomTypeId);
+
+        await NumberCycleTestData.CreateNumberCycleAsync(_client, NumberCycleTopic.Reservation, "RES", 1);
+        await NumberCycleTestData.CreateNumberCycleAsync(_client, NumberCycleTopic.FiscalAccount, "FA", 1);
+
+        var guestId = await GuestTestData.CreateGuestAsync(_client);
+
+        var command = new CreateReservationCommand(
+            guestId,
+            roomId,
+            ratePlanId,
+            RatePlanDates.ValidStartDate,
+            RatePlanDates.ValidStartDate.AddDays(2),
+            null,
+            [guestId]);
 
         // Act
         var response = await _client.PostAsJsonAsync("/api/reservations", command);
