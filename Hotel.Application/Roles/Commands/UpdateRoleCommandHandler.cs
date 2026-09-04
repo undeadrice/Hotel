@@ -3,7 +3,8 @@ using Hotel.Application.Roles.Services;
 using Hotel.Application.Users.Enums;
 using MediatR;
 
-namespace Hotel.Application.Roles.Commands
+namespace Hotel.Application.Roles.Commands;
+
 
 [CheckPermission(Permission.RoleEdit)]
 public record UpdateRoleCommand(Guid Id, string Name, IReadOnlyCollection<string> Permissions) : ICommand;
