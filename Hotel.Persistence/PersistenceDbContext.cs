@@ -1,19 +1,36 @@
-﻿using Hotel.Domain.Customers;
-using Hotel.Domain.Orders.Entities;
-using Hotel.Domain.Products.Entities;
+﻿using Hotel.Domain.Configurations.Entities;
+using Hotel.Domain.FiscalAccounting.Entities;
+using Hotel.Domain.Guests;
+using Hotel.Domain.NumberCycles.Entities;
+using Hotel.Domain.RatePlans.Entities;
+using Hotel.Domain.Reservations.Entities;
+using Hotel.Domain.Rooming.Entities;
+using Hotel.Domain.Transactions.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Persistence;
 
 public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options) : DbContext(options)
 {
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Guest> Guests { get; set; }
 
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Room> Rooms { get; set; }
 
-    public DbSet<Order> Orders { get; set; }
+    public DbSet<RoomType> RoomTypes { get; set; }
 
-    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Reservation> Reservations { get; set; }
+
+    public DbSet<FiscalAccount> FiscalAccounts { get; set; }
+
+    public DbSet<NumberCycle> NumberCycles { get; set; }
+
+    public DbSet<TransactionGroup> TransactionGroups { get; set; }
+
+    public DbSet<TransactionCode> TransactionCodes { get; set; }
+
+    public DbSet<RatePlan> RatePlans { get; set; }
+
+    public DbSet<Configuration> Configurations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,4 +38,3 @@ public class PersistenceDbContext(DbContextOptions<PersistenceDbContext> options
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PersistenceDbContext).Assembly);
     }
 }
-

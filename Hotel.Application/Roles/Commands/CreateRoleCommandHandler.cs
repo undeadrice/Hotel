@@ -1,7 +1,12 @@
-﻿using Hotel.Application.Roles.Services;
+using Hotel.Application.Pipeline;
+using Hotel.Application.Roles.Services;
+using Hotel.Application.Users.Enums;
 using MediatR;
 
 namespace Hotel.Application.Roles.Commands;
+
+[CheckPermission(Permission.RoleCreate)]
+public record CreateRoleCommand(string Name, IReadOnlyCollection<string> Permissions) : ICommand<Guid>;
 
 public class CreateRoleCommandHandler(IRoleService roleService) : IRequestHandler<CreateRoleCommand, Guid>
 {

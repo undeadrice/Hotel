@@ -36,5 +36,36 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 function extractErrorMessage(error: HttpErrorResponse): string {
-  return error.error.detail ?? 'An unexpected error occurred.';
+  const body: unknown = error.error;
+
+  if (body && typeof body === 'object') {
+    // ValidationProblemDetails: FluentValidation returns property -> messages map.
+    const errors = (body as { errors?: Record<string, string[]> }).errors;
+    if (errors && typeof errors === 'object') {
+      const messages = Object.values(errors)
+        .flat()
+        .filter((message): message is string => typeof message === 'string');
+      if (messages.length > 0) {
+        return messages.join(' ');
+      }
+    }
+
+    // ProblemDetails: domain/application exceptions return a detail message.
+    const detail = (body as { detail?: unknown }).detail;
+    if (typeof detail === 'string' && detail.trim().length > 0) {
+      return detail;
+    }
+
+    // Fall back to the response title when no detail is provided.
+    const title = (body as { title?: unknown }).title;
+    if (typeof title === 'string' && title.trim().length > 0) {
+      return title;
+    }
+  }
+
+  if (typeof body === 'string' && body.trim().length > 0) {
+    return body;
+  }
+
+  return 'An unexpected error occurred.';
 }

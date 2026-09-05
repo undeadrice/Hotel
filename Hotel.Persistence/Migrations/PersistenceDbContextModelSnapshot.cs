@@ -22,110 +22,471 @@ namespace Hotel.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Hotel.Domain.Customers.Customer", b =>
+            modelBuilder.Entity("Hotel.Domain.Configurations.Entities.Configuration", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Location")
-                        .HasColumnType("int");
+                    b.Property<DateOnly>("CurrentBusinessDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsSeeded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("TimeZone")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Configuration", (string)null);
                 });
 
-            modelBuilder.Entity("Hotel.Domain.Orders.Entities.Order", b =>
+            modelBuilder.Entity("Hotel.Domain.FiscalAccounting.Entities.FiscalAccount", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<string>("CycleIdentifier")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("OriginatorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("FinalPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("FiscalAccounts");
                 });
 
-            modelBuilder.Entity("Hotel.Domain.Orders.Entities.OrderItem", b =>
+            modelBuilder.Entity("Hotel.Domain.FiscalAccounting.Entities.Folio", b =>
                 {
                     b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FiscalAccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsMainFolio")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FiscalAccountId");
+
+                    b.ToTable("Folios", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.FiscalAccounting.Entities.FolioItem", b =>
+                {
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<DateOnly>("BusinessDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("FolioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<Guid>("TransactionCodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("FolioId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("FolioItems", (string)null);
                 });
 
-            modelBuilder.Entity("Hotel.Domain.Products.Entities.Product", b =>
+            modelBuilder.Entity("Hotel.Domain.Guests.Guest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentNumber");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("Phone");
+
+                    b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.NumberCycles.Entities.NumberCycle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrentIndex")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("StartIndex")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Topic")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Topic")
+                        .IsUnique();
+
+                    b.ToTable("NumberCycles", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.RatePlans.Entities.RatePlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("TransactionCodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RatePlans", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.RatePlans.Entities.RatePlanRoom", b =>
+                {
+                    b.Property<Guid>("RatePlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoomTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("RatePlanId", "RoomTypeId");
+
+                    b.ToTable("RatePlanRooms", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Reservations.Entities.Reservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ArrivalTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CycleIdentifier")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("RatePlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Reservations.Entities.ReservationGuest", b =>
+                {
+                    b.Property<Guid>("ReservationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GuestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ReservationId", "GuestId");
+
+                    b.ToTable("ReservationGuests", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Rooming.Entities.Room", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoomNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<Guid>("RoomTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Rooming.Entities.RoomType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.HasKey("Id");
 
-                    b.Property<int>("Stock")
+                    b.ToTable("RoomTypes", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Transactions.Entities.TransactionCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("TransactionGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("TransactionGroupId");
+
+                    b.ToTable("TransactionCodes", (string)null);
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Transactions.Entities.TransactionGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("TransactionGroups", (string)null);
                 });
 
-            modelBuilder.Entity("Hotel.Domain.Orders.Entities.OrderItem", b =>
+            modelBuilder.Entity("Hotel.Domain.FiscalAccounting.Entities.Folio", b =>
                 {
-                    b.HasOne("Hotel.Domain.Orders.Entities.Order", null)
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("Hotel.Domain.FiscalAccounting.Entities.FiscalAccount", null)
+                        .WithMany("Folios")
+                        .HasForeignKey("FiscalAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hotel.Domain.Orders.Entities.Order", b =>
+            modelBuilder.Entity("Hotel.Domain.FiscalAccounting.Entities.FolioItem", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.HasOne("Hotel.Domain.FiscalAccounting.Entities.Folio", null)
+                        .WithMany("Items")
+                        .HasForeignKey("FolioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Hotel.Domain.RatePlans.Entities.RatePlanRoom", b =>
+                {
+                    b.HasOne("Hotel.Domain.RatePlans.Entities.RatePlan", null)
+                        .WithMany("Rooms")
+                        .HasForeignKey("RatePlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Reservations.Entities.ReservationGuest", b =>
+                {
+                    b.HasOne("Hotel.Domain.Reservations.Entities.Reservation", null)
+                        .WithMany("Guests")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Transactions.Entities.TransactionCode", b =>
+                {
+                    b.HasOne("Hotel.Domain.Transactions.Entities.TransactionGroup", null)
+                        .WithMany("TransactionCodes")
+                        .HasForeignKey("TransactionGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Hotel.Domain.FiscalAccounting.Entities.FiscalAccount", b =>
+                {
+                    b.Navigation("Folios");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.FiscalAccounting.Entities.Folio", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.RatePlans.Entities.RatePlan", b =>
+                {
+                    b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Reservations.Entities.Reservation", b =>
+                {
+                    b.Navigation("Guests");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Transactions.Entities.TransactionGroup", b =>
+                {
+                    b.Navigation("TransactionCodes");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,6 @@
-﻿using Hotel.API.Middleware;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Hotel.API.Middleware;
 using Hotel.Application;
 using Hotel.Application.Seeding;
 using Hotel.Domain;
@@ -7,7 +9,12 @@ using Hotel.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
+        options.JsonSerializerOptions.Converters.Add(new UtcDateOnlyConverter());
+    });
 builder.Services.AddOpenApi();
 
 builder.Services
@@ -49,5 +56,35 @@ app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+internal sealed class UtcDateTimeConverter : JsonConverter<DateTime>
+{
+    private const string Format = "yyyy-MM-ddTHH:mm:ss.fffZ";
+
+    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return DateTime.Parse(reader.GetString()!).ToUniversalTime();
+    }
+
+    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value.ToUniversalTime().ToString(Format));
+    }
+}
+
+internal sealed class UtcDateOnlyConverter : JsonConverter<DateOnly>
+{
+    private const string Format = "yyyy-MM-dd";
+
+    public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return DateOnly.FromDateTime(DateTime.Parse(reader.GetString()!));
+    }
+
+    public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value.ToString(Format));
+    }
+}
 
 public partial class Program { }

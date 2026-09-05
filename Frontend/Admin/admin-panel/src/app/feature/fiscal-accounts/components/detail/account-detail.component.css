@@ -1,0 +1,155 @@
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.account-card {
+  margin-bottom: 40px;
+  padding: 24px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px 32px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.detail-value {
+  font-size: 1rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.folios-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-title {
+  margin: 0 0 4px;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.folio-card {
+  display: block;
+  padding: 24px;
+}
+
+.folio-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.folio-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.main-folio-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background-color: rgba(255, 152, 0, 0.15);
+  color: #e65100;
+}
+
+.status-badge.status-settled {
+  background-color: rgba(46, 125, 50, 0.15);
+  color: #2e7d32;
+}
+
+.status-badge.status-checked-out {
+  background-color: rgba(21, 101, 192, 0.15);
+  color: #1565c0;
+}
+
+.folio-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.folio-meta {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.table-wrapper {
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.empty-hint {
+  margin: 12px 0 0;
+  color: rgba(0, 0, 0, 0.6);
+}

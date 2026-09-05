@@ -1,8 +1,12 @@
 <mat-toolbar>
   <span>Inventory Management</span>
+  <button mat-button color="primary" (click)="performEndOfDay()">
+    <mat-icon>nightlight_round</mat-icon>
+    End of day
+  </button>
   <span class="flex-spacer"></span>
   @if (authService.fullName(); as fullName) {
-    <span class="me-2">{{ fullName }}</span>
+  <span class="me-2">{{ fullName }}</span>
   }
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User menu">
     <mat-icon>more_vert</mat-icon>
@@ -18,6 +22,75 @@
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened class="bg-dark">
     <mat-nav-list>
+      <mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>dashboard</mat-icon> Dashboard</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Rooming</div>
+
+      <mat-list-item routerLink="/rooms" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>meeting_room</mat-icon> Rooms</span>
+      </mat-list-item>
+
+      <mat-list-item routerLink="/room-types" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>category</mat-icon> Room types</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Guests</div>
+
+      <mat-list-item routerLink="/guests" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>people</mat-icon> Guests</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Reservations</div>
+
+      <mat-list-item routerLink="/reservations" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>book_online</mat-icon> Reservations</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Rate Plans</div>
+
+      <mat-list-item routerLink="/rate-plans" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>sell</mat-icon> Rate Plans</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Fiscal Accounts</div>
+
+      <mat-list-item routerLink="/fiscal-accounts" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>account_balance</mat-icon> Fiscal Accounts</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Transactions</div>
+
+      <mat-list-item routerLink="/transaction-groups" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>receipt</mat-icon> Transaction Groups</span>
+      </mat-list-item>
+
+      <mat-list-item routerLink="/transaction-codes" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>code</mat-icon> Transaction Codes</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Numbering</div>
+
+      <mat-list-item routerLink="/number-cycles" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>pin</mat-icon> Number Cycles</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+      <div class="text-light small px-3 pt-3 pb-1">Configuration</div>
+
+      <mat-list-item routerLink="/configurations" routerLinkActive="active-link">
+        <span class="text-light"><mat-icon>settings</mat-icon> Configuration</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
       <div class="text-light small px-3 pt-3 pb-1">Management</div>
 
       <mat-list-item routerLink="/roles" routerLinkActive="active-link">

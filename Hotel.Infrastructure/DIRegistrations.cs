@@ -1,11 +1,11 @@
 ﻿using Hotel.Application.Auth.Models;
 using Hotel.Application.Auth.Services;
+using Hotel.Application.Common;
 using Hotel.Application.Roles.Services;
-using Hotel.Application.Seeding;
 using Hotel.Application.Users.Services;
 using Hotel.Infrastructure.Auth.Entities;
 using Hotel.Infrastructure.Auth.Services;
-using Hotel.Infrastructure.Seeding;
+using Hotel.Infrastructure.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -62,8 +62,9 @@ public static class DIRegistrations
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<ISeedingService, SeedingService>();
         services.AddScoped<IRoleService, RoleService>();
+
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         var jwtSettings = new JwtSettings(
             configuration["jwt:Secret"]!,

@@ -1,0 +1,138 @@
+<mat-card style="max-width: 600px; margin: 0 auto">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Create rate plan</mat-card-title>
+      <button mat-stroked-button routerLink="/rate-plans">Back</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Rate Plan details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="e.g. Summer Promotion" />
+            @if (form.get('name')?.hasError('required')) {
+              <mat-error>Name is required</mat-error>
+            } @else if (form.get('name')?.hasError('minlength')) {
+              <mat-error>Name must be at least 2 characters</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Transaction Code</mat-label>
+            <mat-select formControlName="transactionCodeId">
+              @for (code of transactionCodes(); track code.id) {
+                <mat-option [value]="code.id">{{ code.name }} ({{ code.code }})</mat-option>
+              }
+            </mat-select>
+            @if (form.get('transactionCodeId')?.hasError('required')) {
+              <mat-error>Transaction Code is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+            @if (form.get('startDate')?.hasError('required')) {
+              <mat-error>Start Date is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+            @if (form.get('endDate')?.hasError('required')) {
+              <mat-error>End Date is required</mat-error>
+            }
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card style="margin-top: 16px">
+        <mat-card-header>
+          <mat-card-title>Rooms</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div formArrayName="rooms">
+            @for (room of rooms.controls; track room; let i = $index) {
+              <div [formGroupName]="i" style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px">
+                <mat-form-field appearance="outline" style="flex: 1">
+                  <mat-label>Room Type</mat-label>
+                  <mat-select formControlName="roomTypeId">
+                    @for (rt of availableRoomTypes(i); track rt.id) {
+                      <mat-option [value]="rt.id">{{ rt.name }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (rooms.at(i).get('roomTypeId')?.hasError('required')) {
+                    <mat-error>Room Type is required</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="flex: 1">
+                  <mat-label>Price</mat-label>
+                  <input matInput type="number" formControlName="price" placeholder="e.g. 199.99" step="0.01" min="0.01" />
+                  @if (rooms.at(i).get('price')?.hasError('required')) {
+                    <mat-error>Price is required</mat-error>
+                  } @else if (rooms.at(i).get('price')?.hasError('min')) {
+                    <mat-error>Price must be greater than 0</mat-error>
+                  }
+                </mat-form-field>
+
+                <button
+                  mat-icon-button
+                  color="warn"
+                  type="button"
+                  (click)="removeRoom(i)"
+                  [disabled]="rooms.length <= 1"
+                  style="margin-top: 8px"
+                  aria-label="Remove room"
+                >
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              </div>
+            }
+          </div>
+
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="addRoom()"
+            style="margin-top: 8px"
+          >
+            <mat-icon>add</mat-icon> Add Room
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <div style="margin-top: 16px; display: flex; gap: 8px">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid || submitting()"
+        >
+          Create rate plan
+        </button>
+        <button
+          mat-button
+          type="button"
+          routerLink="/rate-plans"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+
+    @if (submitting()) {
+      <mat-progress-bar mode="indeterminate" style="margin-top: 12px"></mat-progress-bar>
+    }
+  </mat-card-content>
+</mat-card>

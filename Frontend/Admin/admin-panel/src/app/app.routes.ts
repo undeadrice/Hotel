@@ -9,12 +9,40 @@ import { UserAddComponent } from './feature/users/components/add/user-add.compon
 import { UserEditComponent } from './feature/users/components/edit/user-edit.component';
 import { LoginComponent } from './feature/authorization/components/login.component';
 import { authGuard } from './core/auth/auth.guard';
+import { seedStatusGuard } from './core/auth/seed-status.guard';
+import { SetupComponent } from './feature/configurations/components/setup/setup.component';
+import { RoomListComponent } from './feature/rooming/components/room-list/room-list.component';
+import { RoomAddComponent } from './feature/rooming/components/room-add/room-add.component';
+import { RoomEditComponent } from './feature/rooming/components/room-edit/room-edit.component';
+import { RoomTypeListComponent } from './feature/rooming/components/room-type-list/room-type-list.component';
+import { RoomTypeAddComponent } from './feature/rooming/components/room-type-add/room-type-add.component';
+import { RoomTypeEditComponent } from './feature/rooming/components/room-type-edit/room-type-edit.component';
+import { GuestListComponent } from './feature/guests/components/list/guest-list.component';
+import { GuestAddComponent } from './feature/guests/components/add/guest-add.component';
+import { GuestEditComponent } from './feature/guests/components/edit/guest-edit.component';
+import { TransactionGroupListComponent } from './feature/transaction-groups/components/list/transaction-group-list.component';
+import { TransactionGroupAddComponent } from './feature/transaction-groups/components/add/transaction-group-add.component';
+import { TransactionGroupEditComponent } from './feature/transaction-groups/components/edit/transaction-group-edit.component';
+import { TransactionCodeListComponent } from './feature/transaction-codes/components/list/transaction-code-list.component';
+import { TransactionCodeAddComponent } from './feature/transaction-codes/components/add/transaction-code-add.component';
+import { TransactionCodeEditComponent } from './feature/transaction-codes/components/edit/transaction-code-edit.component';
+import { DashboardComponent } from './feature/dashboard/components/dashboard.component';
+import { RatePlanListComponent } from './feature/rate-plans/components/list/rate-plan-list.component';
+import { RatePlanAddComponent } from './feature/rate-plans/components/add/rate-plan-add.component';
+import { RatePlanDetailComponent } from './feature/rate-plans/components/detail/rate-plan-detail.component';
+import { ReservationListComponent } from './feature/reservations/components/list/reservation-list.component';
+import { ReservationAddComponent } from './feature/reservations/components/add/reservation-add.component';
+import { AccountListComponent } from './feature/fiscal-accounts/components/list/account-list.component';
+import { AccountDetailComponent } from './feature/fiscal-accounts/components/detail/account-detail.component';
+import { NumberCycleListComponent } from './feature/number-cycles/components/list/number-cycle-list.component';
+import { NumberCycleAddComponent } from './feature/number-cycles/components/add/number-cycle-add.component';
+import { ConfigurationComponent } from './feature/configurations/components/configuration.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: AuthorizedLayoutComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, seedStatusGuard],
     children: [
       {
         path: 'roles',
@@ -41,10 +69,114 @@ export const routes: Routes = [
         component: UserEditComponent,
       },
       {
-        path: '',
-        redirectTo: 'roles',
-        pathMatch: 'full',
+        path: 'rooms',
+        component: RoomListComponent,
       },
+      {
+        path: 'rooms/add',
+        component: RoomAddComponent,
+      },
+      {
+        path: 'rooms/edit/:id',
+        component: RoomEditComponent,
+      },
+      {
+        path: 'room-types',
+        component: RoomTypeListComponent,
+      },
+      {
+        path: 'room-types/add',
+        component: RoomTypeAddComponent,
+      },
+      {
+        path: 'room-types/edit/:id',
+        component: RoomTypeEditComponent,
+      },
+       {
+         path: 'guests',
+         component: GuestListComponent,
+       },
+       {
+         path: 'guests/add',
+         component: GuestAddComponent,
+       },
+       {
+         path: 'guests/edit/:id',
+         component: GuestEditComponent,
+       },
+       {
+         path: 'transaction-groups',
+         component: TransactionGroupListComponent,
+       },
+       {
+         path: 'transaction-groups/add',
+         component: TransactionGroupAddComponent,
+       },
+       {
+         path: 'transaction-groups/edit/:id',
+         component: TransactionGroupEditComponent,
+       },
+       {
+         path: 'transaction-codes',
+         component: TransactionCodeListComponent,
+       },
+       {
+         path: 'transaction-codes/add',
+         component: TransactionCodeAddComponent,
+       },
+       {
+         path: 'transaction-codes/edit/:id',
+         component: TransactionCodeEditComponent,
+       },
+       {
+          path: 'dashboard',
+          component: DashboardComponent,
+        },
+        {
+          path: 'rate-plans',
+          component: RatePlanListComponent,
+        },
+          {
+            path: 'rate-plans/add',
+            component: RatePlanAddComponent,
+          },
+          {
+            path: 'rate-plans/:id',
+            component: RatePlanDetailComponent,
+          },
+         {
+           path: 'reservations',
+           component: ReservationListComponent,
+         },
+         {
+           path: 'reservations/add',
+           component: ReservationAddComponent,
+         },
+         {
+           path: 'fiscal-accounts',
+           component: AccountListComponent,
+         },
+          {
+            path: 'fiscal-accounts/:id',
+            component: AccountDetailComponent,
+          },
+           {
+             path: 'number-cycles',
+             component: NumberCycleListComponent,
+           },
+           {
+             path: 'number-cycles/add',
+             component: NumberCycleAddComponent,
+           },
+           {
+             path: 'configurations',
+             component: ConfigurationComponent,
+           },
+        {
+          path: '',
+          redirectTo: 'dashboard',
+          pathMatch: 'full',
+        },
     ],
   },
   {
@@ -54,6 +186,10 @@ export const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+      },
+      {
+        path: 'setup',
+        component: SetupComponent,
       },
     ],
   },

@@ -1,0 +1,43 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore Hotel.slnx
+
+      - name: Build unit test projects
+        run: dotnet build Hotel.slnx --no-restore --configuration Release
+
+      - name: Run unit tests (Application)
+        run: dotnet test Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj --no-build --configuration Release
+
+      - name: Run unit tests (Domain)
+        run: dotnet test Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj --no-build --configuration Release

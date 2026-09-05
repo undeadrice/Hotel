@@ -1,0 +1,41 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Guests dashboard</mat-card-title>
+      <button mat-raised-button routerLink="add">Add guest</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="guests">
+      <ng-container matColumnDef="FullName">
+        <th mat-header-cell *matHeaderCellDef>Full name</th>
+        <td mat-cell *matCellDef="let guest">{{ guest.fullName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Phone">
+        <th mat-header-cell *matHeaderCellDef>Phone</th>
+        <td mat-cell *matCellDef="let guest">{{ guest.phone }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let guest">{{ guest.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="DocumentNumber">
+        <th mat-header-cell *matHeaderCellDef>Document number</th>
+        <td mat-cell *matCellDef="let guest">{{ guest.documentNumber }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let guest">
+          <button mat-button color="accent" (click)="editGuest(guest.id)">Edit</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
