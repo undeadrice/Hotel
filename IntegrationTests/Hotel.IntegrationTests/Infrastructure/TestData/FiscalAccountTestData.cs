@@ -8,7 +8,8 @@ public record FiscalAccountContext(
     Guid MainFolioId,
     Guid ReservationId,
     Guid RatePlanId,
-    Guid ChargeTransactionCodeId);
+    Guid ChargeTransactionCodeId,
+    DateTime CreatedAt);
 
 public static class FiscalAccountTestData
 {
@@ -32,7 +33,8 @@ public static class FiscalAccountTestData
             mainFolio.Id,
             reservationContext.ReservationId,
             reservationContext.RatePlanId,
-            ratePlan.TransactionCodeId);
+            ratePlan.TransactionCodeId,
+            account.CreatedAt);
     }
 
     public static async Task<Guid> CreatePaymentTransactionCodeAsync(HttpClient client)
