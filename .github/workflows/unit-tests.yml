@@ -31,10 +31,13 @@ jobs:
           restore-keys: ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj
+        run: dotnet restore Hotel.slnx
 
       - name: Build unit test projects
-        run: dotnet build Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj --no-restore --configuration Release
+        run: dotnet build Hotel.slnx --no-restore --configuration Release
 
-      - name: Run unit tests
-        run: dotnet test Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj --no-build --configuration Release
+      - name: Run unit tests (Application)
+        run: dotnet test Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj --no-build --configuration Release
+
+      - name: Run unit tests (Domain)
+        run: dotnet test Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj --no-build --configuration Release
