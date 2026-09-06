@@ -60,4 +60,12 @@ public static class ReservationTestData
         var context = await CreateReservationContextAsync(client, startDate, endDate);
         return context.ReservationId;
     }
+
+    public static async Task CheckInReservationAsync(HttpClient client, Guid reservationId)
+    {
+        var checkInResponse = await client.PostAsync(
+            $"/api/reservations/{reservationId}/check-in",
+            null);
+        checkInResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
 }

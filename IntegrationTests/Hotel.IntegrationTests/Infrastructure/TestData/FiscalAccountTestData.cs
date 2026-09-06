@@ -91,4 +91,36 @@ public static class FiscalAccountTestData
                 paymentTransactionCodeId));
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
+
+    public static async Task PostRoomChargeAsync(
+        HttpClient client,
+        FiscalAccountContext context)
+    {
+        var response = await client.PostAsync(
+            $"/api/fiscalaccounts/{context.ReservationId}/post-room-charge",
+            null);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    public static async Task SettleFolioAsync(
+        HttpClient client,
+        FiscalAccountContext context)
+    {
+        var settleResponse = await client.PostAsJsonAsync(
+            "/api/folios/settle",
+            new SettleFolioCommand(context.FiscalAccountId, context.MainFolioId));
+        settleResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    public static async Task SettleMainFolioAsync(
+        HttpClient client,
+        FiscalAccountContext context)
+    {
+        await PostRoomChargeAsync(client, context);
+
+        var paymentTransactionCodeId = await CreatePaymentTransactionCodeAsync(client);
+
+        await CreatePaymentFolioItemAsync(client, context, paymentTransactionCodeId);
+        await SettleFolioAsync(client, context);
+    }
 }
