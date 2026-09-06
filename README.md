@@ -1,6 +1,6 @@
 # Hotel PMS
 
-A Property Management System (PMS) for hotels built with **.NET 10**, following **Clean Architecture**, **Domain-Driven Design**, and **CQRS**. The system covers core operations of a front-desk/back-office hotel application.: managing rooms and rate plans, creating reservations, checking guests in and out, posting charges and payments throuhg a folio based fiscal accounting subsystem and running an end-of-day routine that advances the hotel's bsiness date and automatically posts overnight room charges.
+A Property Management System (PMS) for hotels built with **.NET 10**, following **Clean Architecture**, **Domain-Driven Design**, and **CQRS**. The system covers core operations of a front-desk/back-office hotel application: managing rooms and rate plans, creating reservations, checking guests in and out, posting charges and payments through folio based fiscal accounting subsystem and running an end-of-day routine that advances the hotel's bsiness date and automatically posts overnight room charges.
 
 The system is thoroughly tested with both unit and integration tests.
 
