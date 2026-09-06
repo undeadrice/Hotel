@@ -1,5 +1,9 @@
+using FluentAssertions;
+using Hotel.Application.FiscalAccounting.Commands;
 using Hotel.Domain.Transactions.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Net.Http.Json;
 
 namespace Hotel.IntegrationTests.Infrastructure.TestData;
 
@@ -50,5 +54,41 @@ public static class FiscalAccountTestData
             paymentGroupId,
             code: "2001",
             name: "Default payment code");
+    }
+
+    public static async Task CreateChargeFolioItemAsync(
+        HttpClient client,
+        FiscalAccountContext context,
+        Guid chargeTransactionCodeId,
+        string description = "Room charge",
+        decimal amount = 100m)
+    {
+        var response = await client.PostAsJsonAsync(
+            "/api/folioitems",
+            new CreateFolioItemCommand(
+                context.MainFolioId,
+                description,
+                Quantity: 1,
+                amount,
+                chargeTransactionCodeId));
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    public static async Task CreatePaymentFolioItemAsync(
+        HttpClient client,
+        FiscalAccountContext context,
+        Guid paymentTransactionCodeId,
+        string description = "Cash payment",
+        decimal amount = 100m)
+    {
+        var response = await client.PostAsJsonAsync(
+            "/api/folioitems",
+            new CreateFolioItemCommand(
+                context.MainFolioId,
+                description,
+                Quantity: 1,
+                amount,
+                paymentTransactionCodeId));
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }
