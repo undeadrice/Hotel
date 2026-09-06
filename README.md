@@ -26,7 +26,8 @@ The frontend is implemented as a separate Angular application and is intended to
 
 ## Solution structure
 
-
+| Project | Description |
+| --- | --- |
 | `Hotel.Domain` | Core business entities, aggregates, domain services, enums, and business rules. No external dependencies. |
 | `Hotel.Application` | CQRS use cases (commands/queries) implemented with **MediatR**, FluentValidation validators, DTOs, and cross-cutting pipeline behaviors. |
 | `Hotel.Persistence` | EF Core (`PersistenceDbContext`) data access for the business domain, repositories, read repositories, and unit-of-work implementation (also uses **Dapper** for some read paths). |
