@@ -10,56 +10,17 @@ using System.Text.Json;
 namespace Hotel.API.Rooming;
 
 [McpServerToolType]
-public static class RoomTypeTools
+public static class RoomTools
 {
-    [McpServerTool, Description("Creates new room type in the PMS system")]
-    public static async Task<string> CreateRoomType(
-        IMediator mediator,
-        [Description("Name defining the type of the room by the type of the bed. eg (King, Double, Standard")] string name,
-        [Description("Optional description of the room type")] string? description = null,
-        CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            var result = await mediator.Send(
-                new CreateRoomTypeCommand(name, description),
-                cancellationToken);
-
-            return JsonSerializer.Serialize(new
-            {
-                success = true,
-                roomTypeId = result
-            });
-        }
-        catch (ValidationException ex)
-        {
-            return JsonSerializer.Serialize(new
-            {
-                success = false,
-                error = "validation_failed",
-                details = ex.Errors.Select(e => e.ErrorMessage)
-            });
-        }
-        catch (DomainException ex)
-        {
-            return JsonSerializer.Serialize(new
-            {
-                success = false,
-                error = "domain_error",
-                details = ex.Message
-            });
-        }
-    }
-
-    [McpServerTool, Description("Gets all room types in the PMS system")]
-    public static async Task<string> GetAllRoomTypes(
+    [McpServerTool, Description("Gets all rooms in the PMS system")]
+    public static async Task<string> GetAllRooms(
         IMediator mediator,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var result = await mediator.Send(
-                new GetRoomTypesQuery(),
+                new GetRoomsQuery(),
                 cancellationToken);
 
             return JsonSerializer.Serialize(new
@@ -88,22 +49,23 @@ public static class RoomTypeTools
         }
     }
 
-    [McpServerTool, Description("Gets a room type by its unique identifier")]
-    public static async Task<string> RoomTypeById(
+    [McpServerTool, Description("Creates a new room in the PMS system")]
+    public static async Task<string> CreateRoom(
         IMediator mediator,
-        [Description("The unique identifier (GUID) of the room type")] Guid id,
+        [Description("The room number identifying the room (e.g. '101', '202')")] string roomNumber,
+        [Description("The unique identifier (GUID) of the room type")] Guid roomTypeId,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var result = await mediator.Send(
-                new GetRoomTypeByIdQuery(id),
+                new CreateRoomCommand(roomNumber, roomTypeId),
                 cancellationToken);
 
             return JsonSerializer.Serialize(new
             {
                 success = true,
-                data = result
+                roomId = result
             });
         }
         catch (ValidationException ex)
@@ -126,4 +88,3 @@ public static class RoomTypeTools
         }
     }
 }
-

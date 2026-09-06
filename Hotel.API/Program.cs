@@ -1,11 +1,11 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Hotel.API.Middleware;
+﻿using Hotel.API.Middleware;
 using Hotel.Application;
 using Hotel.Application.Seeding;
 using Hotel.Domain;
 using Hotel.Infrastructure;
 using Hotel.Persistence;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +16,10 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new UtcDateOnlyConverter());
     });
 builder.Services.AddOpenApi();
+
+builder.Services.AddMcpServer()
+    .WithHttpTransport()
+    .WithToolsFromAssembly();
 
 builder.Services
     .AddPersistence(builder.Configuration)
@@ -48,13 +52,13 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+  // app.UseHttpsRedirection();
 }
 
 app.UseExceptionHandler();
-app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
-app.UseAuthorization();
 app.MapControllers();
+app.MapMcp("/mcp");
 app.Run();
 
 internal sealed class UtcDateTimeConverter : JsonConverter<DateTime>
