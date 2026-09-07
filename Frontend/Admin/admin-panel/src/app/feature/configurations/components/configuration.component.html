@@ -7,41 +7,24 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }
 
-  <mat-card class="configuration-card">
-    <mat-card-header>
-      <mat-card-title>Property setup</mat-card-title>
-      <mat-card-subtitle>Configure the hotel time zone and current business date</mat-card-subtitle>
-    </mat-card-header>
+  @if (configuration()) {
+    <mat-card class="detail-card">
+      <h2 class="card-title">Property setup</h2>
 
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="save()">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Time zone</mat-label>
-          <mat-select formControlName="timeZoneId">
-            @for (tz of timeZones(); track tz.value) {
-              <mat-option [value]="tz.value">{{ tz.label }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Current business date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="currentBusinessDate" />
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </form>
-    </mat-card-content>
-
-    <mat-card-actions align="end">
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="form.invalid || saving()"
-        (click)="save()"
-      >
-        Save
-      </button>
-    </mat-card-actions>
-  </mat-card>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Time zone</span>
+          <span class="detail-value">{{ timeZoneDisplayName() }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Current business date</span>
+          <span class="detail-value">{{ businessDateDisplay() }}</span>
+        </div>
+      </div>
+    </mat-card>
+  } @else if (!loading()) {
+    <mat-card class="detail-card">
+      <p class="empty-hint">No configuration has been set up yet.</p>
+    </mat-card>
+  }
 </div>
