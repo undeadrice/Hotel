@@ -18,7 +18,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         localStorage.removeItem('token-valid-to');
         router.navigate(['/login']);
         snackBar.open('Session expired. Please log in again.', 'Close', {
-          duration: 5000,
+          duration: 9000,
           panelClass: 'snackbar-error',
         });
         return throwError(() => error);
@@ -26,7 +26,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       const detail = extractErrorMessage(error);
       snackBar.open(detail, 'Close', {
-        duration: 5000,
+        duration: 9000,
         panelClass: 'snackbar-error',
       });
 
