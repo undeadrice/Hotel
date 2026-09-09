@@ -18,8 +18,15 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
 {
     private const string TestTimeZoneId = "Greenwich Standard Time";
 
-    private readonly string _dbName = "HotelTestDb_" + Guid.NewGuid().ToString("N");
-    private readonly string _identityDbName = "HotelAuthTestDb_" + Guid.NewGuid().ToString("N");
+    private readonly string _dbName;
+    private readonly string _identityDbName;
+
+    public HotelWebApplicationFactory()
+    {
+        var testId = Guid.NewGuid().ToString("N");
+        _dbName = "HotelTestDb_" + testId;
+        _identityDbName = "HotelAuthTestDb_" + testId;
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
