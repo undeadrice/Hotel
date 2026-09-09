@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Tests/">
     <Project Path="Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj" />
+    <Project Path="Tests/Hotel.ArchitectureTests/Hotel.ArchitectureTests.csproj" Id="f125c4e6-89cc-42cf-8ad4-dd86438f665a" />
     <Project Path="Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj" />
     <Project Path="Tests/Hotel.IntegrationTests/Hotel.IntegrationTests.csproj" />
   </Folder>
