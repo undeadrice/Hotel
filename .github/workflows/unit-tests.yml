@@ -41,3 +41,6 @@ jobs:
 
       - name: Run unit tests (Domain)
         run: dotnet test Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj --no-build --configuration Release
+
+      - name: Run architecture tests
+        run: dotnet test Tests/Hotel.ArchitectureTests/Hotel.ArchitectureTests.csproj --no-build --configuration Release
