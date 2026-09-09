@@ -13,7 +13,7 @@ public record CreateTransactionGroupCommand(
     TransactionType Type)
     : ICommand<Guid>;
 
-public class CreateTransactionGroupCommandHandler(ITransactionGroupCreationService transactionGroupCreationService)
+internal class CreateTransactionGroupCommandHandler(ITransactionGroupCreationService transactionGroupCreationService)
     : IRequestHandler<CreateTransactionGroupCommand, Guid>
 {
     public async Task<Guid> Handle(CreateTransactionGroupCommand request, CancellationToken cancellationToken)

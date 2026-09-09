@@ -10,7 +10,7 @@ public record SeedDataCommand(
     DateOnly CurrentBusinessDate,
     bool SeedBusinessData) : ICommand<Guid>;
 
-public class SeedDataCommandHandler(ISeedDataService seedDataService)
+internal class SeedDataCommandHandler(ISeedDataService seedDataService)
     : IRequestHandler<SeedDataCommand, Guid>
 {
     public async Task<Guid> Handle(SeedDataCommand request, CancellationToken cancellationToken)

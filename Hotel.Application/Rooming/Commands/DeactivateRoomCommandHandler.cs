@@ -9,7 +9,7 @@ namespace Hotel.Application.Rooming.Commands;
 [CheckPermission(Permission.RoomDelete)]
 public record DeactivateRoomCommand(Guid RoomId) : ICommand;
 
-public class DeactivateRoomCommandHandler(IRoomRepository roomRepository)
+internal class DeactivateRoomCommandHandler(IRoomRepository roomRepository)
     : IRequestHandler<DeactivateRoomCommand>
 {
     public async Task Handle(DeactivateRoomCommand request, CancellationToken cancellationToken)

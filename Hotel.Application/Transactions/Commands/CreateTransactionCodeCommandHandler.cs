@@ -12,7 +12,7 @@ public record CreateTransactionCodeCommand(
     string Name)
     : ICommand<Guid>;
 
-public class CreateTransactionCodeCommandHandler(ITransactionCodeCreationService transactionCodeCreationService)
+internal class CreateTransactionCodeCommandHandler(ITransactionCodeCreationService transactionCodeCreationService)
     : IRequestHandler<CreateTransactionCodeCommand, Guid>
 {
     public async Task<Guid> Handle(CreateTransactionCodeCommand request, CancellationToken cancellationToken)

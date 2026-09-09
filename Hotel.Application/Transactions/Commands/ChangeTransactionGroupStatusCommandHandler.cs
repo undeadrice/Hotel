@@ -11,7 +11,7 @@ public record ChangeTransactionGroupStatusCommand(
     bool IsActive)
     : ICommand;
 
-public class ChangeTransactionGroupStatusCommandHandler(ITransactionGroupRepository transactionGroupRepository)
+internal class ChangeTransactionGroupStatusCommandHandler(ITransactionGroupRepository transactionGroupRepository)
     : IRequestHandler<ChangeTransactionGroupStatusCommand>
 {
     public async Task Handle(ChangeTransactionGroupStatusCommand request, CancellationToken cancellationToken)

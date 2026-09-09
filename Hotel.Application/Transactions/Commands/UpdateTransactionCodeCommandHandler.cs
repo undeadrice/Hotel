@@ -13,7 +13,7 @@ public record UpdateTransactionCodeCommand(
     string Name)
     : ICommand;
 
-public class UpdateTransactionCodeCommandHandler(ITransactionCodeUpdateService transactionCodeUpdateService)
+internal class UpdateTransactionCodeCommandHandler(ITransactionCodeUpdateService transactionCodeUpdateService)
     : IRequestHandler<UpdateTransactionCodeCommand>
 {
     public async Task Handle(UpdateTransactionCodeCommand request, CancellationToken cancellationToken)

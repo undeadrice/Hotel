@@ -25,7 +25,7 @@ public record CreateReservationCommand(
     DateTime? ArrivalTime,
     List<Guid> GuestIds) : ICommand<Guid>;
 
-public class CreateReservationCommandHandler(
+internal class CreateReservationCommandHandler(
     IReservationRepository reservationRepository,
     IFiscalAccountRepository fiscalAccountRepository,
     IRoomRepository roomRepository,

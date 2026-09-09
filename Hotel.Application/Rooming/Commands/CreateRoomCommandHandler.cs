@@ -11,7 +11,7 @@ public record CreateRoomCommand(
     Guid RoomTypeId)
     : ICommand<Guid>;
 
-public class CreateRoomCommandHandler(IRoomCreationService roomCreationService)
+internal class CreateRoomCommandHandler(IRoomCreationService roomCreationService)
     : IRequestHandler<CreateRoomCommand, Guid>
 {
     public async Task<Guid> Handle(CreateRoomCommand request, CancellationToken cancellationToken)

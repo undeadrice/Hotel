@@ -8,7 +8,7 @@ namespace Hotel.Application.Reservations.Commands;
 [CheckPermission(Permission.ReservationEdit)]
 public record CheckInReservationCommand(Guid ReservationId) : ICommand;
 
-public class CheckInReservationCommandHandler(IReservationRepository reservationRepository)
+internal class CheckInReservationCommandHandler(IReservationRepository reservationRepository)
     : IRequestHandler<CheckInReservationCommand>
 {
     public async Task Handle(CheckInReservationCommand request, CancellationToken cancellationToken)

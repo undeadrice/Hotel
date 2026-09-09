@@ -6,7 +6,7 @@ namespace Hotel.Application.Auth.Commands;
 
 public record LoginCommand(string Email, string Password) : IRequest<TokenDto>;
 
-public class LoginCommandHandler(IAuthService authService) : IRequestHandler<LoginCommand, TokenDto>
+internal class LoginCommandHandler(IAuthService authService) : IRequestHandler<LoginCommand, TokenDto>
 {
     public async Task<TokenDto> Handle(LoginCommand request, CancellationToken cancellationToken)
     {

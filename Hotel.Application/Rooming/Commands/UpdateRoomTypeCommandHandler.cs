@@ -12,7 +12,7 @@ public record UpdateRoomTypeCommand(
     string? Description)
     : ICommand;
 
-public class UpdateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository)
+internal class UpdateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository)
     : IRequestHandler<UpdateRoomTypeCommand>
 {
     public async Task Handle(UpdateRoomTypeCommand request, CancellationToken cancellationToken)

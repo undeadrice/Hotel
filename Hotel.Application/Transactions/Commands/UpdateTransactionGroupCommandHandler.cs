@@ -14,7 +14,7 @@ public record UpdateTransactionGroupCommand(
     TransactionType Type)
     : ICommand;
 
-public class UpdateTransactionGroupCommandHandler(ITransactionGroupUpdateService transactionGroupUpdateService)
+internal class UpdateTransactionGroupCommandHandler(ITransactionGroupUpdateService transactionGroupUpdateService)
     : IRequestHandler<UpdateTransactionGroupCommand>
 {
     public async Task Handle(UpdateTransactionGroupCommand request, CancellationToken cancellationToken)

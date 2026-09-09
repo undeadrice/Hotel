@@ -14,7 +14,7 @@ namespace Hotel.Application.Configurations.Commands;
 [CheckPermission(Permission.ConfigurationEdit)]
 public record PerformEndOfDayCommand : ICommand<DateOnly>;
 
-public class PerformEndOfDayCommandHandler(
+internal class PerformEndOfDayCommandHandler(
     IConfigurationRepository configurationRepository,
     IReservationRepository reservationRepository,
     IFiscalAccountRepository fiscalAccountRepository,

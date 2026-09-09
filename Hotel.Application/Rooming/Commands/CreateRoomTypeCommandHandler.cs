@@ -13,7 +13,7 @@ public record CreateRoomTypeCommand(
     string? Description)
     : ICommand<Guid>;
 
-public class CreateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository)
+internal class CreateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository)
     : IRequestHandler<CreateRoomTypeCommand, Guid>
 {
     public async Task<Guid> Handle(CreateRoomTypeCommand request, CancellationToken cancellationToken)
