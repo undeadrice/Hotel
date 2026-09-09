@@ -1,10 +1,8 @@
 <Solution>
-  <Folder Name="/IntegrationTests/">
-    <Project Path="IntegrationTests/Hotel.IntegrationTests/Hotel.IntegrationTests.csproj" />
-  </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj" />
     <Project Path="Tests/Hotel.Domain.Tests/Hotel.Domain.Tests.csproj" />
+    <Project Path="Tests/Hotel.IntegrationTests/Hotel.IntegrationTests.csproj" />
   </Folder>
   <Project Path="Hotel.API/Hotel.API.csproj" />
   <Project Path="Hotel.Application/Hotel.Application.csproj" />

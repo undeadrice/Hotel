@@ -36,4 +36,4 @@ The frontend is implemented as a separate Angular application and is intended to
 | `Hotel.Shared` | Shared exception types and common primitives. |
 | `Tests/Hotel.Domain.Tests` | Unit tests for domain rules and entities. |
 | `Tests/Hotel.Application.Tests` | Unit tests for application handlers and behaviors. |
-| `IntegrationTests/Hotel.IntegrationTests` | Integration tests covering commands, queries, and validation paths. |
+| `Tests/Hotel.IntegrationTests` | Integration tests covering commands, queries, and validation paths. |
