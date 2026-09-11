@@ -1,0 +1,16 @@
+{
+  "stryker-config": {
+    "project": "Hotel.Domain.csproj",
+    "reporters": [ "html", "progress" ],
+    "mutation-level": "Standard",
+    "thresholds": {
+      "high": 80,
+      "low": 60,
+      "break": 0
+    },
+    "ignore-methods": [
+      "*ToString",
+      "*GetHashCode"
+    ]
+  }
+}
