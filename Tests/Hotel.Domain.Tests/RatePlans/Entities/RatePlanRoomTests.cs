@@ -7,13 +7,14 @@ namespace Hotel.Domain.Tests.RatePlans.Entities;
 
 public class RatePlanRoomTests
 {
-    [Fact]
-    public void Create_WithValidArguments_ShouldCreateRatePlanRoom()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(100)]
+    public void Create_WithValidArguments_ShouldCreateRatePlanRoom(decimal price)
     {
         // Arrange
         var ratePlanId = Guid.NewGuid();
         var roomTypeId = Guid.NewGuid();
-        const decimal price = 100;
 
         // Act
         var room = RatePlanRoom.Create(ratePlanId, roomTypeId, price);
