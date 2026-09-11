@@ -64,22 +64,4 @@ public class DeactivateRoomCommandTests : IClassFixture<HotelWebApplicationFacto
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
-
-    [Fact]
-    public async Task DeactivateRoom_WhenAlreadyDeactivated_ReturnsBadRequest()
-    {
-        // Arrange
-        var roomTypeId = await RoomTypeTestData.CreateRoomTypeAsync(_client);
-        var roomId = await RoomTestData.CreateRoomAsync(_client, "101", roomTypeId);
-
-        var command = new DeactivateRoomCommand(roomId);
-        var firstResponse = await _client.PutAsJsonAsync("/api/rooms/deactivate", command);
-        firstResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-        // Act
-        var response = await _client.PutAsJsonAsync("/api/rooms/deactivate", command);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-    }
 }

@@ -63,4 +63,20 @@ public class UpdateRoomTypeCommandTests : IClassFixture<HotelWebApplicationFacto
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+
+    [Fact]
+    public async Task UpdateRoomType_WithDuplicateName_ReturnsBadRequest()
+    {
+        // Arrange
+        await RoomTypeTestData.CreateRoomTypeAsync(_client, "Standard", "Standard room");
+        var roomTypeId = await RoomTypeTestData.CreateRoomTypeAsync(_client, "Deluxe", "Deluxe room");
+
+        var command = new UpdateRoomTypeCommand(roomTypeId, "Standard", "Deluxe room");
+
+        // Act
+        var response = await _client.PutAsJsonAsync("/api/roomtypes", command);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
 }

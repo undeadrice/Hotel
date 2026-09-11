@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Hotel.Application.Rooming.Commands;
 using Hotel.IntegrationTests.Infrastructure;
+using Hotel.IntegrationTests.Infrastructure.TestData;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -43,5 +44,20 @@ public class CreateRoomTypeCommandTests : IClassFixture<HotelWebApplicationFacto
 
         var roomTypeId = await response.Content.ReadFromJsonAsync<Guid>();
         roomTypeId.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public async Task CreateRoomType_WithDuplicateName_ReturnsBadRequest()
+    {
+        // Arrange
+        await RoomTypeTestData.CreateRoomTypeAsync(_client, "Suite", "Luxury suite");
+
+        // Act
+        var response = await _client.PostAsJsonAsync(
+            "/api/roomtypes",
+            new CreateRoomTypeCommand("Suite", "Another suite"));
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }
