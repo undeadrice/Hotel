@@ -1,5 +1,5 @@
+using Hotel.Domain.Rooming.Services;
 using MediatR;
-using Hotel.Domain.Rooming.Repositories;
 using Hotel.Application.Pipeline;
 using Hotel.Application.Users.Enums;
 
@@ -12,12 +12,11 @@ public record UpdateRoomTypeCommand(
     string? Description)
     : ICommand;
 
-internal class UpdateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository)
+internal class UpdateRoomTypeCommandHandler(IRoomTypeUpdateService roomTypeUpdateService)
     : IRequestHandler<UpdateRoomTypeCommand>
 {
     public async Task Handle(UpdateRoomTypeCommand request, CancellationToken cancellationToken)
     {
-        var roomType = await roomTypeRepository.GetById(request.Id);
-        roomType.Update(request.Name, request.Description);
+        await roomTypeUpdateService.UpdateRoomType(request.Id, request.Name, request.Description, cancellationToken);
     }
 }

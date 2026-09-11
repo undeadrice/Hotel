@@ -28,4 +28,16 @@ public class RoomTypeRepository(PersistenceDbContext persistenceDbContext) : IRo
     {
         return await persistenceDbContext.RoomTypes.FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<bool> ExistsByName(string name, CancellationToken token)
+    {
+        return await persistenceDbContext.RoomTypes
+            .AnyAsync(x => x.Name == name, token);
+    }
+
+    public async Task<bool> ExistsByNameExcluding(Guid roomTypeId, string name, CancellationToken token)
+    {
+        return await persistenceDbContext.RoomTypes
+            .AnyAsync(x => x.Name == name && x.Id != roomTypeId, token);
+    }
 }

@@ -12,6 +12,8 @@ public static class DIRegistrations
     {
         services.AddScoped<IRoomCreationService, RoomCreationService>();
         services.AddScoped<IRoomUpdateService, RoomUpdateService>();
+        services.AddScoped<IRoomTypeCreationService, RoomTypeCreationService>();
+        services.AddScoped<IRoomTypeUpdateService, RoomTypeUpdateService>();
 
         services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
 

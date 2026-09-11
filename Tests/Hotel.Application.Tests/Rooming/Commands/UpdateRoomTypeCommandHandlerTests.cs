@@ -1,7 +1,5 @@
-using FluentAssertions;
 using Hotel.Application.Rooming.Commands;
-using Hotel.Domain.Rooming.Entities;
-using Hotel.Domain.Rooming.Repositories;
+using Hotel.Domain.Rooming.Services;
 using NSubstitute;
 using Xunit;
 
@@ -9,31 +7,27 @@ namespace Hotel.Application.Tests.Rooming.Commands;
 
 public class UpdateRoomTypeCommandHandlerTests
 {
-    private readonly IRoomTypeRepository _roomTypeRepository;
+    private readonly IRoomTypeUpdateService _roomTypeUpdateService;
     private readonly UpdateRoomTypeCommandHandler _handler;
 
     public UpdateRoomTypeCommandHandlerTests()
     {
-        _roomTypeRepository = Substitute.For<IRoomTypeRepository>();
-        _handler = new UpdateRoomTypeCommandHandler(_roomTypeRepository);
+        _roomTypeUpdateService = Substitute.For<IRoomTypeUpdateService>();
+        _handler = new UpdateRoomTypeCommandHandler(_roomTypeUpdateService);
     }
 
     [Fact]
-    public async Task Handle_ShouldGetUpdateAndPersistRoomType()
+    public async Task Handle_ShouldCallUpdateRoomType()
     {
         // Arrange
-        var roomType = RoomType.Create("Standard", "Old description.");
-        var command = new UpdateRoomTypeCommand(roomType.Id, "Deluxe", "New description.");
-
-        _roomTypeRepository.GetById(roomType.Id).Returns(roomType);
+        var roomTypeId = Guid.NewGuid();
+        var command = new UpdateRoomTypeCommand(roomTypeId, "Deluxe", "New description.");
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        roomType.Name.Should().Be("Deluxe");
-        roomType.Description.Should().Be("New description.");
-
-        await _roomTypeRepository.Received(1).GetById(roomType.Id);
+        await _roomTypeUpdateService.Received(1)
+            .UpdateRoomType(roomTypeId, "Deluxe", "New description.", Arg.Any<CancellationToken>());
     }
 }

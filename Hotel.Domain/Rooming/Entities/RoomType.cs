@@ -24,7 +24,7 @@ public class RoomType
     public RoomType() { }
 #pragma warning restore CS8618
 
-    public static RoomType Create(string name, string? description)
+    internal static RoomType Create(string name, string? description)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -34,7 +34,7 @@ public class RoomType
         return new RoomType(Guid.NewGuid(), name, description);
     }
 
-    public void Update(string name, string? description)
+    internal void Update(string name, string? description)
     {
         if (string.IsNullOrWhiteSpace(name))
         {

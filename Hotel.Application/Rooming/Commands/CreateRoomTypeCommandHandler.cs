@@ -1,7 +1,5 @@
-using Hotel.Domain.Rooming.Entities;
 using Hotel.Domain.Rooming.Services;
 using MediatR;
-using Hotel.Domain.Rooming.Repositories;
 using Hotel.Application.Pipeline;
 using Hotel.Application.Users.Enums;
 
@@ -13,14 +11,12 @@ public record CreateRoomTypeCommand(
     string? Description)
     : ICommand<Guid>;
 
-internal class CreateRoomTypeCommandHandler(IRoomTypeRepository roomTypeRepository)
+internal class CreateRoomTypeCommandHandler(IRoomTypeCreationService roomTypeCreationService)
     : IRequestHandler<CreateRoomTypeCommand, Guid>
 {
     public async Task<Guid> Handle(CreateRoomTypeCommand request, CancellationToken cancellationToken)
     {
-        var roomType = RoomType.Create(request.Name, request.Description);
-
-        await roomTypeRepository.Add(roomType);
+        var roomType = await roomTypeCreationService.CreateRoomType(request.Name, request.Description, cancellationToken);
 
         return roomType.Id;
     }

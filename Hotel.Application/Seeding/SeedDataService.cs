@@ -6,8 +6,6 @@ using Hotel.Domain.Configurations.Repositories;
 using Hotel.Domain.NumberCycles.Enums;
 using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.Persistence;
-using Hotel.Domain.Rooming.Entities;
-using Hotel.Domain.Rooming.Repositories;
 using Hotel.Domain.Rooming.Services;
 using Hotel.Domain.Transactions.Enums;
 using Hotel.Domain.Transactions.Services;
@@ -23,7 +21,7 @@ public class SeedDataService(
     ITransactionGroupReadRepository transactionGroupReadRepository,
     ITransactionCodeCreationService transactionCodeCreationService,
     ITransactionCodeReadRepository transactionCodeReadRepository,
-    IRoomTypeRepository roomTypeRepository,
+    IRoomTypeCreationService roomTypeCreationService,
     IRoomTypeReadRepository roomTypeReadRepository,
     IRoomCreationService roomCreationService,
     IRoomReadRepository roomReadRepository)
@@ -136,9 +134,9 @@ public class SeedDataService(
         }
 
         await unitOfWork.StartTransaction();
-        await roomTypeRepository.Add(RoomType.Create("Standard", "Standard room"), cancellationToken);
-        await roomTypeRepository.Add(RoomType.Create("Double", "Double room"), cancellationToken);
-        await roomTypeRepository.Add(RoomType.Create("King", "King room"), cancellationToken);
+        await roomTypeCreationService.CreateRoomType("Standard", "Standard room", cancellationToken);
+        await roomTypeCreationService.CreateRoomType("Double", "Double room", cancellationToken);
+        await roomTypeCreationService.CreateRoomType("King", "King room", cancellationToken);
         await unitOfWork.CommitAsync();
     }
 
