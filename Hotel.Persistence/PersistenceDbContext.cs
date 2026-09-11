@@ -1,6 +1,6 @@
 ﻿using Hotel.Domain.Configurations.Entities;
 using Hotel.Domain.FiscalAccounting.Entities;
-using Hotel.Domain.Guests;
+using Hotel.Domain.Guests.Entities;
 using Hotel.Domain.NumberCycles.Entities;
 using Hotel.Domain.RatePlans.Entities;
 using Hotel.Domain.Reservations.Entities;

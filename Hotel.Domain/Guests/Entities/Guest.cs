@@ -1,6 +1,6 @@
 using Hotel.Domain.Guests.Exceptions;
 
-namespace Hotel.Domain.Guests;
+namespace Hotel.Domain.Guests.Entities;
 
 public class Guest
 {

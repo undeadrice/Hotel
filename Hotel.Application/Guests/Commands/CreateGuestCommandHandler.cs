@@ -1,8 +1,8 @@
-using Hotel.Domain.Guests;
 using MediatR;
 using Hotel.Domain.Guests.Repositories;
 using Hotel.Application.Pipeline;
 using Hotel.Application.Users.Enums;
+using Hotel.Domain.Guests.Entities;
 
 namespace Hotel.Application.Guests.Commands;
 

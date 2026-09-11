@@ -1,4 +1,4 @@
-using Hotel.Domain.Guests;
+using Hotel.Domain.Guests.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

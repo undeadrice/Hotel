@@ -1,9 +1,9 @@
 using FluentAssertions;
 using Hotel.Application.Guests.Commands;
-using Hotel.Domain.Guests;
 using NSubstitute;
 using Xunit;
 using Hotel.Domain.Guests.Repositories;
+using Hotel.Domain.Guests.Entities;
 
 namespace Hotel.Application.Tests.Guests.Commands;
 

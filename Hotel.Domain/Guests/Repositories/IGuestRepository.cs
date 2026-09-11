@@ -1,4 +1,4 @@
-using Hotel.Domain.Guests;
+using Hotel.Domain.Guests.Entities;
 
 namespace Hotel.Domain.Guests.Repositories;
 

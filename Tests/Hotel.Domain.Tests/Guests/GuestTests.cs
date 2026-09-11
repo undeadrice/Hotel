@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Hotel.Domain.Guests;
+using Hotel.Domain.Guests.Entities;
 using Hotel.Domain.Guests.Exceptions;
 using Xunit;
 
