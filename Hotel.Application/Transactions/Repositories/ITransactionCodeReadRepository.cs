@@ -1,0 +1,15 @@
+using Hotel.Application.Transactions.TransferObjects;
+
+namespace Hotel.Application.Transactions.Repositories;
+
+public interface ITransactionCodeReadRepository
+{
+    Task<IReadOnlyCollection<TransactionCodeListDto>> GetAll(
+        Guid? transactionGroupId,
+        bool? isActive,
+        CancellationToken cancellationToken);
+
+    Task<TransactionCodeDto> GetById(Guid id, CancellationToken cancellationToken);
+
+    Task<IReadOnlyCollection<TransactionCodeSimpleListDto>> GetActiveSimpleList(CancellationToken cancellationToken);
+}

@@ -1,0 +1,159 @@
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">Fiscal Account Details</h1>
+    <button mat-stroked-button routerLink="/fiscal-accounts">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </header>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (account(); as acc) {
+    <mat-card class="account-card">
+      <div class="card-header">
+        <h2 class="card-title">Account Info</h2>
+        <div class="card-actions">
+          <button mat-raised-button color="primary" (click)="postDailyCharges()">
+            <mat-icon>bolt</mat-icon>
+            Post Daily Charges
+          </button>
+          <button mat-raised-button color="primary" (click)="openCreateFolioDialog()">
+            <mat-icon>add</mat-icon>
+            Create Folio
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            [disabled]="!canCheckOut()"
+            (click)="checkOutAccount()"
+          >
+            <mat-icon>logout</mat-icon>
+            Check Out
+          </button>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Identifier</span>
+          <span class="detail-value">{{ acc.cycleIdentifier }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Owner</span>
+          <span class="detail-value">{{ acc.ownerFullName }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Created</span>
+          <span class="detail-value">{{ acc.createdAt | date: 'short' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Status</span>
+          <span class="status-badge" [class.status-checked-out]="acc.status === FiscalAccountStatus.CheckedOut">
+            {{ fiscalAccountStatusLabel(acc.status) }}
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Reservation</span>
+          <span class="detail-value">
+            <button mat-stroked-button (click)="goToReservation()">
+              <mat-icon>open_in_new</mat-icon>
+              Go to reservation
+            </button>
+          </span>
+        </div>
+      </div>
+    </mat-card>
+
+    <section class="folios-section">
+      <h2 class="section-title">Folios</h2>
+
+      @for (folio of acc.folios; track folio.id) {
+        <mat-card class="folio-card">
+          <div class="card-header">
+            <div class="folio-title-group">
+              <div class="folio-title-row">
+                <h3 class="folio-title">Folio {{ $index + 1 }}</h3>
+                @if (folio.isMainFolio) {
+                  <span class="main-folio-badge">Main</span>
+                }
+                <span class="status-badge" [class.status-settled]="folio.status === FolioStatus.Settled">
+                  {{ folioStatusLabel(folio.status) }}
+                </span>
+              </div>
+              <span class="folio-meta">Created {{ folio.createdAt | date: 'short' }}</span>
+            </div>
+            <div class="card-actions">
+              <button
+                mat-stroked-button
+                color="accent"
+                [disabled]="!canSettleFolio(folio)"
+                (click)="settleFolio(folio)"
+              >
+                <mat-icon>check_circle</mat-icon>
+                Settle
+              </button>
+              <button
+                mat-stroked-button
+                color="accent"
+                (click)="openAddFolioItemDialog(folio)"
+              >
+                <mat-icon>add</mat-icon>
+                Add item
+              </button>
+            </div>
+          </div>
+
+          @if (folio.items.length === 0) {
+            <p class="empty-hint">No items in this folio.</p>
+          } @else {
+            <div class="table-wrapper">
+              <table mat-table [dataSource]="folio.items">
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let item">{{ item.description }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                  <th mat-header-cell *matHeaderCellDef>Type</th>
+                  <td mat-cell *matCellDef="let item">{{ folioItemTypeLabel(item.transactionGroupType) }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef>Amount / Qty</th>
+                  <td mat-cell *matCellDef="let item">
+                    {{ item.amount | currency }} / {{ item.quantity }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalAmount">
+                  <th mat-header-cell *matHeaderCellDef>Total</th>
+                  <td mat-cell *matCellDef="let item">{{ item.totalAmount | currency }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="businessDate">
+                  <th mat-header-cell *matHeaderCellDef>Business date</th>
+                  <td mat-cell *matCellDef="let item">{{ item.businessDate | date: 'yyyy-MM-dd' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdAt">
+                  <th mat-header-cell *matHeaderCellDef>Created</th>
+                  <td mat-cell *matCellDef="let item">{{ item.createdAt | date: 'short' }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="folioDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: folioDisplayedColumns"></tr>
+              </table>
+            </div>
+          }
+        </mat-card>
+      } @empty {
+        <mat-card class="folio-card">
+          <p class="empty-hint">No folios yet.</p>
+        </mat-card>
+      }
+    </section>
+  }
+</div>

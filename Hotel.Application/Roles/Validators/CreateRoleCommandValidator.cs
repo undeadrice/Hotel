@@ -14,7 +14,7 @@ public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
 
         RuleFor(x => x.Permissions)
             .NotNull().WithMessage("Permissions collection is required.")
-            .Must(permissions => permissions.All(p => Enum.IsDefined(typeof(Permission), p)))
+            .Must(permissions => permissions is not null && permissions.All(p => Enum.IsDefined(typeof(Permission), p)))
             .WithMessage("Each permission must be a valid Permission enum value.");
     }
 }

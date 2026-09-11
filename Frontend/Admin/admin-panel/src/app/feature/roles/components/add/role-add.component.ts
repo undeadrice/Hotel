@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
 import { RoleService } from '../../services/role.service';
 import { PermissionGroupResponse } from '../../models/responses/permission-group.response';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -46,8 +47,10 @@ export class RoleAddComponent implements OnInit {
   readonly submitting = signal(false);
 
   ngOnInit(): void {
-    this.roleService.getPermissions().subscribe({
-      next: (groups) => {
+    this.roleService
+      .getPermissions()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((groups) => {
         const permissionsFormGroup: Record<string, boolean> = {};
         for (const group of groups) {
           for (const perm of group.permissions) {
@@ -61,15 +64,7 @@ export class RoleAddComponent implements OnInit {
         );
 
         this.permissionGroups.set(groups);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load permissions', 'Close', {
-          duration: 5000,
-        });
-        this.loading.set(false);
-      },
-    });
+      });
   }
 
   onSubmit(): void {
@@ -91,16 +86,12 @@ export class RoleAddComponent implements OnInit {
         name: this.form.get('name')!.value,
         permissions: selectedPermissions,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Role created successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/roles']);
-        },
-        error: () => {
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Role created successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/roles']);
       });
   }
 }
