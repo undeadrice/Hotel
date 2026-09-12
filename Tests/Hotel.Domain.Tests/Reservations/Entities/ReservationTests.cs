@@ -93,6 +93,16 @@ public class ReservationTests
     }
 
     [Fact]
+    public async Task Create_WithStartDateEqualToEndDate_ShouldThrowReservationInvalidDateRangeException()
+    {
+        // Act
+        Func<Task> act = () => CreateReservation(startDate: StartDate, endDate: StartDate);
+
+        // Assert
+        await act.Should().ThrowAsync<ReservationInvalidDateRangeException>();
+    }
+
+    [Fact]
     public async Task Create_WithEmptyGuestList_ShouldThrowReservationGuestRequiredException()
     {
         // Act

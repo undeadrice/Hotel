@@ -8,18 +8,20 @@ namespace Hotel.Domain.Tests.NumberCycles.Entities;
 
 public class NumberCycleTests
 {
-    [Fact]
-    public void Create_WithValidArguments_ShouldSetProperties()
+    [Theory]
+    [InlineData(10)]
+    [InlineData(0)]
+    public void Create_WithValidArguments_ShouldSetProperties(int startIndex)
     {
         // Act
-        var cycle = NumberCycle.Create(NumberCycleTopic.Reservation, " res ", 10);
+        var cycle = NumberCycle.Create(NumberCycleTopic.Reservation, " res ", startIndex);
 
         // Assert
         cycle.Id.Should().NotBe(Guid.Empty);
         cycle.Topic.Should().Be(NumberCycleTopic.Reservation);
         cycle.Prefix.Should().Be("RES");
-        cycle.StartIndex.Should().Be(10);
-        cycle.CurrentIndex.Should().Be(10);
+        cycle.StartIndex.Should().Be(startIndex);
+        cycle.CurrentIndex.Should().Be(startIndex);
         cycle.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
