@@ -13,18 +13,20 @@ public class FolioItemTests
     private static readonly DateOnly BusinessDate = DateOnly.FromDateTime(DateTime.UtcNow);
     private static readonly DateTime CreatedAt = DateTime.UtcNow;
 
-    [Fact]
-    public void Create_WithValidArguments_ShouldSetProperties()
+    [Theory]
+    [InlineData(50)]
+    [InlineData(0)]
+    public void Create_WithValidArguments_ShouldSetProperties(decimal amount)
     {
         // Act
-        var item = FolioItem.Create(FolioId, "Room charge", 2, 50m, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
+        var item = FolioItem.Create(FolioId, "Room charge", 2, amount, TransactionCodeId, FolioItemType.Charge, BusinessDate, CreatedAt);
 
         // Assert
         item.Id.Should().NotBe(Guid.Empty);
         item.FolioId.Should().Be(FolioId);
         item.Description.Should().Be("Room charge");
         item.Quantity.Should().Be(2);
-        item.Amount.Should().Be(50m);
+        item.Amount.Should().Be(amount);
         item.TransactionCodeId.Should().Be(TransactionCodeId);
         item.TransactionType.Should().Be(FolioItemType.Charge);
         item.BusinessDate.Should().Be(BusinessDate);

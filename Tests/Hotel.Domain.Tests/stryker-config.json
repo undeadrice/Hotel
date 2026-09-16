@@ -3,6 +3,12 @@
     "project": "Hotel.Domain.csproj",
     "reporters": [ "html", "progress" ],
     "mutation-level": "Standard",
+    "ignore-mutations": [
+      "String"
+    ],
+    //"mutate": [
+    //  "**/Rooming/**/*.cs"
+    //],
     "thresholds": {
       "high": 80,
       "low": 60,
