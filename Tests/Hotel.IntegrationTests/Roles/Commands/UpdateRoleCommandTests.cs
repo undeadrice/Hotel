@@ -3,6 +3,8 @@ using Hotel.Application.Roles.Commands;
 using Hotel.Application.Roles.Dtos;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -69,5 +71,10 @@ public class UpdateRoleCommandTests : IClassFixture<HotelWebApplicationFactory>,
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        problemDetails!.Status.Should().Be(StatusCodes.Status404NotFound);
+        problemDetails.Extensions["exception"]!.ToString().Should().Be("NotFoundException");
     }
 }
