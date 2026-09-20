@@ -3,6 +3,8 @@ using Hotel.Application.Rooming.Commands;
 using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Http.Json;
@@ -73,6 +75,11 @@ public class PostRoomChargeCommandTests : IClassFixture<HotelWebApplicationFacto
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        problemDetails!.Status.Should().Be(StatusCodes.Status404NotFound);
+        problemDetails.Extensions["exception"]!.ToString().Should().Be("NotFoundException");
     }
 
     [Fact]
@@ -94,5 +101,10 @@ public class PostRoomChargeCommandTests : IClassFixture<HotelWebApplicationFacto
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        problemDetails!.Status.Should().Be(StatusCodes.Status400BadRequest);
+        problemDetails.Extensions["exception"]!.ToString().Should().Be("RatePlanInvalidForRoomException");
     }
 }

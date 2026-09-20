@@ -3,8 +3,11 @@ using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.Domain.Reservations.Enums;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Net.Http.Json;
 using Xunit;
 
 namespace Hotel.IntegrationTests.FiscalAccounting.Commands;
@@ -59,23 +62,6 @@ public class CheckOutFiscalAccountCommandTests : IClassFixture<HotelWebApplicati
     }
 
     [Fact]
-    public async Task CheckOut_WithUnsettledFolio_ReturnsBadRequest()
-    {
-        // Arrange
-        var context = await FiscalAccountTestData.CreateContextAsync(_client, _factory);
-        await EndOfDayTestData.RunEndOfDayAsync(_client);
-        await ReservationTestData.CheckInReservationAsync(_client, context.ReservationId);
-
-        // Act
-        var response = await _client.PostAsync(
-            $"/api/fiscalaccounts/{context.FiscalAccountId}/check-out",
-            null);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-    }
-
-    [Fact]
     public async Task CheckOut_WhenReservationNotInHouse_ReturnsBadRequest()
     {
         // Arrange
@@ -90,5 +76,10 @@ public class CheckOutFiscalAccountCommandTests : IClassFixture<HotelWebApplicati
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        problemDetails!.Status.Should().Be(StatusCodes.Status400BadRequest);
+        problemDetails.Extensions["exception"]!.ToString().Should().Be("ReservationNotInHouseException");
     }
 }

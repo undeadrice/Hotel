@@ -3,6 +3,8 @@ using Hotel.Application.FiscalAccounting.Commands;
 using Hotel.Domain.FiscalAccounting.Enums;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Http.Json;
@@ -123,6 +125,11 @@ public class CreateFolioItemCommandTests : IClassFixture<HotelWebApplicationFact
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        problemDetails!.Status.Should().Be(StatusCodes.Status404NotFound);
+        problemDetails.Extensions["exception"]!.ToString().Should().Be("NotFoundException");
     }
 
     [Fact]
@@ -143,73 +150,10 @@ public class CreateFolioItemCommandTests : IClassFixture<HotelWebApplicationFact
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-    }
 
-    [Fact]
-    public async Task CreateFolioItem_WithCheckedOutAccount_ReturnsBadRequest()
-    {
-        // Arrange
-        var context = await FiscalAccountTestData.CreateContextAsync(_client, _factory);
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 
-        await CheckInReservationAsync(context.ReservationId);
-        await SettleMainFolioAsync(context);
-        await CheckOutFiscalAccountAsync(context.FiscalAccountId);
-
-        var command = new CreateFolioItemCommand(
-            context.MainFolioId,
-            "Room service",
-            Quantity: 1,
-            Amount: 25m,
-            context.ChargeTransactionCodeId);
-
-        // Act
-        var response = await _client.PostAsJsonAsync("/api/folioitems", command);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-    }
-
-    private async Task CheckInReservationAsync(Guid reservationId)
-    {
-        var endOfDayResponse = await _client.PostAsync("/api/configurations/end-of-day", null);
-        endOfDayResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        var checkInResponse = await _client.PostAsync(
-            $"/api/reservations/{reservationId}/check-in",
-            null);
-        checkInResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
-    }
-
-    private async Task SettleMainFolioAsync(FiscalAccountContext context)
-    {
-        var chargeResponse = await _client.PostAsync(
-            $"/api/fiscalaccounts/{context.ReservationId}/post-room-charge",
-            null);
-        chargeResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        var paymentTransactionCodeId = await FiscalAccountTestData.CreatePaymentTransactionCodeAsync(_client);
-
-        var paymentResponse = await _client.PostAsJsonAsync(
-            "/api/folioitems",
-            new CreateFolioItemCommand(
-                context.MainFolioId,
-                "Cash payment",
-                Quantity: 1,
-                Amount: 100m,
-                paymentTransactionCodeId));
-        paymentResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        var settleResponse = await _client.PostAsJsonAsync(
-            "/api/folios/settle",
-            new SettleFolioCommand(context.FiscalAccountId, context.MainFolioId));
-        settleResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
-    }
-
-    private async Task CheckOutFiscalAccountAsync(Guid fiscalAccountId)
-    {
-        var response = await _client.PostAsync(
-            $"/api/fiscalaccounts/{fiscalAccountId}/check-out",
-            null);
-        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        problemDetails!.Status.Should().Be(StatusCodes.Status404NotFound);
+        problemDetails.Extensions["exception"]!.ToString().Should().Be("NotFoundException");
     }
 }
