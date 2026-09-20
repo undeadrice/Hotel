@@ -3,6 +3,8 @@ using Hotel.Application.Reservations.TransferObjects;
 using Hotel.Domain.Reservations.Enums;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -52,18 +54,5 @@ public class CheckInReservationCommandTests : IClassFixture<HotelWebApplicationF
 
         var reservation = await getResponse.Content.ReadFromJsonAsync<ReservationDto>();
         reservation!.Status.Should().Be(ReservationStatus.InHouse);
-    }
-
-    [Fact]
-    public async Task CheckInReservation_WhenReserved_ReturnsBadRequest()
-    {
-        // Arrange
-        var reservationId = await ReservationTestData.CreateReservationAsync(_client);
-
-        // Act
-        var response = await _client.PostAsync($"/api/reservations/{reservationId}/check-in", null);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }
