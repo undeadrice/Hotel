@@ -1,9 +1,8 @@
+using Hotel.Shared.Exceptions;
+
 namespace Hotel.Domain.RatePlans.Exceptions;
 
-public class RatePlanPriceInvalidException : Exception
+public class RatePlanPriceInvalidException()
+    : DomainException("Rate plan price must be positive.")
 {
-    public RatePlanPriceInvalidException()
-        : base("Rate plan price must be positive.")
-    {
-    }
 }

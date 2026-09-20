@@ -1,9 +1,8 @@
+using Hotel.Shared.Exceptions;
+
 namespace Hotel.Domain.RatePlans.Exceptions;
 
-public class RatePlanDateRangeInvalidException : Exception
+public class RatePlanDateRangeInvalidException()
+    : DomainException("Rate plan end date must be after start date.")
 {
-    public RatePlanDateRangeInvalidException()
-        : base("Rate plan end date must be after start date.")
-    {
-    }
 }

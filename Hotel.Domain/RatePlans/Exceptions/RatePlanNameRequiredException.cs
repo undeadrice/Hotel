@@ -1,9 +1,8 @@
+using Hotel.Shared.Exceptions;
+
 namespace Hotel.Domain.RatePlans.Exceptions;
 
-public class RatePlanNameRequiredException : Exception
+public class RatePlanNameRequiredException()
+    : DomainException("Rate plan name is required.")
 {
-    public RatePlanNameRequiredException()
-        : base("Rate plan name is required.")
-    {
-    }
 }
