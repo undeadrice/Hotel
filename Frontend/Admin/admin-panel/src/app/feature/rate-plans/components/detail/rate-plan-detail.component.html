@@ -1,0 +1,67 @@
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">Rate Plan Details</h1>
+    <button mat-stroked-button routerLink="/rate-plans">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </header>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (ratePlan(); as plan) {
+    <mat-card class="detail-card">
+      <h2 class="card-title">Rate Plan Info</h2>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Name</span>
+          <span class="detail-value">{{ plan.name }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Transaction Code</span>
+          <span class="detail-value">{{ plan.transactionCode }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Start Date</span>
+          <span class="detail-value">{{ plan.startDate }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">End Date</span>
+          <span class="detail-value">{{ plan.endDate }}</span>
+        </div>
+      </div>
+    </mat-card>
+
+    <section class="rooms-section">
+      <h2 class="section-title">Rooms</h2>
+
+      @if (plan.rooms.length === 0) {
+        <mat-card class="detail-card">
+          <p class="empty-hint">No rooms assigned to this rate plan.</p>
+        </mat-card>
+      } @else {
+        <mat-card class="detail-card">
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="plan.rooms">
+              <ng-container matColumnDef="roomType">
+                <th mat-header-cell *matHeaderCellDef>Room Type</th>
+                <td mat-cell *matCellDef="let room">{{ room.roomType }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Price</th>
+                <td mat-cell *matCellDef="let room">{{ room.price | currency }}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="roomDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: roomDisplayedColumns"></tr>
+            </table>
+          </div>
+        </mat-card>
+      }
+    </section>
+  }
+</div>

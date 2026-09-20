@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 
 @Component({
   imports: [
@@ -60,8 +60,9 @@ export class RoleEditComponent implements OnInit {
     forkJoin({
       role: this.roleService.getRole(this.roleId),
       permissions: this.roleService.getPermissions(),
-    }).subscribe({
-      next: ({ role, permissions }) => {
+    })
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe(({ role, permissions }) => {
         this.form.patchValue({ name: role.name });
 
         const permissionsFormGroup: Record<string, boolean> = {};
@@ -77,15 +78,7 @@ export class RoleEditComponent implements OnInit {
         );
 
         this.permissionGroups.set(permissions);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load role', 'Close', {
-          duration: 5000,
-        });
-        this.router.navigate(['/roles']);
-      },
-    });
+      });
   }
 
   onSubmit(): void {
@@ -108,19 +101,12 @@ export class RoleEditComponent implements OnInit {
         name: this.form.get('name')!.value,
         permissions: selectedPermissions,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Role updated successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/roles']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to update role', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('Role updated successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/roles']);
       });
   }
 }

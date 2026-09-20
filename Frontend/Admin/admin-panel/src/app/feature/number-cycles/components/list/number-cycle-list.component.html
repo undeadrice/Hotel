@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Number Cycles dashboard</mat-card-title>
+      <button mat-raised-button routerLink="add">Add number cycle</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="numberCycles">
+      <ng-container matColumnDef="Topic">
+        <th mat-header-cell *matHeaderCellDef>Topic</th>
+        <td mat-cell *matCellDef="let cycle">
+          {{ getTopicName(cycle.topic) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Prefix">
+        <th mat-header-cell *matHeaderCellDef>Prefix</th>
+        <td mat-cell *matCellDef="let cycle">{{ cycle.prefix }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="StartIndex">
+        <th mat-header-cell *matHeaderCellDef>Start Index</th>
+        <td mat-cell *matCellDef="let cycle">{{ cycle.startIndex }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="CurrentIndex">
+        <th mat-header-cell *matHeaderCellDef>Current Index</th>
+        <td mat-cell *matCellDef="let cycle">{{ cycle.currentIndex }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="CreatedAt">
+        <th mat-header-cell *matHeaderCellDef>Created At</th>
+        <td mat-cell *matCellDef="let cycle">{{ cycle.createdAt | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let cycle">
+          <button
+            mat-button
+            color="warn"
+            (click)="deleteNumberCycle(cycle.id)"
+          >
+            Delete
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

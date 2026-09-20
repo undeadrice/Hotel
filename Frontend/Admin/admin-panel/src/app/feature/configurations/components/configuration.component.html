@@ -1,0 +1,30 @@
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">Configuration</h1>
+  </header>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (configuration()) {
+    <mat-card class="detail-card">
+      <h2 class="card-title">Property setup</h2>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Time zone</span>
+          <span class="detail-value">{{ timeZoneDisplayName() }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Current business date</span>
+          <span class="detail-value">{{ businessDateDisplay() }}</span>
+        </div>
+      </div>
+    </mat-card>
+  } @else if (!loading()) {
+    <mat-card class="detail-card">
+      <p class="empty-hint">No configuration has been set up yet.</p>
+    </mat-card>
+  }
+</div>

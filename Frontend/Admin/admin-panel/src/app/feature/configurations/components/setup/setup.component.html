@@ -1,0 +1,46 @@
+<div class="vh-100 d-flex justify-content-center align-items-center" style="background-color: var(--mat-sys-surface-container-low)">
+  <mat-card class="shadow-lg" style="width: 100%; max-width: 500px; padding: 24px">
+    <div class="text-center mb-4">
+      <mat-icon class="mb-2" style="font-size: 48px; height: 48px; width: 48px">inventory</mat-icon>
+      <h3 class="mt-2">Welcome</h3>
+      <p class="text-muted">Let's finish setting up your hotel</p>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger mb-3" style="color: var(--mat-sys-on-error-container); background-color: var(--mat-sys-error-container); padding: 12px; border-radius: 4px">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px">
+        <mat-label>Time zone</mat-label>
+        <mat-select formControlName="timeZoneId">
+          @for (tz of timeZones(); track tz.value) {
+            <mat-option [value]="tz.value">{{ tz.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px">
+        <mat-label>Current business date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="currentBusinessDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="seedBusinessData" class="d-block mb-4">
+        Seed business data (rooms, transaction codes, number cycles)
+      </mat-checkbox>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || submitting()" style="width: 100%">
+        <mat-icon>check</mat-icon>
+        @if (submitting()) {
+          Setting up...
+        } @else {
+          Finish setup
+        }
+      </button>
+    </form>
+  </mat-card>
+</div>

@@ -9,8 +9,7 @@ public class UnitOfWork(PersistenceDbContext dbContext) : IUnitOfWork
 
     public async Task StartTransaction()
     {
-        // For integration test purposes
-        if (dbContext.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+        if (_transaction != null)
         {
             return;
         }
@@ -25,6 +24,8 @@ public class UnitOfWork(PersistenceDbContext dbContext) : IUnitOfWork
         if (_transaction != null)
         {
             await _transaction.CommitAsync();
+            await _transaction.DisposeAsync();
+            _transaction = null;
         }
     }
 
@@ -33,6 +34,8 @@ public class UnitOfWork(PersistenceDbContext dbContext) : IUnitOfWork
         if (_transaction != null)
         {
             await _transaction.RollbackAsync();
+            await _transaction.DisposeAsync();
+            _transaction = null;
         }
     }
 }
