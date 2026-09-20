@@ -2,6 +2,8 @@ using FluentAssertions;
 using Hotel.Application.Rooming.Commands;
 using Hotel.IntegrationTests.Infrastructure;
 using Hotel.IntegrationTests.Infrastructure.TestData;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -60,5 +62,10 @@ public class CreateRoomCommandTests : IClassFixture<HotelWebApplicationFactory>,
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        problemDetails!.Status.Should().Be(StatusCodes.Status400BadRequest);
+        problemDetails.Extensions["exception"]!.ToString().Should().Be("RoomNumberAlreadyExistsException");
     }
 }
