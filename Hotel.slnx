@@ -1,4 +1,10 @@
 <Solution>
+  <Folder Name="/AWS/" />
+  <Folder Name="/AWS/Lambdas/" />
+  <Folder Name="/AWS/Lambdas/Auth/">
+    <Project Path="AWS/Lambdas/Auth/Hotel.Auth.Application/Hotel.Auth.Application.csproj" Id="b420b00b-a10f-4502-b2b5-ea6163b62e52" />
+    <Project Path="AWS/Lambdas/Auth/Hotel.Auth.Lambda/Hotel.Auth.Lambda.csproj" Id="78316f7a-eeb0-4baa-aa29-9a7d90023fe1" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/Hotel.Application.Tests/Hotel.Application.Tests.csproj" />
     <Project Path="Tests/Hotel.ArchitectureTests/Hotel.ArchitectureTests.csproj" Id="f125c4e6-89cc-42cf-8ad4-dd86438f665a" />
@@ -11,4 +17,5 @@
   <Project Path="Hotel.Infrastructure/Hotel.Infrastructure.csproj" />
   <Project Path="Hotel.Persistence/Hotel.Persistence.csproj" />
   <Project Path="Hotel.Shared/Hotel.Shared.csproj" />
+  <Project Path="Hotel.SharedPipeline/Hotel.SharedPipeline.csproj" Id="c05f43e0-d833-425d-892d-8914077e7882" />
 </Solution>
