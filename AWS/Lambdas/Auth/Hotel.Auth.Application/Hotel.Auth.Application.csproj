@@ -7,9 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Auth\" />
     <Folder Include="Users\" />
     <Folder Include="Roles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Hotel.SharedPipeline\Hotel.SharedPipeline.csproj" />
   </ItemGroup>
 
 </Project>
