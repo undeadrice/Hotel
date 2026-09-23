@@ -10,7 +10,7 @@ public interface ICurrentUserService
 
     Task<bool> IsInRole(UserRole role);
 
-    Task<bool> HasPermissions(params Permission[] permissions);
+    bool HasPermissions(params Permission[] permissions);
 
     Task<bool> IsSuperAdmin();
 }

@@ -1,17 +1,11 @@
 ﻿using Hotel.Application.Auth.Services;
 using Hotel.Application.Users.Enums;
-using Hotel.Infrastructure.Auth.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Infrastructure.Auth.Services;
 
 internal class CurrentUserService(
-    IHttpContextAccessor httpContextAccessor,
-    UserManager<ApplicationUser> userManager,
-    RoleManager<ApplicationRole> roleManager,
-    InfraIdentityDbContext dbContext) : ICurrentUserService
+    IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
     public Guid? CurrentUserId
     {
@@ -40,29 +34,21 @@ internal class CurrentUserService(
         return await Task.FromResult(user.IsInRole(UserRole.SuperAdmin.ToString()));
     }
 
-    public async Task<bool> HasPermissions(params Permission[] permissions)
+    public bool HasPermissions(params Permission[] permissions)
     {
-        var userId = CurrentUserId;
-        if (userId is null) return false;
+        var user = httpContextAccessor.HttpContext?.User;
+        if (user is null)
+        {
+            return false;
+        }
 
-        var user = await userManager.FindByIdAsync(userId.Value.ToString());
-        if (user is null) return false;
-
-        var roleNames = await userManager.GetRolesAsync(user);
-
-        var roleIds = await roleManager.Roles
-            .Where(r => roleNames.Contains(r.Name!))
-            .Select(r => r.Id)
-            .ToListAsync();
-
-        var rolePermissionClaims = await dbContext.RoleClaims
-            .Where(rc => roleIds.Contains(rc.RoleId) && rc.ClaimType == "permission")
-            .Select(rc => rc.ClaimValue)
-            .ToListAsync();
+        var permissionClaims = user.FindAll("permission")
+            .Select(c => c.Value)
+            .ToHashSet();
 
         foreach (var permission in permissions)
         {
-            if (!rolePermissionClaims.Contains(permission.ToString()))
+            if (!permissionClaims.Contains(permission.ToString()))
             {
                 return false;
             }

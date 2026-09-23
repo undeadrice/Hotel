@@ -2,6 +2,7 @@
 using Hotel.Application.Auth.Services;
 using Hotel.Infrastructure.Auth.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,7 +10,10 @@ using System.Text;
 
 namespace Hotel.Infrastructure.Auth.Services;
 
-internal class AuthService(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings) : IAuthService
+internal class AuthService(
+    UserManager<ApplicationUser> userManager,
+    InfraIdentityDbContext dbContext,
+    JwtSettings jwtSettings) : IAuthService
 {
     public async Task<string> Login(string email, string password)
     {
@@ -33,6 +37,22 @@ internal class AuthService(UserManager<ApplicationUser> userManager, JwtSettings
         foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
+        var roleIds = await dbContext.Roles
+            .Where(r => roles.Contains(r.Name!))
+            .Select(r => r.Id)
+            .ToListAsync();
+
+        var permissions = await dbContext.RoleClaims
+            .Where(rc => roleIds.Contains(rc.RoleId) && rc.ClaimType == "permission" && rc.ClaimValue != null)
+            .Select(rc => rc.ClaimValue!)
+            .Distinct()
+            .ToListAsync();
+
+        foreach (var permission in permissions)
+        {
+            claims.Add(new Claim("permission", permission));
         }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));

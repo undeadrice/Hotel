@@ -30,7 +30,7 @@ public class CheckPermissionBehavior<TRequest, TResponse>(ICurrentUserService cu
             return await next();
         }
 
-        if (!await currentUserService.HasPermissions(attribute.Permissions))
+        if (!currentUserService.HasPermissions(attribute.Permissions))
         {
             throw new ForbiddenException();
         }
