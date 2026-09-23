@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hotel.Domain\Hotel.Domain.csproj" />
+    <ProjectReference Include="..\Hotel.SharedPipeline\Hotel.SharedPipeline.csproj" />
   </ItemGroup>
 
 </Project>
