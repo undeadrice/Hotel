@@ -3,6 +3,7 @@
   <Folder Name="/AWS/Lambdas/" />
   <Folder Name="/AWS/Lambdas/Auth/">
     <Project Path="AWS/Lambdas/Auth/Hotel.Auth.Application/Hotel.Auth.Application.csproj" Id="b420b00b-a10f-4502-b2b5-ea6163b62e52" />
+    <Project Path="AWS/Lambdas/Auth/Hotel.Auth.Infrastructure/Hotel.Auth.Infrastructure.csproj" Id="4625b722-14cf-4054-afea-f5fa83616c96" />
     <Project Path="AWS/Lambdas/Auth/Hotel.Auth.Lambda/Hotel.Auth.Lambda.csproj" Id="78316f7a-eeb0-4baa-aa29-9a7d90023fe1" />
   </Folder>
   <Folder Name="/Tests/">
