@@ -1,8 +1,9 @@
 using Hotel.Domain.RatePlans.Entities;
 using MediatR;
 using Hotel.Domain.RatePlans.Repositories;
-using Hotel.Application.Pipeline;
-using Hotel.Application.Users.Enums;
+using Hotel.SharedPipeline;
+using Hotel.SharedPipeline.Attributes;
+using Hotel.Shared.Application.Users.Enums;
 using Hotel.Application.Configurations.Services;
 
 namespace Hotel.Application.RatePlans.Commands;

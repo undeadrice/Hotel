@@ -1,8 +1,8 @@
 using Hotel.Application.Guests.TransferObjects;
 using MediatR;
 using Hotel.Application.Guests.Repositories;
-using Hotel.Application.Pipeline;
-using Hotel.Application.Users.Enums;
+using Hotel.SharedPipeline.Attributes;
+using Hotel.Shared.Application.Users.Enums;
 
 namespace Hotel.Application.Guests.Queries;
 

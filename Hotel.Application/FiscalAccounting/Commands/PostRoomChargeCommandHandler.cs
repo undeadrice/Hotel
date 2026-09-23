@@ -6,8 +6,9 @@ using Hotel.Domain.RatePlans.Repositories;
 using Hotel.Domain.Reservations.Repositories;
 using Hotel.Domain.Rooming.Repositories;
 using Hotel.Domain.FiscalAccounting.Repositories;
-using Hotel.Application.Pipeline;
-using Hotel.Application.Users.Enums;
+using Hotel.SharedPipeline;
+using Hotel.SharedPipeline.Attributes;
+using Hotel.Shared.Application.Users.Enums;
 
 namespace Hotel.Application.FiscalAccounting.Commands;
 
