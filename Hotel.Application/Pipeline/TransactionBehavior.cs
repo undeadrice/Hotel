@@ -1,4 +1,5 @@
 ﻿using Hotel.Domain.Persistence;
+using Hotel.SharedPipeline;
 using MediatR;
 
 namespace Hotel.Application.Pipeline

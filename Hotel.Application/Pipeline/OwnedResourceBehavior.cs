@@ -1,4 +1,4 @@
-﻿using Hotel.Application.Auth.Services;
+﻿using Hotel.Shared.Application.Auth;
 using Hotel.Domain.Interfaces;
 using Hotel.Shared.Exceptions;
 using MediatR;
