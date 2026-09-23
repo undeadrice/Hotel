@@ -2,6 +2,7 @@
 using Hotel.Application.Configurations.Services;
 using Hotel.Application.Pipeline;
 using Hotel.Application.Seeding;
+using Hotel.SharedPipeline.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
