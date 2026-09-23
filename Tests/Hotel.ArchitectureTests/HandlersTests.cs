@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Hotel.Application.Pipeline;
 using MediatR;
 using NetArchTest.Rules;
 using Xunit;
@@ -11,7 +10,7 @@ namespace Hotel.ArchitectureTests
         [Fact]
         public void Handlers_Should_BeInternal()
         {
-            var result = Types.InAssembly(typeof(ICommand).Assembly)
+            var result = Types.InAssembly(typeof(Application.DIRegistrations).Assembly)
                 .That()
                 .ImplementInterface(typeof(IRequestHandler<>))
                 .Or()

@@ -6,6 +6,7 @@ using Hotel.Application.Users.Services;
 using Hotel.Infrastructure.Auth.Entities;
 using Hotel.Infrastructure.Auth.Services;
 using Hotel.Infrastructure.Common;
+using Hotel.Shared.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,7 @@ public static class DIRegistrations
         services.AddHttpContextAccessor();
 
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddSharedInfrastructure();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
 

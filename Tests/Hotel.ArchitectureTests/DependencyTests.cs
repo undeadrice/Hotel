@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Hotel.API.Auth;
-using Hotel.Application.Pipeline;
 using Hotel.Domain.Rooming.Entities;
 using Hotel.Infrastructure;
 using Hotel.Persistence;
@@ -31,7 +30,7 @@ namespace Hotel.ArchitectureTests
         [Fact]
         public void Application_Should_Not_Reference_Other_Projects()
         {
-            var result = Types.InAssembly(typeof(ICommand).Assembly)
+            var result = Types.InAssembly(typeof(Application.DIRegistrations).Assembly)
                 .Should()
                 .NotHaveDependencyOn("Hotel.Persistence")
                 .And()
