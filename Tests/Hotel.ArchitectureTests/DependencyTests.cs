@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Hotel.API.Auth;
 using Hotel.Domain.Rooming.Entities;
 using Hotel.Infrastructure;
 using Hotel.Persistence;
@@ -71,7 +70,7 @@ namespace Hotel.ArchitectureTests
         [Fact]
         public void Api_Should_Reference_All_Projects()
         {
-            var referencedAssemblies = typeof(AuthController).Assembly
+            var referencedAssemblies = typeof(Program).Assembly
                 .GetReferencedAssemblies()
                 .Select(a => a.Name)
                 .ToHashSet();

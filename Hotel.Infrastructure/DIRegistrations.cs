@@ -1,6 +1,4 @@
-﻿using Hotel.Application.Auth.Models;
-using Hotel.Application.Auth.Services;
-using Hotel.Application.Common;
+﻿using Hotel.Application.Common;
 using Hotel.Application.Roles.Services;
 using Hotel.Application.Users.Services;
 using Hotel.Infrastructure.Auth.Entities;
@@ -62,17 +60,9 @@ public static class DIRegistrations
 
         services.AddScoped<IUserService, UserService>();
         services.AddSharedInfrastructure();
-        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-
-        var jwtSettings = new JwtSettings(
-            configuration["jwt:Secret"]!,
-            configuration["jwt:Issuer"]!,
-            configuration["jwt:Audience"]!
-        );
-        services.AddSingleton(jwtSettings);
 
         return services;
     }
