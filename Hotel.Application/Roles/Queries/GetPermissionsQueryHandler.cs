@@ -1,18 +1,12 @@
-using Hotel.Application.Pipeline;
+using Hotel.SharedPipeline.Attributes;
 using Hotel.Application.Roles.Dtos;
-using Hotel.Application.Users.Enums;
+using Hotel.Shared.Application.Users.Enums;
 using MediatR;
-
-
 
 namespace Hotel.Application.Roles.Queries;
 
-
-
 [CheckPermission(Permission.PermissionView)]
-
 public record GetPermissionsQuery() : IRequest<IReadOnlyCollection<PermissionGroupDto>>;
-
 
 
 internal class GetPermissionsQueryHandler
@@ -81,14 +75,8 @@ internal class GetPermissionsQueryHandler
 
     ];
 
-
-
     public Task<IReadOnlyCollection<PermissionGroupDto>> Handle(GetPermissionsQuery request, CancellationToken cancellationToken)
-
     {
-
         return Task.FromResult(_groups);
-
     }
-
 }

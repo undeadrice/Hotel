@@ -2,8 +2,8 @@ using Hotel.Application.RatePlans.TransferObjects;
 using MediatR;
 using Hotel.Application.RatePlans.Repositories;
 using Hotel.Application.Rooming.Repositories;
-using Hotel.Application.Pipeline;
-using Hotel.Application.Users.Enums;
+using Hotel.SharedPipeline.Attributes;
+using Hotel.Shared.Application.Users.Enums;
 
 namespace Hotel.Application.RatePlans.Queries;
 

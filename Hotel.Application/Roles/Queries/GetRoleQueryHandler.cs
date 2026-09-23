@@ -1,20 +1,13 @@
-using Hotel.Application.Pipeline;
+using Hotel.SharedPipeline.Attributes;
 using Hotel.Application.Roles.Dtos;
 using Hotel.Application.Roles.Services;
-using Hotel.Application.Users.Enums;
+using Hotel.Shared.Application.Users.Enums;
 using MediatR;
-
-
 
 namespace Hotel.Application.Roles.Queries;
 
-
-
 [CheckPermission(Permission.RoleView)]
-
 public record GetRoleQuery(Guid Id) : IRequest<RoleDto>;
-
-
 
 internal class GetRoleQueryHandler(IRoleService roleService)
 
@@ -23,11 +16,7 @@ internal class GetRoleQueryHandler(IRoleService roleService)
 {
 
     public async Task<RoleDto> Handle(GetRoleQuery request, CancellationToken cancellationToken)
-
     {
-
         return await roleService.Get(request.Id);
-
     }
-
 }

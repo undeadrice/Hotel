@@ -1,6 +1,7 @@
-using Hotel.Application.Pipeline;
+using Hotel.SharedPipeline;
+using Hotel.SharedPipeline.Attributes;
 using Hotel.Application.Roles.Services;
-using Hotel.Application.Users.Enums;
+using Hotel.Shared.Application.Users.Enums;
 using MediatR;
 
 namespace Hotel.Application.Roles.Commands;

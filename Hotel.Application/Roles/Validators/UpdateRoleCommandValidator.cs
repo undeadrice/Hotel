@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Hotel.Application.Roles.Commands;
-using Hotel.Application.Users.Enums;
+using Hotel.Shared.Application.Users.Enums;
 
 namespace Hotel.Application.Roles.Validators;
 

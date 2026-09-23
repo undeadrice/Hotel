@@ -1,7 +1,8 @@
 using Hotel.Domain.Transactions.Services;
 using MediatR;
-using Hotel.Application.Pipeline;
-using Hotel.Application.Users.Enums;
+using Hotel.SharedPipeline;
+using Hotel.SharedPipeline.Attributes;
+using Hotel.Shared.Application.Users.Enums;
 using Hotel.Domain.Transactions.Enums;
 
 namespace Hotel.Application.Transactions.Commands;

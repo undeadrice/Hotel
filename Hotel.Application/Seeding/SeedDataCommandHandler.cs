@@ -1,5 +1,6 @@
-using Hotel.Application.Pipeline;
-using Hotel.Application.Users.Enums;
+using Hotel.SharedPipeline;
+using Hotel.SharedPipeline.Attributes;
+using Hotel.Shared.Application.Users.Enums;
 using MediatR;
 
 namespace Hotel.Application.Seeding;

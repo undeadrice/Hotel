@@ -1,6 +1,6 @@
-using Hotel.Application.Pipeline;
+using Hotel.SharedPipeline.Attributes;
 using Hotel.Application.Users.Contracts;
-using Hotel.Application.Users.Enums;
+using Hotel.Shared.Application.Users.Enums;
 using Hotel.Application.Users.Services;
 using MediatR;
 
