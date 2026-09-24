@@ -27,7 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Hotel.Domain\Hotel.Domain.csproj" />
     <ProjectReference Include="..\Hotel.Application\Hotel.Application.csproj" />
-    <ProjectReference Include="..\Hotel.Shared\Hotel.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Hotel.Shared\Hotel.Shared.csproj" />
   </ItemGroup>
 
 </Project>

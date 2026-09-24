@@ -24,7 +24,7 @@
     <ProjectReference Include="..\Hotel.Domain\Hotel.Domain.csproj" />
     <ProjectReference Include="..\Hotel.Persistence\Hotel.Persistence.csproj" />
     <ProjectReference Include="..\Hotel.Infrastructure\Hotel.Infrastructure.csproj" />
-    <ProjectReference Include="..\Hotel.Shared\Hotel.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Hotel.Shared\Hotel.Shared.csproj" />
   </ItemGroup>
 
 </Project>

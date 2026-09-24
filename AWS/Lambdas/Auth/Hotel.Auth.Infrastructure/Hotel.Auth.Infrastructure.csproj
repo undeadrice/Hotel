@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\Hotel.Shared.Application\Hotel.Shared.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\Shared\Hotel.Shared.Infrastructure\Hotel.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

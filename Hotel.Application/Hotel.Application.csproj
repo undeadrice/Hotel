@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hotel.Domain\Hotel.Domain.csproj" />
-    <ProjectReference Include="..\Hotel.SharedPipeline\Hotel.SharedPipeline.csproj" />
+    <ProjectReference Include="..\Shared\Hotel.SharedPipeline\Hotel.SharedPipeline.csproj" />
     <ProjectReference Include="..\Shared\Hotel.Shared.Infrastructure\Hotel.Shared.Infrastructure.csproj" />
   </ItemGroup>
 
