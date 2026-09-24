@@ -1,4 +1,6 @@
 ﻿using Hotel.Auth.Application;
+using Hotel.Auth.Application.Seeding;
+using Hotel.Auth.Infrastructure;
 
 namespace Hotel.Auth.Lambda
 {
@@ -15,6 +17,7 @@ namespace Hotel.Auth.Lambda
         {
             services.AddControllers();
             services.AddAuthApplication();
+            services.AddAuthInfrastructure(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -22,6 +25,12 @@ namespace Hotel.Auth.Lambda
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
+                seedingService.SeedAsync().GetAwaiter().GetResult();
             }
 
             app.UseHttpsRedirection();

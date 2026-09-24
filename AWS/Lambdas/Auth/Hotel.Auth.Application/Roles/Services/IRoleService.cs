@@ -1,0 +1,14 @@
+﻿using Hotel.Auth.Application.Roles.Dtos;
+
+namespace Hotel.Auth.Application.Roles.Services;
+
+public interface IRoleService
+{
+    Task<IReadOnlyCollection<RoleSimpleDto>> GetAll();
+
+    Task<RoleDto> Get(Guid id);
+
+    Task<Guid> Create(string name, IReadOnlyCollection<string> permissions);
+
+    Task Update(Guid id, string name, IReadOnlyCollection<string> permissions);
+}

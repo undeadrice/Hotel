@@ -1,6 +1,5 @@
 ﻿using Hotel.API.Middleware;
 using Hotel.Application;
-using Hotel.Application.Seeding;
 using Hotel.Domain;
 using Hotel.Infrastructure;
 using Hotel.Persistence;
@@ -42,12 +41,6 @@ builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
-    await seedingService.SeedAsync();
-}
 
 if (app.Environment.IsDevelopment())
 {
