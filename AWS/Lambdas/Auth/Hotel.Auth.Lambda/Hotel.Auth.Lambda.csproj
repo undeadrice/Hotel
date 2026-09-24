@@ -17,5 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hotel.Auth.Application\Hotel.Auth.Application.csproj" />
+    <ProjectReference Include="..\Hotel.Auth.Infrastructure\Hotel.Auth.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

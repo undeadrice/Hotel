@@ -1,5 +1,4 @@
 ﻿using Hotel.Application.Seeding;
-using Hotel.Infrastructure;
 using Hotel.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -19,13 +18,11 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
     private const string TestTimeZoneId = "Greenwich Standard Time";
 
     private readonly string _dbName;
-    private readonly string _identityDbName;
 
     public HotelWebApplicationFactory()
     {
         var testId = Guid.NewGuid().ToString("N");
         _dbName = "HotelTestDb_" + testId;
-        _identityDbName = "HotelAuthTestDb_" + testId;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -34,15 +31,11 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
         {
             var toRemove = services
                 .Where(d =>
-                    d.ServiceType == typeof(ISeedingService) ||
                     d.ServiceType == typeof(PersistenceDbContext) ||
                     d.ServiceType == typeof(DbContextOptions<PersistenceDbContext>) ||
-                    d.ServiceType == typeof(InfraIdentityDbContext) ||
-                    d.ServiceType == typeof(DbContextOptions<InfraIdentityDbContext>) ||
                     d.ServiceType == typeof(DbContextOptions) ||
                     (d.ServiceType.FullName?.StartsWith("Microsoft.EntityFrameworkCore") == true &&
-                     (d.ServiceType.FullName.Contains("PersistenceDbContext") ||
-                      d.ServiceType.FullName.Contains("InfraIdentityDbContext"))))
+                     d.ServiceType.FullName.Contains("PersistenceDbContext")))
                 .ToList();
 
             foreach (var d in toRemove)
@@ -51,18 +44,11 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
             }
 
             RemoveOptionsConfigurations<PersistenceDbContext>(services);
-            RemoveOptionsConfigurations<InfraIdentityDbContext>(services);
 
             var connectionString = $"Server=(localdb)\\mssqllocaldb;Database={_dbName};Trusted_Connection=True;MultipleActiveResultSets=true";
-            var identityConnectionString = $"Server=(localdb)\\mssqllocaldb;Database={_identityDbName};Trusted_Connection=True;MultipleActiveResultSets=true";
 
             services.AddDbContext<PersistenceDbContext>(options =>
                 options.UseSqlServer(connectionString));
-
-            services.AddDbContext<InfraIdentityDbContext>(options =>
-                options.UseSqlServer(identityConnectionString));
-
-            services.AddScoped<ISeedingService, TestSeedingService>();
         });
 
         builder.UseEnvironment("Development");
@@ -88,12 +74,6 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
             await dbContext.Database.EnsureCreatedAsync();
-
-            var identityContext = scope.ServiceProvider.GetRequiredService<InfraIdentityDbContext>();
-            await identityContext.Database.EnsureCreatedAsync();
-
-            var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
-            await seedingService.SeedAsync();
         }
 
         await InitializeApplicationAsync();
@@ -120,9 +100,6 @@ public class HotelWebApplicationFactory : WebApplicationFactory<Program>
 
         var dbContext = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
         await dbContext.Database.EnsureDeletedAsync();
-
-        var identityContext = scope.ServiceProvider.GetRequiredService<InfraIdentityDbContext>();
-        await identityContext.Database.EnsureDeletedAsync();
     }
 
     public async Task<HttpClient> CreateAuthenticatedClientAsync(

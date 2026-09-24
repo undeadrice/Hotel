@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Hotel.Domain.Rooming.Entities;
-using Hotel.Infrastructure;
+using Hotel.Infrastructure.Common;
 using Hotel.Persistence;
 using NetArchTest.Rules;
 using Xunit;
@@ -57,7 +57,7 @@ namespace Hotel.ArchitectureTests
         [Fact]
         public void Infrastructure_Should_Not_Reference_Other_Projects()
         {
-            var result = Types.InAssembly(typeof(InfraIdentityDbContext).Assembly)
+            var result = Types.InAssembly(typeof(DateTimeProvider).Assembly)
                 .Should()
                 .NotHaveDependencyOn("Hotel.Persistence")
                 .And()

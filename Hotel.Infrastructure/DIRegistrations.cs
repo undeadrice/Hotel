@@ -1,13 +1,7 @@
 ﻿using Hotel.Application.Common;
-using Hotel.Application.Roles.Services;
-using Hotel.Application.Users.Services;
-using Hotel.Infrastructure.Auth.Entities;
-using Hotel.Infrastructure.Auth.Services;
 using Hotel.Infrastructure.Common;
 using Hotel.Shared.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -20,9 +14,6 @@ public static class DIRegistrations
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<InfraIdentityDbContext>(options =>
-             options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
-
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,26 +33,8 @@ public static class DIRegistrations
             };
         });
 
-        services.AddIdentityCore<ApplicationUser>(options =>
-        {
-            options.Password.RequireDigit = true;
-            options.Password.RequiredLength = 3;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequiredUniqueChars = 0;
-            options.SignIn.RequireConfirmedEmail = false;
-        })
-            .AddRoles<ApplicationRole>()
-            .AddEntityFrameworkStores<InfraIdentityDbContext>()
-            .AddDefaultTokenProviders();
-
         services.AddHttpContextAccessor();
-
-        services.AddScoped<IUserService, UserService>();
         services.AddSharedInfrastructure();
-        services.AddScoped<IRoleService, RoleService>();
-
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         return services;

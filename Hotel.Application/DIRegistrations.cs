@@ -22,7 +22,6 @@ public static class DIRegistrations
 
         services.AddValidatorsFromAssembly(typeof(DIRegistrations).Assembly);
 
-        services.AddScoped<ISeedingService, SeedingService>();
         services.AddScoped<ISeedDataService, SeedDataService>();
 
         services.AddScoped<IBusinessDateProvider, BusinessDateProvider>();
