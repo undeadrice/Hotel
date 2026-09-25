@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Hotel.Auth.Application.Initialization;
 using Hotel.Auth.Infrastructure.Initialization;
 using Hotel.Auth.Infrastructure.Secrets;
+using Amazon.SecretsManager;
+using Microsoft.Data.SqlClient;
 
 namespace Hotel.Auth.Infrastructure;
 
@@ -23,8 +25,36 @@ public static class DIRegistrations
 {
     public static IServiceCollection AddAuthInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<InfraIdentityDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+        services.AddSingleton<IAmazonSecretsManager>(new AmazonSecretsManagerClient());
+
+        services.AddSingleton<IDbConnectionSecretProvider>(sp =>
+        {
+            var client = sp.GetRequiredService<IAmazonSecretsManager>();
+            var connectionSecretId = configuration["SecretsManager:ConnectionSecretId"]
+                ?? throw new InvalidOperationException("SecretsManager:ConnectionSecretId is not configured.");
+            var credentialsSecretId = configuration["SecretsManager:CredentialsSecretId"]
+                ?? throw new InvalidOperationException("SecretsManager:CredentialsSecretId is not configured.");
+
+            return new SecretsManagerConnectionProvider(client, connectionSecretId, credentialsSecretId);
+        });
+
+        services.AddDbContext<InfraIdentityDbContext>((serviceProvider, options) =>
+        {
+            var secretProvider = serviceProvider.GetRequiredService<IDbConnectionSecretProvider>();
+            var dbConfig = secretProvider.GetDbConfigAsync().GetAwaiter().GetResult();
+
+            var connectionString = new SqlConnectionStringBuilder
+            {
+                DataSource = $"{dbConfig.Host},{dbConfig.Port}",
+                InitialCatalog = dbConfig.Dbname,
+                UserID = dbConfig.Username,
+                Password = dbConfig.Password,
+                MultipleActiveResultSets = true,
+                TrustServerCertificate = true
+            }.ConnectionString;
+
+            options.UseSqlServer(connectionString);
+        });
 
         services.AddAuthentication(options =>
         {
@@ -66,8 +96,6 @@ public static class DIRegistrations
         services.AddScoped<IAuthService, AuthService>();
 
         services.AddScoped<IInitializationService, InitializationService>();
-
-        services.AddSingleton<IDbConnectionSecretProvider, SecretsManagerConnectionProvider>();
 
         services.AddSharedInfrastructure();
 
