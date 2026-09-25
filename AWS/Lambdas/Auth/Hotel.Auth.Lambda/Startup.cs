@@ -1,4 +1,5 @@
 ﻿using Hotel.Auth.Application;
+using Hotel.Auth.Application.Initialization;
 using Hotel.Auth.Application.Seeding;
 using Hotel.Auth.Infrastructure;
 
@@ -29,6 +30,9 @@ namespace Hotel.Auth.Lambda
 
             using (var scope = app.ApplicationServices.CreateScope())
             {
+                var initializationService = scope.ServiceProvider.GetRequiredService<IInitializationService>();
+                initializationService.Initialize();
+
                 var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
                 seedingService.SeedAsync().GetAwaiter().GetResult();
             }
@@ -38,7 +42,7 @@ namespace Hotel.Auth.Lambda
             app.UseRouting();
 
             app.UseAuthorization();
-
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
