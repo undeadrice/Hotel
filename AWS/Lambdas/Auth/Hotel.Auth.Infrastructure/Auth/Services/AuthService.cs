@@ -1,4 +1,5 @@
 using Hotel.Auth.Infrastructure.Auth.Contracts;
+using Hotel.Auth.Application.Auth.Dtos;
 using Hotel.Auth.Application.Auth.Services;
 using Hotel.Auth.Infrastructure.Auth.Entities;
 using Hotel.Shared.Exceptions;
@@ -16,7 +17,7 @@ internal class AuthService(
     InfraIdentityDbContext dbContext,
     JwtSettings jwtSettings) : IAuthService
 {
-    public async Task<string> Login(string email, string password)
+    public async Task<TokenDto> Login(string email, string password)
     {
         var user = await userManager.FindByEmailAsync(email);
 
@@ -69,6 +70,6 @@ internal class AuthService(
         );
 
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-        return tokenString;
+        return new TokenDto(tokenString);
     }
 }

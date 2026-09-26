@@ -32,6 +32,17 @@ namespace Hotel.Auth.Lambda
 
             services.AddExceptionHandler<DomainExceptionHandler>();
             services.AddProblemDetails();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -58,10 +69,10 @@ namespace Hotel.Auth.Lambda
             }
 
             app.UseRouting();
-
+            app.UseCors("AllowFrontend");
             app.UseAuthentication();
 
-           
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

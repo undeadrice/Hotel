@@ -1,6 +1,8 @@
-﻿namespace Hotel.Auth.Application.Auth.Services;
+﻿using Hotel.Auth.Application.Auth.Dtos;
+
+namespace Hotel.Auth.Application.Auth.Services;
 
 public interface IAuthService
 {
-    Task<string> Login(string email, string password);
+    Task<TokenDto> Login(string email, string password);
 }
