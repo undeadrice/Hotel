@@ -1,4 +1,4 @@
-using Hotel.Auth.Infrastructure.Secrets;
+using Hotel.Auth.Infrastructure.Secrets.Database;
 
 namespace Hotel.Auth.Lambda.Secrets;
 
