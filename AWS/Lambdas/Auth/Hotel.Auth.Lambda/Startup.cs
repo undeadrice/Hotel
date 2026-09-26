@@ -52,11 +52,15 @@ namespace Hotel.Auth.Lambda
                 seedingService.SeedAsync().GetAwaiter().GetResult();
             }
 
-            app.UseHttpsRedirection();
+            if (!env.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
+
            
             app.UseEndpoints(endpoints =>
             {

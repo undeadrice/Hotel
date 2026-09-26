@@ -50,6 +50,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 app.UseCors("AllowFrontend");
+app.UseAuthentication();
 app.MapControllers();
 app.MapMcp("/mcp");
 app.Run();
