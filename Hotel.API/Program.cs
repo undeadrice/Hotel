@@ -3,6 +3,7 @@ using Hotel.Application;
 using Hotel.Domain;
 using Hotel.Infrastructure;
 using Hotel.Persistence;
+using Hotel.Shared.API.Middleware;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

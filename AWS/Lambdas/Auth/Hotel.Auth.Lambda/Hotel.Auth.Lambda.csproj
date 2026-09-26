@@ -18,5 +18,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Hotel.Auth.Application\Hotel.Auth.Application.csproj" />
     <ProjectReference Include="..\Hotel.Auth.Infrastructure\Hotel.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\Shared\Hotel.Shared.API\Hotel.Shared.API.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Secrets\" />
   </ItemGroup>
 </Project>

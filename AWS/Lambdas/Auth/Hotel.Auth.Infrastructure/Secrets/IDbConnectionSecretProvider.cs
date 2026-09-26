@@ -1,6 +1,6 @@
 ﻿namespace Hotel.Auth.Infrastructure.Secrets;
 
-internal interface IDbConnectionSecretProvider
+public interface IDbConnectionSecretProvider
 {
-    Task<DbConfig> GetDbConfigAsync(CancellationToken token = default);
+    Task<string> GetConnectionStringAsync(CancellationToken token = default);
 }

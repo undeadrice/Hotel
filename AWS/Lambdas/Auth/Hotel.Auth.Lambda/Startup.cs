@@ -2,6 +2,9 @@
 using Hotel.Auth.Application.Initialization;
 using Hotel.Auth.Application.Seeding;
 using Hotel.Auth.Infrastructure;
+using Hotel.Auth.Infrastructure.Secrets;
+using Hotel.Auth.Lambda.Secrets;
+using Hotel.Shared.API.Middleware;
 
 namespace Hotel.Auth.Lambda
 {
@@ -19,6 +22,13 @@ namespace Hotel.Auth.Lambda
             services.AddControllers();
             services.AddAuthApplication();
             services.AddAuthInfrastructure(Configuration);
+
+#if DEBUG
+            services.AddSingleton<IDbConnectionSecretProvider, AppSettingsDbConnectionSecretProvider>();
+#endif
+
+            services.AddExceptionHandler<DomainExceptionHandler>();
+            services.AddProblemDetails();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -27,6 +37,8 @@ namespace Hotel.Auth.Lambda
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler();
 
             using (var scope = app.ApplicationServices.CreateScope())
             {

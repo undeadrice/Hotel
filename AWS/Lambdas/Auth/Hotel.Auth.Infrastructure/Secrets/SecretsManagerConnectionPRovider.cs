@@ -1,6 +1,7 @@
 ﻿using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using System.Text.Json;
+using Microsoft.Data.SqlClient;
 
 namespace Hotel.Auth.Infrastructure.Secrets;
 
@@ -10,7 +11,7 @@ internal class SecretsManagerConnectionProvider : IDbConnectionSecretProvider
     private readonly string _connectionSecretId;
     private readonly string _credentialsSecretId;
      
-    private DbConfig? cached;
+    private string? _cachedConnectionString;
 
     public SecretsManagerConnectionProvider(
         IAmazonSecretsManager client,
@@ -22,11 +23,11 @@ internal class SecretsManagerConnectionProvider : IDbConnectionSecretProvider
         _credentialsSecretId = credentialsSecretId;
     }
 
-    public async Task<DbConfig> GetDbConfigAsync(CancellationToken ct = default)
+    public async Task<string> GetConnectionStringAsync(CancellationToken ct = default)
     {
-        if (cached != null)
+        if (_cachedConnectionString != null)
         {
-            return cached;
+            return _cachedConnectionString;
         }
 
         var connectionTask = _client.GetSecretValueAsync(new GetSecretValueRequest { SecretId = _connectionSecretId }, ct);
@@ -39,15 +40,19 @@ internal class SecretsManagerConnectionProvider : IDbConnectionSecretProvider
         var connection = JsonSerializer.Deserialize<ConnectionInfoSecret>(connectionTask.Result.SecretString, jsonOptions)!;
         var credentials = JsonSerializer.Deserialize<CredentialsSecret>(credentialsTask.Result.SecretString, jsonOptions)!;
 
-        cached = new DbConfig(
-            connection.Host,
-            connection.Port,
-            connection.Dbname,
-            credentials.Username,
-            credentials.Password
-        );
+        var connectionString = new SqlConnectionStringBuilder
+        {
+            DataSource = $"{connection.Host},{connection.Port}",
+            InitialCatalog = connection.Dbname,
+            UserID = credentials.Username,
+            Password = credentials.Password,
+            MultipleActiveResultSets = true,
+            TrustServerCertificate = true
+        }.ConnectionString;
 
-        return cached;
+        _cachedConnectionString = connectionString;
+
+        return connectionString;
     }
 
     private record ConnectionInfoSecret(string Host, int Port, string Dbname);
