@@ -1,6 +1,7 @@
 using Hotel.Auth.Application.Auth.Models;
 using Hotel.Auth.Application.Auth.Services;
 using Hotel.Auth.Infrastructure.Auth.Entities;
+using Hotel.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,7 +22,7 @@ internal class AuthService(
 
         if (user == null || !await userManager.CheckPasswordAsync(user, password))
         {
-            throw new UnauthorizedAccessException("Invalid credentials");
+            throw new UnauthorizedException("Invalid credentials");
         }
 
         var claims = new List<Claim>
