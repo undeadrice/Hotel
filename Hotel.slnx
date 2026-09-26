@@ -6,6 +6,9 @@
     <Project Path="AWS/Lambdas/Auth/Hotel.Auth.Infrastructure/Hotel.Auth.Infrastructure.csproj" Id="4625b722-14cf-4054-afea-f5fa83616c96" />
     <Project Path="AWS/Lambdas/Auth/Hotel.Auth.Lambda/Hotel.Auth.Lambda.csproj" Id="78316f7a-eeb0-4baa-aa29-9a7d90023fe1" />
   </Folder>
+  <Folder Name="/Other/">
+    <Project Path="Other/KeyGen/KeyGen.csproj" Id="d0a059d7-ed49-4ece-b592-e1c676cec756" />
+  </Folder>
   <Folder Name="/Shared/">
     <Project Path="Shared/Hotel.Shared.API/Hotel.Shared.API.csproj" Id="c72178ba-2b80-475e-b579-473f99766186" />
     <Project Path="Shared/Hotel.Shared.Application/Hotel.Shared.Application.csproj" Id="3f295cc6-2145-4f56-9e13-1ffbd7aa926d" />
