@@ -7,7 +7,9 @@ namespace Hotel.Auth.Infrastructure.Initialization
     {
         public void Initialize()
         {
+            Console.WriteLine("=== STARTING DATABASE MIGRATION ===");
             context.Database.Migrate();
+            Console.WriteLine("=== DATABASE MIGRATED ===");
         }
     }
 }

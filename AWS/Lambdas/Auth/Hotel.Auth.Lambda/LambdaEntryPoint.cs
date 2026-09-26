@@ -28,8 +28,7 @@ namespace Hotel.Auth.Lambda
         /// <param name="builder">The IWebHostBuilder to configure.</param>
         protected override void Init(IWebHostBuilder builder)
         {
-            builder
-                .UseStartup<Startup>();
+            builder.UseStartup<Startup>();
         }
 
         /// <summary>

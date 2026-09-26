@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using Hotel.Shared.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hotel.API.Middleware;
+namespace Hotel.Shared.API.Middleware;
 
 public class DomainExceptionHandler : IExceptionHandler
 {
@@ -23,7 +24,7 @@ public class DomainExceptionHandler : IExceptionHandler
             var problemDetails = new ValidationProblemDetails(errors)
             {
                 Status = StatusCodes.Status400BadRequest,
-                Title  = "Validation failed"
+                Title = "Validation failed"
             };
             problemDetails.Extensions["exception"] = exception.GetType().Name;
 
@@ -34,11 +35,11 @@ public class DomainExceptionHandler : IExceptionHandler
 
         var (statusCode, title) = exception switch
         {
-            NotFoundException     => (StatusCodes.Status404NotFound, "Resource not found"),
-            ForbiddenException    => (StatusCodes.Status403Forbidden, "Forbidden"),
+            NotFoundException => (StatusCodes.Status404NotFound, "Resource not found"),
+            ForbiddenException => (StatusCodes.Status403Forbidden, "Forbidden"),
             UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
-            DomainException       => (StatusCodes.Status400BadRequest, "Invalid request"),
-            _                     => (0, string.Empty)
+            DomainException => (StatusCodes.Status400BadRequest, "Invalid request"),
+            _ => (0, string.Empty)
         };
 
         if (statusCode == 0)
@@ -49,7 +50,7 @@ public class DomainExceptionHandler : IExceptionHandler
         var domainProblemDetails = new ProblemDetails
         {
             Status = statusCode,
-            Title  = title,
+            Title = title,
             Detail = exception.Message
         };
         domainProblemDetails.Extensions["exception"] = exception.GetType().Name;
@@ -60,3 +61,4 @@ public class DomainExceptionHandler : IExceptionHandler
         return true;
     }
 }
+
