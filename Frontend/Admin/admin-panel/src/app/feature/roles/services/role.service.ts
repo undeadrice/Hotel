@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseHttpService } from '../../../core/http/base-http.service';
+import { AuthHttpService } from '../../../core/http/auth-http.service';
 import { RoleSimpleResponse } from '../models/responses/role-simple.response';
 import { RoleResponse } from '../models/responses/role.response';
 import { PermissionGroupResponse } from '../models/responses/permission-group.response';
@@ -10,7 +10,7 @@ import { UpdateRoleRequest } from '../models/requests/update-role.request';
 @Injectable({
   providedIn: 'root',
 })
-export class RoleService extends BaseHttpService {
+export class RoleService extends AuthHttpService {
 
   getRoles(): Observable<RoleSimpleResponse[]> {
     return this.get<RoleSimpleResponse[]>('roles');
