@@ -3,16 +3,23 @@ using Hotel.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Hotel.Shared.API.Middleware;
 
-public class DomainExceptionHandler : IExceptionHandler
+public class DomainExceptionHandler(ILogger<DomainExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
     {
+        if(exception is not DomainException and not ValidationException)
+        {       
+            logger.LogError("!!!!!!!!!!");
+            logger.LogError(exception.Message);
+        }
+
         if (exception is ValidationException validationException)
         {
             var errors = validationException.Errors
