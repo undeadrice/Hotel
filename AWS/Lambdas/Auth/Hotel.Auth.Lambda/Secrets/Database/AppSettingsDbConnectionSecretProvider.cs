@@ -1,6 +1,6 @@
 using Hotel.Auth.Infrastructure.Secrets.Database;
 
-namespace Hotel.Auth.Lambda.Secrets;
+namespace Hotel.Auth.Lambda.Secrets.Database;
 
 internal sealed class AppSettingsDbConnectionSecretProvider : IConnectionStringProvider
 {

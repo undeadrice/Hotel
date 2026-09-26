@@ -1,6 +1,6 @@
 using Hotel.Auth.Infrastructure.Secrets.Jwt;
 
-namespace Hotel.Auth.Lambda.Secrets;
+namespace Hotel.Auth.Lambda.Secrets.Jwt;
 
 internal sealed class AppSettingsJwtPrivateKeyProvider : IJwtPrivateKeyProvider
 {

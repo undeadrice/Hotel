@@ -4,7 +4,8 @@ using Hotel.Auth.Application.Seeding;
 using Hotel.Auth.Infrastructure;
 using Hotel.Auth.Infrastructure.Secrets.Database;
 using Hotel.Auth.Infrastructure.Secrets.Jwt;
-using Hotel.Auth.Lambda.Secrets;
+using Hotel.Auth.Lambda.Secrets.Database;
+using Hotel.Auth.Lambda.Secrets.Jwt;
 using Hotel.Shared.API.Middleware;
 
 namespace Hotel.Auth.Lambda
