@@ -25,6 +25,7 @@ namespace Hotel.Auth.Lambda
 
 #if DEBUG
             services.AddSingleton<IDbConnectionSecretProvider, AppSettingsDbConnectionSecretProvider>();
+            services.AddSingleton<IJwtPrivateKeyProvider, AppSettingsJwtPrivateKeyProvider>();
 #endif
 
             services.AddExceptionHandler<DomainExceptionHandler>();

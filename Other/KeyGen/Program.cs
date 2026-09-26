@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-var folder = @"C:\Users\bruce\Desktop\ssl";
+var folder = @"C:\Users\bruce\Desktop\ssltest";
 Directory.CreateDirectory(folder);
 
 using var rsa = RSA.Create(2048);

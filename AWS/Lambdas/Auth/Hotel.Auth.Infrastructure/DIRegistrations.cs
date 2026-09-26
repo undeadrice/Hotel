@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using System.Text;
+using System.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Hotel.Auth.Application.Initialization;
@@ -37,6 +37,15 @@ public static class DIRegistrations
             return new SecretsManagerConnectionProvider(client, connectionSecretId, credentialsSecretId);
         });
 
+        services.AddSingleton<IJwtPrivateKeyProvider>(sp =>
+        {
+            var client = sp.GetRequiredService<IAmazonSecretsManager>();
+            var jwtPrivateKeySecretId = configuration["SecretsManager:JwtPrivateKeySecretId"]
+                ?? throw new InvalidOperationException("SecretsManager:JwtPrivateKeySecretId is not configured.");
+
+            return new SecretsManagerJwtPrivateKeyProvider(client, jwtPrivateKeySecretId);
+        });
+
         services.AddDbContext<InfraIdentityDbContext>((serviceProvider, options) =>
         {
             var secretProvider = serviceProvider.GetRequiredService<IDbConnectionSecretProvider>();
@@ -51,6 +60,9 @@ public static class DIRegistrations
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
+            var rsa = RSA.Create();
+            rsa.ImportFromPem(configuration["jwt:PublicKey"]!);
+
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -59,7 +71,7 @@ public static class DIRegistrations
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = configuration["jwt:Issuer"],
                 ValidAudience = configuration["jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:Secret"]!)),
+                IssuerSigningKey = new RsaSecurityKey(rsa),
                 RoleClaimType = ClaimTypes.Role
             };
         });
@@ -88,12 +100,19 @@ public static class DIRegistrations
 
         services.AddSharedInfrastructure();
 
-        var jwtSettings = new JwtSettings(
-            configuration["jwt:Secret"]!,
-            configuration["jwt:Issuer"]!,
-            configuration["jwt:Audience"]!
-        );
-        services.AddSingleton(jwtSettings);
+        services.AddSingleton(sp =>
+        {
+            var privateKey = sp.GetRequiredService<IJwtPrivateKeyProvider>()
+                .GetPrivateKeyAsync()
+                .GetAwaiter()
+                .GetResult();
+
+            return new JwtSettings(
+                privateKey,
+                configuration["jwt:Issuer"]!,
+                configuration["jwt:Audience"]!
+            );
+        });
 
         return services;
     }
