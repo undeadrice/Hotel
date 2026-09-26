@@ -1,4 +1,4 @@
-using Hotel.Auth.Application.Auth.Models;
+using Hotel.Auth.Infrastructure.Auth.Contracts;
 using Hotel.Auth.Application.Auth.Services;
 using Hotel.Auth.Application.Roles.Services;
 using Hotel.Auth.Application.Users.Services;

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\..\..\..\Shared\Hotel.Shared.Infrastructure\Hotel.Shared.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth\Contracts\" />
+  </ItemGroup>
+
 </Project>
