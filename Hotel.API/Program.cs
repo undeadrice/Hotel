@@ -1,5 +1,4 @@
-﻿using Hotel.API.Middleware;
-using Hotel.Application;
+﻿using Hotel.Application;
 using Hotel.Domain;
 using Hotel.Infrastructure;
 using Hotel.Persistence;
