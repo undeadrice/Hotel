@@ -15,7 +15,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Hotel.Auth.Application.Initialization;
 using Hotel.Auth.Infrastructure.Initialization;
-using Hotel.Auth.Infrastructure.Secrets;
 using Amazon.SecretsManager;
 using Hotel.Auth.Infrastructure.Secrets.Database;
 using Hotel.Auth.Infrastructure.Secrets.Jwt;

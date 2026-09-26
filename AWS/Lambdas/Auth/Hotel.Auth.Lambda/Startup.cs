@@ -2,7 +2,8 @@
 using Hotel.Auth.Application.Initialization;
 using Hotel.Auth.Application.Seeding;
 using Hotel.Auth.Infrastructure;
-using Hotel.Auth.Infrastructure.Secrets;
+using Hotel.Auth.Infrastructure.Secrets.Database;
+using Hotel.Auth.Infrastructure.Secrets.Jwt;
 using Hotel.Auth.Lambda.Secrets;
 using Hotel.Shared.API.Middleware;
 
