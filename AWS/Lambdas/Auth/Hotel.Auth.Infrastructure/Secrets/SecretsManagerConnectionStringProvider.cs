@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Hotel.Auth.Infrastructure.Secrets;
 
-internal class SecretsManagerConnectionProvider : IDbConnectionSecretProvider
+internal class SecretsManagerConnectionStringProvider : IConnectionStringProvider
 {
     private readonly IAmazonSecretsManager _client;
     private readonly string _connectionSecretId;
@@ -13,7 +13,7 @@ internal class SecretsManagerConnectionProvider : IDbConnectionSecretProvider
      
     private string? _cachedConnectionString;
 
-    public SecretsManagerConnectionProvider(
+    public SecretsManagerConnectionStringProvider(
         IAmazonSecretsManager client,
         string connectionSecretId,
         string credentialsSecretId)

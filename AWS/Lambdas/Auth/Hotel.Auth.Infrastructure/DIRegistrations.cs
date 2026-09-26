@@ -26,7 +26,7 @@ public static class DIRegistrations
     {
         services.AddSingleton<IAmazonSecretsManager>(new AmazonSecretsManagerClient());
 
-        services.AddSingleton<IDbConnectionSecretProvider>(sp =>
+        services.AddSingleton<IConnectionStringProvider>(sp =>
         {
             var client = sp.GetRequiredService<IAmazonSecretsManager>();
             var connectionSecretId = configuration["SecretsManager:ConnectionSecretId"]
@@ -34,7 +34,7 @@ public static class DIRegistrations
             var credentialsSecretId = configuration["SecretsManager:CredentialsSecretId"]
                 ?? throw new InvalidOperationException("SecretsManager:CredentialsSecretId is not configured.");
 
-            return new SecretsManagerConnectionProvider(client, connectionSecretId, credentialsSecretId);
+            return new SecretsManagerConnectionStringProvider(client, connectionSecretId, credentialsSecretId);
         });
 
         services.AddSingleton<IJwtPrivateKeyProvider>(sp =>
@@ -48,7 +48,7 @@ public static class DIRegistrations
 
         services.AddDbContext<InfraIdentityDbContext>((serviceProvider, options) =>
         {
-            var secretProvider = serviceProvider.GetRequiredService<IDbConnectionSecretProvider>();
+            var secretProvider = serviceProvider.GetRequiredService<IConnectionStringProvider>();
             var connectionString = secretProvider.GetConnectionStringAsync().GetAwaiter().GetResult();
 
             options.UseSqlServer(connectionString);

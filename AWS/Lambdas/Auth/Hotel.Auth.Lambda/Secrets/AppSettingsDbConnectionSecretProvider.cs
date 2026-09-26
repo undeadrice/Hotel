@@ -2,7 +2,7 @@ using Hotel.Auth.Infrastructure.Secrets;
 
 namespace Hotel.Auth.Lambda.Secrets;
 
-internal sealed class AppSettingsDbConnectionSecretProvider : IDbConnectionSecretProvider
+internal sealed class AppSettingsDbConnectionSecretProvider : IConnectionStringProvider
 {
     private readonly IConfiguration _configuration;
 
