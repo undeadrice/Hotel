@@ -3,7 +3,7 @@ using Amazon.SecretsManager.Model;
 using System.Text.Json;
 using Microsoft.Data.SqlClient;
 
-namespace Hotel.Auth.Infrastructure.Secrets;
+namespace Hotel.Auth.Infrastructure.Secrets.Database;
 
 internal class SecretsManagerConnectionStringProvider : IConnectionStringProvider
 {

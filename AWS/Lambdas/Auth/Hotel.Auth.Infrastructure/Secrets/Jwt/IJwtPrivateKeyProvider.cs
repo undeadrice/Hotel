@@ -1,4 +1,4 @@
-namespace Hotel.Auth.Infrastructure.Secrets;
+namespace Hotel.Auth.Infrastructure.Secrets.Jwt;
 
 public interface IJwtPrivateKeyProvider
 {

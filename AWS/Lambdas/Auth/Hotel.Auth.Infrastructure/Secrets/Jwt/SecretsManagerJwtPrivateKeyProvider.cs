@@ -2,7 +2,7 @@ using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using System.Text.Json;
 
-namespace Hotel.Auth.Infrastructure.Secrets;
+namespace Hotel.Auth.Infrastructure.Secrets.Jwt;
 
 internal class SecretsManagerJwtPrivateKeyProvider : IJwtPrivateKeyProvider
 {

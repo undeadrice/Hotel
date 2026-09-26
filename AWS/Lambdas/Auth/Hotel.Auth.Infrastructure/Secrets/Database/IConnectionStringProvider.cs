@@ -1,4 +1,4 @@
-﻿namespace Hotel.Auth.Infrastructure.Secrets;
+﻿namespace Hotel.Auth.Infrastructure.Secrets.Database;
 
 public interface IConnectionStringProvider
 {
