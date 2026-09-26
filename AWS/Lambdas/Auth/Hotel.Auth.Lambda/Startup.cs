@@ -26,7 +26,7 @@ namespace Hotel.Auth.Lambda
             services.AddAuthInfrastructure(Configuration);
 
 #if DEBUG
-            services.AddSingleton<IConnectionStringProvider, AppSettingsDbConnectionSecretProvider>();
+            services.AddSingleton<IConnectionStringProvider, AppSettingsConnectionStringProvider>();
             services.AddSingleton<IJwtPrivateKeyProvider, AppSettingsJwtPrivateKeyProvider>();
 #endif
 
