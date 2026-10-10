@@ -1,4 +1,4 @@
-﻿using Hotel.Application.Auth.Models;
+﻿using Hotel.Infrastructure.Auth;
 using Hotel.Application.Auth.Services;
 using Hotel.Application.Common;
 using Hotel.Application.Roles.Services;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using System.Text;
+using System.Security.Cryptography;
 
 namespace Hotel.Infrastructure;
 
@@ -30,6 +30,9 @@ public static class DIRegistrations
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
+            var rsa = RSA.Create();
+            rsa.ImportFromPem(configuration["jwt:PublicKey"]!);
+
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -38,7 +41,7 @@ public static class DIRegistrations
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = configuration["jwt:Issuer"],
                 ValidAudience = configuration["jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:Secret"]!)),
+                IssuerSigningKey = new RsaSecurityKey(rsa),
                 RoleClaimType = ClaimTypes.Role
             };
         });
@@ -67,7 +70,7 @@ public static class DIRegistrations
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         var jwtSettings = new JwtSettings(
-            configuration["jwt:Secret"]!,
+            configuration["jwt:PrivateKey"]!,
             configuration["jwt:Issuer"]!,
             configuration["jwt:Audience"]!
         );

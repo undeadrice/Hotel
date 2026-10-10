@@ -1,11 +1,10 @@
-﻿using Hotel.Application.Auth.Models;
-using Hotel.Application.Auth.Services;
+﻿using Hotel.Application.Auth.Services;
 using Hotel.Infrastructure.Auth.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using System.Security.Cryptography;
 
 namespace Hotel.Infrastructure.Auth.Services;
 
@@ -35,8 +34,9 @@ internal class AuthService(UserManager<ApplicationUser> userManager, JwtSettings
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var rsa = RSA.Create();
+        rsa.ImportFromPem(jwtSettings.PrivateKey);
+        var creds = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
 
         var token = new JwtSecurityToken(
             issuer: jwtSettings.Issuer,
