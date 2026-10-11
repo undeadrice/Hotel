@@ -12,6 +12,6 @@ internal class LoginCommandHandler(IAuthService authService) : IRequestHandler<L
     {
         var token = await authService.Login(request.Email, request.Password);
 
-        return new TokenDto(token, DateTime.Now.AddHours(1));
+        return new TokenDto(token);
     }
 }

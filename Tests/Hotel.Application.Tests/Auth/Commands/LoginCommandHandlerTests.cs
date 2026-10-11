@@ -36,7 +36,7 @@ public class LoginCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithValidCommand_ShouldReturnTokenDtoWithTokenAndValidTo()
+    public async Task Handle_WithValidCommand_ShouldReturnTokenDtoWithToken()
     {
         // Arrange
         const string email = "john.doe@example.com";
@@ -44,13 +44,11 @@ public class LoginCommandHandlerTests
         _authService.Login(email, password).Returns("jwt-token");
 
         var command = new LoginCommand(email, password);
-        var before = DateTime.Now.AddHours(1);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         result.Token.Should().Be("jwt-token");
-        result.ValidTo.Should().BeCloseTo(before, TimeSpan.FromMinutes(1));
     }
 }
