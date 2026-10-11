@@ -1,17 +1,38 @@
-﻿using Hotel.Application.Orders.Services;
-using Hotel.Application.Products.Services;
-using Hotel.Domain.Customers.Services;
-using Hotel.Domain.Orders.Services;
+using Hotel.Domain.NumberCycles.Services;
 using Hotel.Domain.Persistence;
 using Hotel.Domain.Interfaces;
-using Hotel.Domain.Products.Services;
-using Hotel.Persistence.Customers;
-using Hotel.Persistence.Orders;
-using Hotel.Persistence.Products;
+using Hotel.Domain.Reservations.Services;
+using Hotel.Domain.Rooming.Services;
+using Hotel.Domain.Transactions.Services;
+using Hotel.Persistence.Transactions;
+using Hotel.Persistence.Dashboard;
+using Hotel.Persistence.FiscalAccounting;
+using Hotel.Persistence.Guests;
+using Hotel.Persistence.Configurations;
+using Hotel.Persistence.NumberCycles;
+using Hotel.Persistence.RatePlans;
+using Hotel.Persistence.Reservations;
+using Hotel.Persistence.Rooming;
 using Hotel.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Hotel.Domain.RatePlans.Repositories;
+using Hotel.Domain.Guests.Repositories;
+using Hotel.Domain.Transactions.Repositories;
+using Hotel.Domain.Reservations.Repositories;
+using Hotel.Domain.Rooming.Repositories;
+using Hotel.Domain.NumberCycles.Repositories;
+using Hotel.Domain.Configurations.Repositories;
+using Hotel.Domain.FiscalAccounting.Repositories;
+using Hotel.Application.RatePlans.Repositories;
+using Hotel.Application.FiscalAccounting.Repositories;
+using Hotel.Application.Dashboard.Repositories;
+using Hotel.Application.Transactions.Repositories;
+using Hotel.Application.NumberCycles.Repositories;
+using Hotel.Application.Guests.Repositories;
+using Hotel.Application.Reservations.Repositories;
+using Hotel.Application.Rooming.Repositories;
 
 namespace Hotel.Persistence;
 
@@ -24,14 +45,31 @@ public static class DIRegistrations
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IGuestRepository, GuestRepository>();
 
-        services.AddScoped<IOrderReadRepository, OrderReadRepository>();
-        services.AddScoped<IProductReadRepository, ProductReadRepository>();
-
+        services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+        services.AddScoped<IRoomReadRepository, RoomReadRepository>();
+        services.AddScoped<IRoomTypeReadRepository, RoomTypeReadRepository>();
+        services.AddScoped<IGuestReadRepository, GuestReadRepository>();
+        services.AddScoped<IDashboardReadRepository, DashboardReadRepository>();
         services.AddScoped(typeof(IUserOwnershipRepository<>), typeof(UserOwnershipRepository<>));
+
+        services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IReservationReadRepository, ReservationReadRepository>();
+        services.AddScoped<IFiscalAccountRepository, FiscalAccountRepository>();
+        services.AddScoped<INumberCycleRepository, NumberCycleRepository>();
+        services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+
+        services.AddScoped<ITransactionGroupRepository, TransactionGroupRepository>();
+        services.AddScoped<ITransactionCodeRepository, TransactionCodeRepository>();
+        services.AddScoped<ITransactionGroupReadRepository, TransactionGroupReadRepository>();
+        services.AddScoped<ITransactionCodeReadRepository, TransactionCodeReadRepository>();
+        services.AddScoped<IFiscalAccountReadRepository, FiscalAccountReadRepository>();
+        services.AddScoped<INumberCycleReadRepository, NumberCycleReadRepository>();
+
+        services.AddScoped<IRatePlanRepository, RatePlanRepository>();
+        services.AddScoped<IRatePlanReadRepository, RatePlanReadRepository>();
 
         return services;
     }

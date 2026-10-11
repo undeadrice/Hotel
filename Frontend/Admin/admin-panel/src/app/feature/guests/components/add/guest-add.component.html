@@ -1,0 +1,76 @@
+<mat-card style="max-width: 600px; margin: 0 auto">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Create guest</mat-card-title>
+      <button mat-stroked-button routerLink="/guests">Back</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Guest details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>First name</mat-label>
+            <input matInput formControlName="firstName" placeholder="e.g. John" />
+            @if (form.get('firstName')?.hasError('required')) {
+              <mat-error>First name is required</mat-error>
+            } @else if (form.get('firstName')?.hasError('minlength')) {
+              <mat-error>First name must be at least 2 characters</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Last name</mat-label>
+            <input matInput formControlName="lastName" placeholder="e.g. Doe" />
+            @if (form.get('lastName')?.hasError('required')) {
+              <mat-error>Last name is required</mat-error>
+            } @else if (form.get('lastName')?.hasError('minlength')) {
+              <mat-error>Last name must be at least 2 characters</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone" placeholder="e.g. +48 123 456 789" />
+            @if (form.get('phone')?.hasError('required')) {
+              <mat-error>Phone is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="e.g. john@example.com" />
+            @if (form.get('email')?.hasError('required')) {
+              <mat-error>Email is required</mat-error>
+            } @else if (form.get('email')?.hasError('email')) {
+              <mat-error>Enter a valid email</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Document number</mat-label>
+            <input matInput formControlName="documentNumber" placeholder="e.g. ABC123456" />
+            @if (form.get('documentNumber')?.hasError('required')) {
+              <mat-error>Document number is required</mat-error>
+            }
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <div style="margin-top: 16px; display: flex; gap: 8px">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid || submitting()"
+        >
+          Create guest
+        </button>
+        <button mat-button type="button" routerLink="/guests">Cancel</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -37,7 +37,7 @@ internal class CurrentUserService(
         var user = httpContextAccessor.HttpContext?.User;
         if (user is null) return false;
 
-        return await Task.FromResult(user.IsInRole("Super admin"));
+        return await Task.FromResult(user.IsInRole(UserRole.SuperAdmin.ToString()));
     }
 
     public async Task<bool> HasPermissions(params Permission[] permissions)

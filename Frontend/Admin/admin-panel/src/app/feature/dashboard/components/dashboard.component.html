@@ -1,0 +1,113 @@
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @else if (dashboard(); as data) {
+  <div class="dashboard-grid">
+
+    @if (businessDay()) {
+      <div class="business-day-banner">
+        <mat-icon>event</mat-icon>
+        <span>Business day: {{ businessDay() }}</span>
+      </div>
+    }
+
+    <!-- Stats Cards Row -->
+    <div class="stats-row">
+      <mat-card class="stat-card">
+        <mat-card-content class="stat-content">
+          <div class="stat-icon rooms-icon">
+            <mat-icon>meeting_room</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Total Rooms</div>
+            <div class="stat-value">{{ data.roomCount }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content class="stat-content">
+          <div class="stat-icon occupied-icon">
+            <mat-icon>hotel</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Occupied Rooms</div>
+            <div class="stat-value">{{ data.occupiedRoomCount }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content class="stat-content">
+          <div class="stat-icon guests-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Total Guests</div>
+            <div class="stat-value">{{ data.guestCount }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content class="stat-content">
+          <div class="stat-icon onsite-icon">
+            <mat-icon>location_on</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Guests On Site</div>
+            <div class="stat-value">{{ data.guestsOnSiteCount }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Occupancy Gauge -->
+    <div class="gauge-row">
+      <mat-card class="gauge-card">
+        <mat-card-header>
+          <mat-card-title>Occupancy</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="gauge-content">
+          <div class="gauge-container">
+            <svg viewBox="0 0 140 140" class="gauge-svg">
+              <!-- Background circle -->
+              <circle
+                cx="70" cy="70" r="54"
+                fill="none"
+                stroke="#e0e0e0"
+                stroke-width="12" />
+              <!-- Filled arc -->
+              <circle
+                cx="70" cy="70" r="54"
+                fill="none"
+                [attr.stroke]="occupancy() >= 80 ? '#d32f2f' : occupancy() >= 60 ? '#ed6c02' : '#2e7d32'"
+                stroke-width="12"
+                stroke-linecap="round"
+                [attr.stroke-dasharray]="gaugeDashArray()"
+                stroke-dashoffset="0"
+                transform="rotate(-90 70 70)" />
+              <!-- Percentage text -->
+              <text x="70" y="65" text-anchor="middle" class="gauge-percent">
+                {{ occupancy() | number: '1.0-0' }}%
+              </text>
+              <text x="70" y="82" text-anchor="middle" class="gauge-label">
+                occupied
+              </text>
+            </svg>
+          </div>
+          <div class="gauge-details">
+            <div class="gauge-detail-item">
+              <span class="detail-dot occupied-dot"></span>
+              <span>Occupied: {{ data.occupiedRoomCount }} / {{ data.roomCount }}</span>
+            </div>
+            <div class="gauge-detail-item">
+              <span class="detail-dot free-dot"></span>
+              <span>Free: {{ data.roomCount - data.occupiedRoomCount }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+}

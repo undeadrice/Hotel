@@ -1,0 +1,76 @@
+using Hotel.Application.Transactions.TransferObjects;
+using Hotel.Shared.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Hotel.Application.Transactions.Repositories;
+
+namespace Hotel.Persistence.Transactions;
+
+public class TransactionCodeReadRepository(PersistenceDbContext dbContext) : ITransactionCodeReadRepository
+{
+    public async Task<IReadOnlyCollection<TransactionCodeListDto>> GetAll(
+        Guid? transactionGroupId,
+        bool? isActive,
+        CancellationToken cancellationToken)
+    {
+        var query = dbContext.TransactionCodes.AsNoTracking();
+
+        if (transactionGroupId.HasValue)
+        {
+            query = query.Where(tc => tc.TransactionGroupId == transactionGroupId.Value);
+        }
+
+        if (isActive.HasValue)
+        {
+            query = query.Where(tc => tc.IsActive == isActive.Value);
+        }
+
+        return await query
+            .OrderBy(tc => tc.Code)
+            .Select(tc => new TransactionCodeListDto(
+                tc.Id,
+                tc.TransactionGroupId,
+                dbContext.TransactionGroups
+                    .Where(tg => tg.Id == tc.TransactionGroupId)
+                    .Select(tg => tg.Name)
+                    .FirstOrDefault() ?? "",
+                tc.Code,
+                tc.Name,
+                tc.IsActive))
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<TransactionCodeSimpleListDto>> GetActiveSimpleList(CancellationToken cancellationToken)
+    {
+        return await dbContext.TransactionCodes
+            .AsNoTracking()
+            .Where(tc => tc.IsActive)
+            .OrderBy(tc => tc.Name)
+            .Select(tc => new TransactionCodeSimpleListDto(tc.Id, tc.Name))
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<TransactionCodeDto> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var transactionCode = await dbContext.TransactionCodes
+            .AsNoTracking()
+            .Where(tc => tc.Id == id)
+            .Select(tc => new TransactionCodeDto(
+                tc.Id,
+                tc.TransactionGroupId,
+                dbContext.TransactionGroups
+                    .Where(tg => tg.Id == tc.TransactionGroupId)
+                    .Select(tg => tg.Name)
+                    .FirstOrDefault() ?? "",
+                tc.Code,
+                tc.Name,
+                tc.IsActive))
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (transactionCode is null)
+        {
+            throw new NotFoundException($"Transaction code with id {id} doesn't exist");
+        }
+
+        return transactionCode;
+    }
+}

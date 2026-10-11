@@ -25,6 +25,7 @@ public class DomainExceptionHandler : IExceptionHandler
                 Status = StatusCodes.Status400BadRequest,
                 Title  = "Validation failed"
             };
+            problemDetails.Extensions["exception"] = exception.GetType().Name;
 
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
@@ -51,6 +52,7 @@ public class DomainExceptionHandler : IExceptionHandler
             Title  = title,
             Detail = exception.Message
         };
+        domainProblemDetails.Extensions["exception"] = exception.GetType().Name;
 
         httpContext.Response.StatusCode = statusCode;
         await httpContext.Response.WriteAsJsonAsync(domainProblemDetails, cancellationToken);

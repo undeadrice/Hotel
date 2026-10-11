@@ -1,0 +1,65 @@
+using Hotel.Application.Rooming.TransferObjects;
+using Hotel.Domain.Reservations.Enums;
+using Hotel.Shared.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Hotel.Application.Rooming.Repositories;
+
+namespace Hotel.Persistence.Rooming;
+
+public class RoomReadRepository(PersistenceDbContext dbContext) : IRoomReadRepository
+{
+    public async Task<IReadOnlyCollection<RoomListDto>> GetAll(CancellationToken cancellationToken)
+    {
+        return await (
+            from r in dbContext.Rooms.AsNoTracking()
+            join rt in dbContext.RoomTypes.AsNoTracking() on r.RoomTypeId equals rt.Id
+            orderby r.RoomNumber
+            select new RoomListDto(r.Id, r.RoomNumber, rt.Name)
+        ).ToListAsync(cancellationToken);
+    }
+
+    public async Task<RoomDto> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var room = await (
+            from r in dbContext.Rooms.AsNoTracking()
+            join rt in dbContext.RoomTypes.AsNoTracking() on r.RoomTypeId equals rt.Id
+            where r.Id == id
+            select new RoomDto(r.Id, r.RoomNumber, r.RoomTypeId, rt.Name, r.IsActive)
+        ).FirstOrDefaultAsync(cancellationToken);
+
+        if (room is null)
+        {
+            throw new NotFoundException($"Room with id {id} doesn't exist");
+        }
+
+        return room;
+    }
+
+    public async Task<IReadOnlyCollection<RoomListDto>> GetAvailable(
+        DateOnly startDate,
+        DateOnly endDate,
+        CancellationToken cancellationToken)
+    {
+        var reservedRoomIds = dbContext.Reservations
+            .AsNoTracking()
+            .Where(r => r.Status != ReservationStatus.NoShow && r.StartDate <= endDate && r.EndDate >= startDate)
+            .Select(r => r.RoomId)
+            .Distinct();
+
+        var roomTypeIdsWithRatePlans = dbContext.RatePlans
+            .AsNoTracking()
+            .Where(rp => rp.StartDate <= startDate && rp.EndDate >= endDate)
+            .SelectMany(rp => rp.Rooms.Select(rpr => rpr.RoomTypeId))
+            .Distinct();
+
+        return await (
+            from r in dbContext.Rooms.AsNoTracking()
+            join rt in dbContext.RoomTypes.AsNoTracking() on r.RoomTypeId equals rt.Id
+            where !reservedRoomIds.Contains(r.Id) &&
+                r.IsActive &&
+                roomTypeIdsWithRatePlans.Contains(r.RoomTypeId)
+            orderby r.RoomNumber
+            select new RoomListDto(r.Id, r.RoomNumber, rt.Name)
+        ).ToListAsync(cancellationToken);
+    }
+}

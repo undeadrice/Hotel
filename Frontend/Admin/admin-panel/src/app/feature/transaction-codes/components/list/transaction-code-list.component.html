@@ -1,0 +1,49 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Transaction Codes dashboard</mat-card-title>
+      <button mat-raised-button routerLink="add">Add transaction code</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="transactionCodes">
+      <ng-container matColumnDef="Code">
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let code">{{ code.code }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let code">{{ code.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="TransactionGroupName">
+        <th mat-header-cell *matHeaderCellDef>Group</th>
+        <td mat-cell *matCellDef="let code">{{ code.transactionGroupName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="IsActive">
+        <th mat-header-cell *matHeaderCellDef>Active</th>
+        <td mat-cell *matCellDef="let code">
+          {{ code.isActive ? 'Yes' : 'No' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let code">
+          <button
+            mat-button
+            color="accent"
+            (click)="editTransactionCode(code.id)"
+          >
+            Edit
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

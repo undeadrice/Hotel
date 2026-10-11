@@ -1,0 +1,84 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Reservations dashboard</mat-card-title>
+      <button mat-raised-button routerLink="add">Add reservation</button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="reservations">
+      <ng-container matColumnDef="CycleIdentifier">
+        <th mat-header-cell *matHeaderCellDef>Identifier</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.cycleIdentifier }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="RoomName">
+        <th mat-header-cell *matHeaderCellDef>Room</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.roomName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="RatePlanName">
+        <th mat-header-cell *matHeaderCellDef>Rate Plan</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.ratePlanName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="CreatorName">
+        <th mat-header-cell *matHeaderCellDef>Guest</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.creatorName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="StartDate">
+        <th mat-header-cell *matHeaderCellDef>Start Date</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.startDate | date: 'shortDate' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="EndDate">
+        <th mat-header-cell *matHeaderCellDef>End Date</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.endDate | date: 'shortDate' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ArrivalTime">
+        <th mat-header-cell *matHeaderCellDef>Arrival Time</th>
+        <td mat-cell *matCellDef="let reservation">
+          @if (reservation.arrivalTime) {
+            {{ reservation.arrivalTime | date: 'short' }}
+          } @else {
+            N/A
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let reservation">{{ statusLabel(reservation.status) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="CreatedAt">
+        <th mat-header-cell *matHeaderCellDef>Created</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.createdAt | date: 'shortDate' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="GuestCount">
+        <th mat-header-cell *matHeaderCellDef>Guests</th>
+        <td mat-cell *matCellDef="let reservation">{{ reservation.guestCount }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let reservation">
+          <button
+            mat-button
+            color="primary"
+            [disabled]="!canCheckIn(reservation.status)"
+            (click)="checkIn(reservation)"
+          >
+            Check In
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

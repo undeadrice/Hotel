@@ -16,7 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 
 @Component({
   imports: [
@@ -71,8 +71,9 @@ export class UserEditComponent implements OnInit {
     forkJoin({
       user: this.userService.getUser(this.userId),
       roles: this.roleService.getRoles(),
-    }).subscribe({
-      next: ({ user, roles }) => {
+    })
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe(({ user, roles }) => {
         const parsedDate =
           typeof user.dateOfBirth === 'string'
             ? new Date(user.dateOfBirth)
@@ -87,15 +88,7 @@ export class UserEditComponent implements OnInit {
         });
 
         this.roles.set(roles);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.snackBar.open('Failed to load user', 'Close', {
-          duration: 5000,
-        });
-        this.router.navigate(['/users']);
-      },
-    });
+      });
   }
 
   onSubmit(): void {
@@ -119,19 +112,12 @@ export class UserEditComponent implements OnInit {
         dateOfBirth,
         roleIds: raw.roleIds,
       })
-      .subscribe({
-        next: () => {
-          this.snackBar.open('User updated successfully', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/users']);
-        },
-        error: () => {
-          this.snackBar.open('Failed to update user', 'Close', {
-            duration: 5000,
-          });
-          this.submitting.set(false);
-        },
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe(() => {
+        this.snackBar.open('User updated successfully', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/users']);
       });
   }
 }

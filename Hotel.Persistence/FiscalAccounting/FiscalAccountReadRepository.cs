@@ -1,0 +1,74 @@
+using Hotel.Application.FiscalAccounting.TransferObjects;
+using Hotel.Shared.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Hotel.Application.FiscalAccounting.Repositories;
+
+namespace Hotel.Persistence.FiscalAccounting;
+
+public class FiscalAccountReadRepository(PersistenceDbContext dbContext) : IFiscalAccountReadRepository
+{
+    public async Task<IReadOnlyCollection<FiscalAccountListItemDto>> GetAll(CancellationToken cancellationToken)
+    {
+        return await dbContext.FiscalAccounts
+            .AsNoTracking()
+            .OrderBy(a => a.CreatedAt)
+            .Select(a => new FiscalAccountListItemDto(
+                a.Id,
+                a.CycleIdentifier,
+                a.CreatedAt,
+                dbContext.Guests
+                    .Where(g => g.Id == a.OwnerId)
+                    .Select(g => g.FirstName + " " + g.LastName)
+                    .FirstOrDefault() ?? "Unknown",
+                a.Status))
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<FiscalAccountDetailsDto> GetById(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var account = await dbContext.FiscalAccounts
+            .AsNoTracking()
+            .Where(a => a.Id == id)
+            .Select(a => new FiscalAccountDetailsDto(
+                a.Id,
+                a.OriginatorId,
+                a.CycleIdentifier,
+                dbContext.Guests
+                    .Where(g => g.Id == a.OwnerId)
+                    .Select(g => g.FirstName + " " + g.LastName)
+                    .FirstOrDefault() ?? "Unknown",
+                a.CreatedAt,
+                a.Status,
+                a.Folios
+                    .Select(f => new FolioDto(
+                        f.Id,
+                        f.IsMainFolio,
+                        f.CreatedAt,
+                        f.Status,
+                        f.Items
+                            .Select(i => new FolioItemDto(
+                                i.Id,
+                                i.Description,
+                                i.Quantity,
+                                i.Amount,
+                                i.Quantity * i.Amount,
+                                i.TransactionCodeId,
+                                i.TransactionType,
+                                i.BusinessDate,
+                                i.CreatedAt))
+                            .ToList()
+                            .AsReadOnly()))
+                    .ToList()
+                    .AsReadOnly()))
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (account is null)
+        {
+            throw new NotFoundException($"FiscalAccount with id {id} doesn't exist");
+        }
+
+        return account;
+    }
+}
